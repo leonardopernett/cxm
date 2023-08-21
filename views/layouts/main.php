@@ -394,12 +394,12 @@ AppAsset::register($this);
                                                 '<li class="dropdown-headercx ico1">&nbsp;Alertas&nbsp;&nbsp;</li>',
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Crear Alertas&nbsp;&nbsp;'),
-                                                    'url' => ['basesatisfaccion/alertas'],
+                                                    'url' => ['/alertascxm/registraalerta?id_procesos=0'],
                                                     'visible' => Yii::$app->user->identity->isverAlertas() || Yii::$app->user->identity->isVerexterno()|| Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerusuatlmast(),
                                                 ],
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Gesti&oacute;n de Alertas&nbsp;&nbsp;'),
-                                                    'url' => ['/site/dashboardalertas'],
+                                                    'url' => ['/alertascxm/notificacionalertas'],
                                                     'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isVerexterno() || Yii::$app->user->identity->isVerusuatlmast(),
                                                 ],
                                                 '<br>',
@@ -469,7 +469,7 @@ AppAsset::register($this);
                                                 ],
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Hist&oacute;rico de Alertas&nbsp;&nbsp;'),
-                                                    'url' => ['basesatisfaccion/alertasvaloracion'],
+                                                    'url' => ['/alertascxm/reportealerta'],
                                                     'visible' => Yii::$app->user->identity->isverAlertas() || Yii::$app->user->identity->isVerexterno()|| Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerusuatlmast(),
                                                 ],                                                
                                                 [
