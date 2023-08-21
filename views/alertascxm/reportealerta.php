@@ -531,13 +531,11 @@ if ($varDataResultado != null) {
 
                                 <?= Html::a('<em class="fas fa-times" style="font-size: 15px; color: #FC4343;"></em>',  ['eliminaralerta','id'=> $varIdAlertas], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;  border-color: #4298b500 !important; color:#000000;", 'title' => 'Eliminar', 'target' => "_blank"]) ?>
 
-                                <?= Html::a('<em class="fas fa-paper-plane" style="font-size: 15px; "></em>',  ['enviaralertados','id_enviados'=> $varIdAlertas], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;  border-color: #4298b500 !important; color:#000000;", 'title' => 'Enviar Alerta Emergente', 'target' => "_blank"]) ?>
-
                                 <?php
                                 }
                                 ?>
 
-
+                                <?= Html::a('<em class="fas fa-paper-plane" style="font-size: 15px; "></em>',  ['enviaralertados','id_enviados'=> $varIdAlertas], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;  border-color: #4298b500 !important; color:#000000;", 'title' => 'Enviar Alerta Emergente', 'target' => "_blank"]) ?>
 
                             </td>
                         </tr>
