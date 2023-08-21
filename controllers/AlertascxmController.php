@@ -1104,16 +1104,11 @@ use Exception;
                 dp_datos_generales.documento = :varDocumentoName
             GROUP BY dp_datos_generales.documento ')->bindValues($varDocumentos_Notas)->queryScalar();
 
-        $varCorreoJarvis_Notas = Yii::$app->dbjarvis->createCommand('
-        SELECT dp_usuarios_red.email FROM dp_usuarios_red
-            WHERE 
-                dp_usuarios_red.documento =  :varDocumentoName')->bindValues($varDocumentos_Notas)->queryAll();
-
-        $varArraIdCorreosNotas = array();
-        foreach ($varCorreoJarvis_Notas as $value) {
-            array_push($varArraIdCorreosNotas, $value['email']);
-        }
-        $varListadoCorreos_Notas =  explode(",", str_replace(array("#", "'", ";", " "), '', implode(", ",$varArraIdCorreosNotas)));
+        $varUsuarioRed = (new \yii\db\Query())
+                            ->select(['tbl_usuarios.usua_usuario'])
+                            ->from(['tbl_usuarios'])
+                            ->where(['=','tbl_usuarios.usua_id',$varUsuarioActual])
+                            ->scalar(); 
 
         $varDataResultado_Notas = (new \yii\db\Query())
                             ->select([
@@ -1132,9 +1127,39 @@ use Exception;
                             ->join('LEFT OUTER JOIN', 'tbl_usuarios',
                                   'tbl_usuarios.usua_id = tbl_alertascx.valorador')
 
-                            ->where(['in','tbl_alertascx.remitentes',$varCorreoJarvis_Notas])
+                            ->where(['like','tbl_alertascx.remitentes',$varUsuarioRed])
                             ->andwhere(['>=','tbl_alertascx.fecha',date('Y-m-01').' 00:00:00'])
-                            ->all(); 
+                            ->all();
+
+        if (count($varDataResultado_Notas) == 0) {
+
+            $varCorreoJarvis_Notas = Yii::$app->dbjarvis->createCommand('
+            SELECT dp_usuarios_red.email FROM dp_usuarios_red
+                WHERE 
+                    dp_usuarios_red.documento =  :varDocumentoName')->bindValues($varDocumentos_Notas)->queryScalar();
+
+            $varDataResultado_Notas = (new \yii\db\Query())
+                            ->select([
+                                'tbl_alertascx.id',
+                                'tbl_alertascx.fecha', 
+                                'tbl_arbols.name',
+                                'tbl_usuarios.usua_id',
+                                'tbl_usuarios.usua_nombre', 
+                                'tbl_alertascx.tipo_alerta'
+                            ])
+                            ->from(['tbl_alertascx'])
+
+                            ->join('LEFT OUTER JOIN', 'tbl_arbols',
+                                  'tbl_arbols.id = tbl_alertascx.pcrc')
+
+                            ->join('LEFT OUTER JOIN', 'tbl_usuarios',
+                                  'tbl_usuarios.usua_id = tbl_alertascx.valorador')
+
+                            ->where(['like','tbl_alertascx.remitentes',$varCorreoJarvis_Notas])
+                            ->andwhere(['>=','tbl_alertascx.fecha',date('Y-m-01').' 00:00:00'])
+                            ->all();
+        }
+
 
         $varArraIdAlertas = array();
         foreach ($varDataResultado_Notas as $value) {

@@ -195,46 +195,48 @@ $this->params['breadcrumbs'][] = $this->title;
                         foreach ($varDataResultado_Notas as $value) {
                             $varIdAlertas = $value['id'];
                             
+                            $varFechas = $value['fecha'];
+                            $varNames = $value['name'];
+                            $varUsuaNombres = $value['usua_nombre'];
+                            $varTipoAlertas = $value['tipo_alerta'];
+                            
+                            $arrayVarPeso = 0;
+                            $varEncuestas = 0;
+                            
                             $varPeso = (new \yii\db\Query())
-                                        ->select(['ROUND(AVG(tbl_alertas_tipoencuestas.peso)) AS peso'])
+                                        ->select(['tbl_alertas_tipoencuestas.peso'])
                                         ->from(['tbl_alertas_tipoencuestas'])
                                         ->join('LEFT OUTER JOIN', 'tbl_alertas_encuestasalertas',
                                                 'tbl_alertas_tipoencuestas.id_tipoencuestas = tbl_alertas_encuestasalertas.id_tipoencuestas')
                                         ->where(['=','tbl_alertas_encuestasalertas.id_alerta',$varIdAlertas])
                                         ->andwhere(['=','tbl_alertas_encuestasalertas.anulado',0])
-                                        ->scalar(); 
+                                        ->all(); 
 
-                            if ($varPeso == "1") {
-                                $varEncuestas = "<img src='../../images/insatisfecho.png' alt='insatisfecho' title='Insatisfecho' style='height: 30px; width: 30px;'>";
+                            $varConteosPesos = 0;
+                            if (count($varPeso)) {     
+                                                  
+                                foreach ($varPeso as $value) {                                    
+                                    if ($value['peso'] == 4 || $value['peso'] == 5) {
+                                        $arrayVarPeso = $varConteosPesos = $varConteosPesos + 1;
+                                    }
+                                }
                             }
-                                
-                            if ($varPeso == "2") {
-                                $varEncuestas = "<img src='../../images/medioinsatisfecho.png' alt='medioinsatisfecho' title='Medio Insatisfecho' style='height: 30px; width: 30px;'>";
-                            }
-                            
-                            if ($varPeso == "3") {
-                                $varEncuestas = "<img src='../../images/neutro.png' alt='neutro' title='Neutro' style='height: 30px; width: 30px;'>";
-                            }
-                            
-                            if ($varPeso == "4") {
-                                $varEncuestas = "<img src='../../images/mediosatisfecho.png' alt='mediosatisfecho' title='Medio Satisfecho' style='height: 30px; width: 30px;'>";
-                            }
-                            
-                            if ($varPeso == "5") {
-                                $varEncuestas = "<img src='../../images/satisfecho.png' alt='satisafecho' title='Satisfecho' style='height: 30px; width: 30px;'>";
-                            }
-                                            
-                            if ($varPeso == "") {
-                                $varEncuestas = '--';
+
+
+
+                            if (count($varPeso)) {
+                                $varEncuestas = round(($arrayVarPeso / count($varPeso)) * 100, 2).' %';
+                            }else{
+                                $varEncuestas = "--";
                             }
                             
                         ?>
                         <tr>
                             <td><label style="font-size: 11px;"><?php echo  $varIdAlertas; ?></label></td>
-                            <td><label style="font-size: 11px;"><?php echo  $value['fecha']; ?></label></td>
-                            <td><label style="font-size: 11px;"><?php echo  $value['name']; ?></label></td>
-                            <td><label style="font-size: 11px;"><?php echo  $value['usua_nombre']; ?></label></td>
-                            <td><label style="font-size: 11px;"><?php echo  $value['tipo_alerta']; ?></label></td>
+                            <td><label style="font-size: 11px;"><?php echo  $varFechas; ?></label></td>
+                            <td><label style="font-size: 11px;"><?php echo  $varNames; ?></label></td>
+                            <td><label style="font-size: 11px;"><?php echo  $varUsuaNombres; ?></label></td>
+                            <td><label style="font-size: 11px;"><?php echo  $varTipoAlertas; ?></label></td>
                             <td class="text-center">
                                 <?php echo $varEncuestas; ?>
                             </td>
