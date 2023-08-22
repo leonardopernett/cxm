@@ -213,6 +213,7 @@ class BasechatTigo extends \yii\db\ActiveRecord
             ->select(['idbasechat_tigob'])
             ->from(['tbl_basechat_tigob'])
             ->where(['=','anulado',0])
+            ->andwhere(['is not','ticked_id',null])
             ->orderBy(['fechacreacion' => SORT_DESC])
             ->limit(10000)
             ->All();
