@@ -218,7 +218,7 @@ if ($varMensajes_encuestas != 0) {
                     	
                     		<td  class="text-center" style="width: 100px;">
                     			<div class="d-md-flex justify-content-left align-content-left flex-column text-left">
-                    				<?= $form->field($model, 'id_tipoencuestas', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->radio(['style'=>'font-size: smaller;', 'value' => $value['peso'], 'uncheck' => null])->label($value['peso'].' - '.$value['tipoencuestas']);?> 
+                    				<?= $form->field($model, 'id_tipoencuestas', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->radio(['style'=>'font-size: smaller;', 'value' => $value['id_tipoencuestas'], 'uncheck' => null])->label($value['peso'].' - '.$value['tipoencuestas']);?> 
                     			</div>
                     		</td>
                     	
