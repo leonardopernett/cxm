@@ -227,7 +227,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             if (count($varPeso)) {
                                 $varEncuestas = round(($arrayVarPeso / count($varPeso)) * 100, 2).' %';
                             }else{
-                                $varEncuestas = "--";
+                                $varEncuestas = "NA";
                             }
                             
                         ?>
@@ -238,7 +238,18 @@ $this->params['breadcrumbs'][] = $this->title;
                             <td><label style="font-size: 11px;"><?php echo  $varUsuaNombres; ?></label></td>
                             <td><label style="font-size: 11px;"><?php echo  $varTipoAlertas; ?></label></td>
                             <td class="text-center">
-                                <?php echo $varEncuestas; ?>
+                                <?php
+                                if ($varEncuestas == "NA") {
+                                    
+                                ?>
+                                    <?= Html::a('<em class="fas fa-paper-plane" style="font-size: 15px; "></em>',  ['alertaencuesta','id_alerta'=> $varIdAlertas], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;  border-color: #4298b500 !important; color:#000000;", 'title' => 'Encuestar Alerta', 'target' => "_blank"]) ?>
+                                <?php
+                                }else{
+                                ?>
+                                    <?php echo $varEncuestas; ?>
+                                <?php
+                                }
+                                ?>
                             </td>
                             <td class="text-center">
 
