@@ -676,6 +676,11 @@ use GuzzleHttp;
 
           $varComentarios = $value['FeedbackText'];
 
+          $varScoreAnswer = ['ScoreAnswer_0'];
+          $varNombrePregunta = ['NombrePregunta_0'];
+          $varNombreNivel = ['NombreNivel_0'];
+          $varInteraccion = ['Interaccion_0'];
+
           $varRn = null;
           $varConInstitucion = null;
           $varConIndustria = null;
@@ -776,6 +781,20 @@ use GuzzleHttp;
                         'fecha_satu' => $varTiempoInteraccion,
                         'aliados' => 'GNB',
                         'modalidad_encuesta' => null,
+              ])->execute();
+
+              Yii::$app->db->createCommand()->insert('tbl_base_genesysencuestas',[
+                        'arbol_id' => $varPcrc,
+                        'cola_genesys' => $varNombreCola,
+                        'connid' => $varConnid,
+                        'score_respuesta' => $varScoreAnswer,
+                        'nombre_pregunta' => $varNombrePregunta,
+                        'nombre_nivel' => $varNombreNivel,
+                        'fecha_interaccion' => $varTiempoInteraccion,
+                        'call_id' => $varInteraccion,
+                        'anulado' => 0,
+                        'usua_id' => 1,
+                        'fechacreacion' => date("Y-m-d"),
               ])->execute();
             }
 
