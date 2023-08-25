@@ -26,6 +26,14 @@ use app\models\Valoraciondatoespecial;
 use app\models\Valoracionformulariosexcel;
 use app\models\EquiposEvaluados;
 use app\models\DirectorioCad;
+use app\models\VicepresidenteCad;
+use app\models\TipoCad;
+use app\models\CiudadCad;
+use app\models\SectorCad;
+use app\models\ProveedoresCad;
+use app\models\TipocanalCad;
+use app\models\SociedadCad;
+use app\models\EtapaCad;
 use app\models\EtapamultipleCad;
 use GuzzleHttp;
 use Exception;
@@ -37,7 +45,7 @@ use Exception;
         return[
           'access' => [
               'class' => AccessControl::classname(),
-              'only' => ['index'],
+              'only' => ['index','subircarga'],
               'rules' => [
                 [
                   'allow' => true,
@@ -75,18 +83,25 @@ use Exception;
 
       $varAlerta = 0;
 
-      $varListaGeneral = (new \yii\db\Query())                                                                    
+      $varId_Directorio = (new \yii\db\Query())
+                            ->select(['tbl_directorio_cad.id_directorcad'])
+                            ->from(['tbl_directorio_cad'])
+                            ->where(['=','tbl_directorio_cad.anulado',0])
+                            ->all();
+
+
+      $varListaGeneral = (new \yii\db\Query()) 
                               ->select(['tbl_directorio_cad.id_directorcad',
                               'tbl_vicepresidente_cad.nombre AS vicepresidente',
-                              'pd.director_programa',
-                              'pg.gerente_cuenta',
+                              'pg.director_programa',
+                              'pd.gerente_cuenta',
                               'tbl_sociedad_cad.nombre AS sociedad',
                               'tbl_ciudad_cad.nombre AS ciudad',
                               'tbl_sector_cad.nombre AS sector',
-                              'pg.cliente',
                               'tbl_tipo_cad.nombre AS tipo','tbl_tipocanal_cad.nombre AS tipo_canal','tbl_directorio_cad.otro_canal',
                               'tbl_proveedores_cad.name AS proveedores','tbl_directorio_cad.nom_plataforma','tbl_directorio_cad.id_directorcad',
-                              'pg.cliente'
+                              
+
                               ])
                               ->from(['tbl_directorio_cad'])  
                               ->join('INNER JOIN','tbl_vicepresidente_cad',
@@ -94,11 +109,9 @@ use Exception;
                               ->join('INNER JOIN','tbl_ciudad_cad',
                               'tbl_ciudad_cad.id_ciudad_cad  = tbl_directorio_cad.ciudad')
                               ->join('INNER JOIN','tbl_proceso_cliente_centrocosto pd',
-                              'pd.documento_director = tbl_directorio_cad.directorprog
-                              AND pd.estado = 1') 
+                              'pd.documento_gerente = tbl_directorio_cad.gerente') 
                               ->join('INNER JOIN','tbl_proceso_cliente_centrocosto pg',
-                              'pg.documento_gerente = tbl_directorio_cad.gerente
-                              AND pg.estado = 1') 
+                              'pg.documento_director = tbl_directorio_cad.directorprog') 
                               ->join('INNER JOIN','tbl_sector_cad',
                               'tbl_sector_cad.id_sectorcad = tbl_directorio_cad.sector')    
                               ->join('INNER JOIN','tbl_tipo_cad',
@@ -109,9 +122,10 @@ use Exception;
                               'tbl_proveedores_cad.id_proveedorescad = tbl_directorio_cad.proveedores')
                               ->join('INNER JOIN','tbl_sociedad_cad',
                               'tbl_sociedad_cad.id_sociedadcad = tbl_directorio_cad.sociedad')
+                              ->where(['=','tbl_directorio_cad.anulado',0])
                               ->groupBy(['tbl_directorio_cad.id_directorcad'])
                               ->all();
-                      
+       
       $form = Yii::$app->request->post();
       if ($model->load($form) ) { 
         
@@ -151,6 +165,9 @@ use Exception;
                             ->andwhere(['=','sector',$model->sector])
                             ->andwhere(['=','anulado',0])
                             ->scalar();
+
+
+                           
         
             foreach ($model->etapa as $key => $value) {
 
@@ -171,7 +188,8 @@ use Exception;
         return $this->render('index',[
             'model' => $model,
             'varListaGeneral' => $varListaGeneral,
-            'varAlerta' => $varAlerta,            
+            'varAlerta' => $varAlerta, 
+            'varId_Directorio' => $varId_Directorio, 
         ]);
 
     }
@@ -267,8 +285,7 @@ use Exception;
           $varCliente = (new \yii\db\Query())
               ->select(['tbl_proceso_cliente_centrocosto.id_dp_clientes'])
               ->from(['tbl_proceso_cliente_centrocosto'])
-              ->where(['LIKE','tbl_proceso_cliente_centrocosto.cliente','%' . trim($sheet->getCell("G".$i)->getValue()) . '%',false])
-              ->groupBY(['tbl_proceso_cliente_centrocosto.cliente'])
+              ->where(['=','tbl_proceso_cliente_centrocosto.cliente',trim($sheet->getCell("G".$i)->getValue())])
               ->scalar();
 
           $varSociedad = (new \yii\db\Query())
@@ -294,8 +311,6 @@ use Exception;
               ->from(['tbl_proveedores_cad'])
               ->where(['LIKE','tbl_proveedores_cad.name','%' . trim($sheet->getCell("K".$i)->getValue()) . '%',false])
               ->scalar();
-
-         
 
             Yii::$app->db->createCommand()->insert('tbl_directorio_cad',[
               'vicepresidente' => $varVicepresidente,
@@ -323,6 +338,7 @@ use Exception;
                         ->andwhere(['=','sociedad',$varSociedad])
                         ->andwhere(['=','ciudad',$varCiudad])
                         ->andwhere(['=','tipo',$varTipo])
+                        ->andwhere(['=','cliente',$varCliente])
                         ->andwhere(['=','tipo_canal',$varTipoCanal])
                         ->andwhere(['=','usua_id',Yii::$app->user->identity->id])
                         ->andwhere(['=','proveedores',$varProveedores])
@@ -729,41 +745,291 @@ use Exception;
 
       public function actionParametrizar(){
         $model = new DirectorioCad();
+        $modelSociedad = new SociedadCad();
+        $modelVicepresidente = new VicepresidenteCad();
+        $modelCiudad = new CiudadCad();
+        $modelTipo = new TipoCad();
+        $modelSector = new SectorCad();
+        $modelTipo_Canal = new TipocanalCad();
+        $modelProveedores = new ProveedoresCad();
+        $modelEtapa = new EtapaCad();
 
-        $varListaGeneral = (new \yii\db\Query())                                                                    
-                  ->select(['tbl_proceso_cliente_centrocosto.cliente'])
-                  ->from(['tbl_clientesparametrizados_cad'])  
-                  ->join('LEFT OUTER JOIN', 'tbl_proceso_cliente_centrocosto',
-                              'tbl_proceso_cliente_centrocosto.id_dp_clientes = tbl_clientesparametrizados_cad.cliente')          
-                  ->where(['=','tbl_clientesparametrizados_cad.anulado',0])
-                  ->groupBy(['tbl_clientesparametrizados_cad.cliente']) 
-                  ->all();
+
+
         
-        $form = Yii::$app->request->post();
-        if ($model->load($form) ) {
-        Yii::$app->db->createCommand()->insert('tbl_clientesparametrizados_cad',[
-                                  'cliente' => $model->cliente,
-                                  'fechacreacion' => date("Y-m-d"),                    
-                                  'anulado' => 0,
-                                  'usua_id' => Yii::$app->user->identity->id,
-                                  ])->execute();
-
-                                  return $this->redirect(array('parametrizar'));
-
-                                }
 
 
         return $this->render('parametrizar',[
             'model' => $model,
-            'varListaGeneral' => $varListaGeneral,
+            'modelSociedad' => $modelSociedad,
+            'modelVicepresidente' => $modelVicepresidente,
+            'modelCiudad' => $modelCiudad,
+            'modelTipo' => $modelTipo,
+            'modelSector' => $modelSector,
+            'modelTipo_Canal' => $modelTipo_Canal,
+            'modelProveedores' => $modelProveedores,
+            'modelEtapa' => $modelEtapa,
         ]);  
       
 
   }
 
-  public function actionEliminarclient(){
-    
+  public function actionEliminarcuenta($id_directorcad){
+
+        $varparametros = [
+          ':varid'=> $id_directorcad
+      ];
+      Yii::$app->db->createCommand('
+        UPDATE tbl_directorio_cad SET anulado = 1
+          WHERE 
+          id_directorcad = :varid')
+      ->bindValues($varparametros)
+      ->execute(); 
+
+    return $this->redirect(array('index','id_directorcad'=>$id_directorcad));//retornar  la vista 
   }
+
+  public function actionIngresarsector(){
+
+    $txtvaridsector = Yii::$app->request->get("txtvaridsector");
+
+    Yii::$app->db->createCommand()->insert('tbl_sector_cad',[
+                'nombre' => $txtvaridsector,
+                'fechacreacion' => date('Y-m-d'),
+                'anulado' => 0,
+                'usua_id' => Yii::$app->user->identity->id,                                       
+    ])->execute(); 
+
+    die(json_encode($txtvaridsector));
+
+  }
+
+  public function actionEliminarsector($id_sectorcad){
+
+    $varparametros = [
+        ':varid'=> $id_sectorcad
+    ];
+    Yii::$app->db->createCommand('
+      UPDATE tbl_sector_cad SET anulado = 1
+        WHERE 
+        id_sectorcad = :varid')
+    ->bindValues($varparametros)
+    ->execute(); 
+
+    return $this->redirect(array('parametrizar','id_sectorcad'=>$id_sectorcad));//retornar  la vista 
+  }
+
+  public function actionIngresartipo(){
+
+    $txtvaridtipo = Yii::$app->request->get("txtvaridtipo");
+
+    Yii::$app->db->createCommand()->insert('tbl_tipo_cad',[
+                'nombre' => $txtvaridtipo,
+                'fechacreacion' => date('Y-m-d'),
+                'anulado' => 0,
+                'usua_id' => Yii::$app->user->identity->id,                                       
+    ])->execute(); 
+
+    die(json_encode($txtvaridtipo));
+
+  }
+
+  public function actionEliminartipo($id_tipocad){
+
+      $varparametros = [
+        ':varid'=> $id_tipocad
+    ];
+    Yii::$app->db->createCommand('
+      UPDATE tbl_tipo_cad SET anulado = 1
+        WHERE 
+        id_tipocad = :varid')
+    ->bindValues($varparametros)
+    ->execute(); 
+
+    return $this->redirect(array('parametrizar','id_tipocad'=>$id_tipocad));//retornar  la vista 
+  }
+
+  public function actionIngresarciudad(){
+
+    $txtvaridciudad = Yii::$app->request->get("txtvaridciudad");
+
+    Yii::$app->db->createCommand()->insert('tbl_ciudad_cad',[
+                'nombre' => $txtvaridciudad,
+                'fechacreacion' => date('Y-m-d'),
+                'anulado' => 0,
+                'usua_id' => Yii::$app->user->identity->id,                                       
+    ])->execute(); 
+
+    die(json_encode($txtvaridciudad));
+
+  }
+
+  public function actionEliminarciudad($id_ciudad_cad){
+
+      $varparametros = [
+        ':varid'=> $id_ciudad_cad
+    ];
+    Yii::$app->db->createCommand('
+      UPDATE tbl_ciudad_cad SET anulado = 1
+        WHERE 
+        id_ciudad_cad = :varid')
+    ->bindValues($varparametros)
+    ->execute(); 
+
+    return $this->redirect(array('parametrizar','id_ciudad_cad'=>$id_ciudad_cad));//retornar  la vista 
+  }
+
+  public function actionIngresartipocanal(){
+
+    $txtvaridtipo_canal = Yii::$app->request->get("txtvaridtipo_canal");
+
+    Yii::$app->db->createCommand()->insert('tbl_tipocanal_cad',[
+                'nombre' => $txtvaridtipo_canal,
+                'fechacreacion' => date('Y-m-d'),
+                'anulado' => 0,
+                'usua_id' => Yii::$app->user->identity->id,                                       
+    ])->execute(); 
+
+    die(json_encode($txtvaridtipo_canal));
+
+  }
+
+  public function actionEliminartipocanal($id_tipocanalcad){
+
+    $varparametros = [
+      ':varid'=> $id_tipocanalcad
+    ];
+    Yii::$app->db->createCommand('
+      UPDATE tbl_tipocanal_cad SET anulado = 1
+        WHERE 
+        id_tipocanalcad = :varid')
+    ->bindValues($varparametros)
+    ->execute(); 
+
+    return $this->redirect(array('parametrizar','id_tipocanalcad'=>$id_tipocanalcad));//retornar  la vista 
+  }
+
+
+  public function actionIngresaretapa(){
+
+    $txtvaridetapa = Yii::$app->request->get("txtvaridetapa");
+
+    Yii::$app->db->createCommand()->insert('tbl_etapa_cad',[
+                'nombre' => $txtvaridetapa,
+                'fechacreacion' => date('Y-m-d'),
+                'anulado' => 0,
+                'usua_id' => Yii::$app->user->identity->id,                                       
+    ])->execute(); 
+
+    die(json_encode($txtvaridetapa));
+
+  }
+
+  public function actionEliminaretapa($id_etapacad){
+
+    $varparametros = [
+      ':varid'=> $id_etapacad
+    ];
+    Yii::$app->db->createCommand('
+      UPDATE tbl_etapa_cad SET anulado = 1
+        WHERE 
+        id_etapacad = :varid')
+    ->bindValues($varparametros)
+    ->execute(); 
+
+    return $this->redirect(array('parametrizar','id_etapacad'=>$id_etapacad));//retornar  la vista 
+  }
+
+  public function actionIngresarvicepresidente(){
+
+    $txtvaridvicepresidente = Yii::$app->request->get("txtvaridvicepresidente");
+
+    Yii::$app->db->createCommand()->insert('tbl_vicepresidente_cad',[
+                'nombre' => $txtvaridvicepresidente,
+                'fechacreacion' => date('Y-m-d'),
+                'anulado' => 0,
+                'usua_id' => Yii::$app->user->identity->id,                                       
+    ])->execute(); 
+
+    die(json_encode($txtvaridvicepresidente));
+
+  }
+  public function actionEliminarvicepresidente($id_vicepresidentecad){
+
+    $varparametros = [
+      ':varid'=> $id_vicepresidentecad
+    ];
+    Yii::$app->db->createCommand('
+      UPDATE tbl_vicepresidente_cad SET anulado = 1
+        WHERE 
+        id_vicepresidentecad = :varid')
+    ->bindValues($varparametros)
+    ->execute(); 
+
+    return $this->redirect(array('parametrizar','id_vicepresidentecad'=>$id_vicepresidentecad));//retornar  la vista 
+  }
+
+  public function actionIngresarproveedores(){
+
+    $txtvaridproveedores = Yii::$app->request->get("txtvaridproveedores");
+
+    Yii::$app->db->createCommand()->insert('tbl_proveedores_cad',[
+                'name' => $txtvaridproveedores,
+                'fechacreacion' => date('Y-m-d'),
+                'anulado' => 0,
+                'usua_id' => Yii::$app->user->identity->id,                                       
+    ])->execute(); 
+
+    die(json_encode($txtvaridproveedores));
+
+  }
+
+  public function actionEliminarproveedores($id_proveedorescad){
+
+    $varparametros = [
+      ':varid'=> $id_proveedorescad
+    ];
+    Yii::$app->db->createCommand('
+      UPDATE tbl_proveedores_cad SET anulado = 1
+        WHERE 
+        id_proveedorescad = :varid')
+    ->bindValues($varparametros)
+    ->execute(); 
+
+    return $this->redirect(array('parametrizar','id_proveedorescad'=>$id_proveedorescad));//retornar  la vista 
+  }
+
+  public function actionIngresarsociedad(){
+
+    $txtvaridsociedad = Yii::$app->request->get("txtvaridsociedad");
+
+    Yii::$app->db->createCommand()->insert('tbl_sociedad_cad',[
+                'nombre' => $txtvaridsociedad,
+                'fechacreacion' => date('Y-m-d'),
+                'anulado' => 0,
+                'usua_id' => Yii::$app->user->identity->id,                                       
+    ])->execute(); 
+
+    die(json_encode($txtvaridsociedad));
+
+  }
+
+  public function actionEliminarsociedad($id_sociedadcad){
+
+    $varparametros = [
+      ':varid'=> $id_sociedadcad
+    ];
+    Yii::$app->db->createCommand('
+      UPDATE tbl_sociedad_cad SET anulado = 1
+        WHERE 
+        id_sociedadcad = :varid')
+    ->bindValues($varparametros)
+    ->execute(); 
+
+    return $this->redirect(array('parametrizar','id_sociedadcad'=>$id_sociedadcad));//retornar  la vista 
+  }
+
+ 
 
 }
 
