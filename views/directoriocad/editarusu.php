@@ -231,7 +231,7 @@ $this->title = 'Directorio Cad  - Editar';
                                 <div class="col-md-6">
 
                                 <label style="font-size: 15px;"><em class="fas fa-arrow-right" style="font-size: 20px; color: #C31CB4;"></em> <?= Yii::t('app', 'Seleccionar Cliente:') ?></label> 
-                                            <?=  $form->field($model, 'cliente', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\ProcesosClienteCentrocosto::find()->distinct()->select(['id_dp_clientes','CONCAT(cliente," - ",id_dp_clientes) as cliente'])->where("anulado = 0")->orderBy(['cliente'=> SORT_ASC])->all(), 'id_dp_clientes', 'cliente'),
+                                            <?=  $form->field($model, 'cliente', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\ProcesosClienteCentrocosto::find()->distinct()->where("anulado = 0")->orderBy(['cliente'=> SORT_ASC])->all(), 'id_dp_clientes', 'cliente'),
                                                             [
                                                               'id' => 'idinfocliente',
                                                               'prompt'=>'Seleccionar Servicio...',
@@ -516,7 +516,7 @@ $this->title = 'Directorio Cad  - Editar';
   })
 
   <?php if(base64_decode(Yii::$app->request->get("varAlerta")) === "2"){?>
-      swal.fire("Aviso","No cumple con los criterios establecidos, No tiene permitido modificar el Cliente","warning");
+      swal.fire("Aviso","No cumple con los criterios establecidos, No tiene permitido modificar el cliente","warning");
     <?php }   ?>
     
 </script>
