@@ -110,7 +110,7 @@ use GuzzleHttp;
                             ->where(['=','tbl_base_satisfaccion.connid',$varConnid])
                             ->count();
 
-        if ($varConnid == 0) {          
+        if ($varConteoConnid == 0) {          
 
           // Información Cliente
           $varIdentificacion = $value['CustomerId'];
