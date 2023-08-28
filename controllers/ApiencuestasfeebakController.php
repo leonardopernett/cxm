@@ -156,7 +156,8 @@ use GuzzleHttp;
           $vardiaGNS = substr($value['AddedDate'], 8, -14);
 
           $varReplaceHour = str_replace("T", " ", $value['AddedDate']);
-          $varFechaInteraccion = date('Y-m-d H:i:s', strtotime('-5 hour', strtotime($varReplaceHour)));
+          $varFehaHora = $varAnnioGNS."-".$varMesGNS."-".$vardiaGNS." ".substr($varReplaceHour, 11, -11).date(":i:s",strtotime($varReplaceHour));
+          $varFechaInteraccion = date('Y-m-d H:i:s', strtotime('-5 hour', strtotime($varFehaHora)));
 
           $varHoraGNS = str_replace(":", "", date('H:i:s', strtotime($varFechaInteraccion)));
 
