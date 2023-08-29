@@ -135,7 +135,7 @@ use GuzzleHttp;
           $varDocumentoAsesor = Yii::$app->dbjarvis->createCommand("
             SELECT dp_datos_generales.documento FROM dp_datos_generales 
               WHERE 
-                dp_datos_generales.nombre_completo LIKE '%:varAsesorGns%'
+                dp_datos_generales.nombre_completo LIKE :varAsesorGns
           ")->bindValues($varParamsAsesor)->queryScalar();
 
           if ($varDocumentoAsesor) {
