@@ -130,7 +130,7 @@ use GuzzleHttp;
           $varAsesorUsuario = null;
           $varAsesorDoc = null;
           $varAgente_Gns = $value['AgentName'];
-          $varParamsAsesor = [":varAsesorGns"=>$varAgente_Gns];
+          $varParamsAsesor = [":varAsesorGns"=>'%'.$varAgente_Gns.'%'];
 
           $varDocumentoAsesor = Yii::$app->dbjarvis->createCommand("
             SELECT dp_datos_generales.documento FROM dp_datos_generales 
