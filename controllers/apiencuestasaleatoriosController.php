@@ -69,6 +69,7 @@ use GuzzleHttp;
     }
 
     public function actionApialeatorios(){
+      // Inicio del procesos de los aleatorios
       $varAnnio = date('Y');
       $varMes = date('m');
       $varDia = date('d',strtotime("- 1 days"));
