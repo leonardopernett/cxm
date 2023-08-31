@@ -84,7 +84,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <br>
 
 <?php
-if ($varMensaje != 1) {
+if ($varMensaje == 0) {
 ?>
 
 <?php $form = ActiveForm::begin([
