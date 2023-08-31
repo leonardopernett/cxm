@@ -5931,22 +5931,6 @@ use app\models\SpeechParametrizar;
 
         $curl = curl_init();
 
-        // curl_setopt_array($curl, array(
-        //   CURLOPT_SSL_VERIFYPEER=> false,
-        //   CURLOPT_SSL_VERIFYHOST => false,
-        //   CURLOPT_URL => 'https://wia-web-api-gw-5j8fyx1b.uc.gateway.dev/conectionDateCXM?key=AIzaSyClC9KoixrqyM3CcO24a29OI3u4e3Vzv4c',
-        //   CURLOPT_RETURNTRANSFER => true,
-        //   CURLOPT_ENCODING => '',
-        //   CURLOPT_MAXREDIRS => 10,
-        //   CURLOPT_TIMEOUT => 0,
-        //   CURLOPT_FOLLOWLOCATION => true,
-        //   CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        //   CURLOPT_CUSTOMREQUEST => 'POST',
-        //   CURLOPT_POSTFIELDS => 'proyectID='.$varIdProyecto_BD.'&datasetId='.$varDataSetId_BD.'&tableId='.$varTableId_BD.'&limit='.$varLimitId_BD.'&offset='.$varOffsetId_BD.'&fecha_inicial='.$varFechaInicioLlamadaEspecial_BD.'&fecha_final='.$varFechaFinLlamadaEspecial_BD.'',
-        //   CURLOPT_HTTPHEADER => array(
-        //     'Content-Type: application/x-www-form-urlencoded'
-        //   ),
-        // ));
 
         curl_setopt_array($curl, array(
           CURLOPT_SSL_VERIFYPEER=> false,
