@@ -242,7 +242,20 @@ $this->params['breadcrumbs'][] = $this->title;
                                 if ($varEncuestas == "NA") {
                                     
                                 ?>
-                                    <?= Html::a('<em class="fas fa-paper-plane" style="font-size: 15px; "></em>',  ['alertaencuesta','id_alerta'=> $varIdAlertas], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;  border-color: #4298b500 !important; color:#000000;", 'title' => 'Encuestar Alerta', 'target' => "_blank"]) ?>
+                                    <?php
+                                    if ($roles == '272') {                                        
+                                    ?>
+                                        <?php echo $varEncuestas; ?>
+
+                                    <?php
+                                    }else{  
+                                    ?>
+
+                                        <?= Html::a('<em class="fas fa-paper-plane" style="font-size: 15px; "></em>',  ['alertaencuesta','id_alerta'=> $varIdAlertas], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;  border-color: #4298b500 !important; color:#000000;", 'title' => 'Encuestar Alerta', 'target' => "_blank"]) ?>
+
+                                    <?php
+                                    }
+                                    ?>
                                 <?php
                                 }else{
                                 ?>
