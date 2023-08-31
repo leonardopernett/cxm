@@ -140,12 +140,20 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>
 
+        <?php
+            if ($roles != '272') {                                        
+        ?>
+
         <div class="col-md-3">
             <div class="card2 mb">
                 <label style="font-size: 15px;"><em class="fas fa-hashtag" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Cantidad de Encuestas') ?></label>
                 <label  style="font-size: 50px; text-align: center;"><?php echo $varCantidadEncuestas_Notas; ?></label>
             </div>
         </div>
+
+        <?php
+            }
+        ?>
 
         <div class="col-md-6">
             <div class="card2 mb">
@@ -238,28 +246,31 @@ $this->params['breadcrumbs'][] = $this->title;
                             <td><label style="font-size: 11px;"><?php echo  $varUsuaNombres; ?></label></td>
                             <td><label style="font-size: 11px;"><?php echo  $varTipoAlertas; ?></label></td>
                             <td class="text-center">
+
                                 <?php
-                                if ($varEncuestas == "NA") {
-                                    
+                                if ($roles == '272') {                                        
                                 ?>
-                                    <?php
-                                    if ($roles == '272') {                                        
-                                    ?>
-                                        <?php echo $varEncuestas; ?>
+                                    <?php echo '--'; ?>
+
+                                <?php
+                                }else{  
+                                ?>
 
                                     <?php
-                                    }else{  
-                                    ?>
+                                    if ($varEncuestas == "NA") {
+                                        
+                                    ?>                                   
 
                                         <?= Html::a('<em class="fas fa-paper-plane" style="font-size: 15px; "></em>',  ['alertaencuesta','id_alerta'=> $varIdAlertas], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;  border-color: #4298b500 !important; color:#000000;", 'title' => 'Encuestar Alerta', 'target' => "_blank"]) ?>
-
+                                        
+                                    <?php
+                                    }else{
+                                    ?>
+                                        <?php echo $varEncuestas; ?>
                                     <?php
                                     }
                                     ?>
-                                <?php
-                                }else{
-                                ?>
-                                    <?php echo $varEncuestas; ?>
+
                                 <?php
                                 }
                                 ?>
