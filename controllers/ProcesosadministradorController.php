@@ -51,6 +51,7 @@ use app\models\RespuestaAutomatica;
 use app\models\Estadosqyr;
 use app\models\Cumplimientoqyr;
 use app\models\WorspaceReportesPowerbi;
+use app\models\BaseAleatorio;
 
   class ProcesosadministradorController extends \yii\web\Controller {
 
@@ -68,7 +69,7 @@ use app\models\WorspaceReportesPowerbi;
             'deleteareaapoyo','viewareaapoyogptw','viewprocesossatisfaccion','viewdetallepilaresgptw','viewindicadores',
             'adminusuarios','adminapiwiasae','viewtipoalertasqyr','deletealertasqyr',
             'viewareasqyr','varListAreasqyr','viewtipologiasqyr','viewrespuestaautomaticaqyr','deleterespuestaqyr',
-            'viewalertacumplimientoqyr','importardocumento','viewcartarespuestaqyr','parametrizarpcrccomdata','deletepcrcs','parametrizarpbi'],
+            'viewalertacumplimientoqyr','importardocumento','viewcartarespuestaqyr','parametrizarpcrccomdata','deletepcrcs','parametrizarpbi','aleatorioencuestas'],
             'rules' => [
               [
                 'allow' => true,
@@ -3401,6 +3402,59 @@ use app\models\WorspaceReportesPowerbi;
             'varListCredenciales' => $varListCredenciales,
         ]);
     }
+
+    public function actionAleatorioencuestas(){
+        $model = new BaseAleatorio();
+
+        $varListaAleatorio = (new \yii\db\Query())
+                        ->select([
+                            'tbl_arbols.name AS varArbol',
+                            'COUNT(tbl_reglanegocio.rn) AS varConteo'
+                        ])
+                        ->from(['tbl_arbols'])
+                        ->join('LEFT OUTER JOIN', 'tbl_reglanegocio',
+                              'tbl_arbols.id = tbl_reglanegocio.pcrc')
+                        ->join('LEFT OUTER JOIN', 'tbl_base_aleatorio',
+                              'tbl_reglanegocio.pcrc = tbl_base_aleatorio.arbol_id
+                                AND tbl_reglanegocio.id_formulario = tbl_base_aleatorio.form_id')
+                        ->where(['=','tbl_base_aleatorio.anulado',0])
+                        ->all(); 
+
+        $form = Yii::$app->request->post();
+        if($model->load($form)){
+            $varPcrc = $model->arbol_id;
+            $varCliente = (new \yii\db\Query())
+                            ->select(['tbl_arbols.formulario_id'])
+                            ->from(['tbl_arbols'])
+                            ->where(['=','tbl_arbols.id',$varPcrc])
+                            ->scalar();
+
+            $varValida = (new \yii\db\Query())
+                            ->select(['tbl_base_aleatorio.id_aleatorio'])
+                            ->from(['tbl_base_aleatorio'])
+                            ->where(['=','tbl_base_aleatorio.arbol_id',$varPcrc])
+                            ->andwhere(['=','tbl_base_aleatorio.anulado',0])
+                            ->count();
+
+            if ($varValida == 0) {
+                Yii::$app->db->createCommand()->insert('tbl_base_aleatorio',[
+                    'arbol_id' => $varPcrc,
+                    'form_id' => $varCliente,
+                    'fechacreacion' => date('Y-m-d'),
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,                                       
+                ])->execute(); 
+            }            
+
+            return $this->redirect('aleatorioencuestas');
+        }
+
+        return $this->render('aleatorioencuestas',[
+            'model' => $model,
+            'varListaAleatorio' => $varListaAleatorio,
+        ]);
+    }
+    
 
   }
 
