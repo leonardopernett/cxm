@@ -5967,7 +5967,12 @@ use app\models\SpeechParametrizar;
 
 
         foreach ($objet_json as $key => $value) {
-           $varCambiaFechas = substr(str_replace("Z", "", str_replace("T", " ", strval($value['fechallamada']))),0,19);
+
+          if ($varIdClienteLlamadaEspecial_BD == '171') {
+            $varCambiaFechas = substr($value['fechallamada'],0,19);
+          }else{
+            $varCambiaFechas = substr(str_replace("Z", "", str_replace("T", " ", strval($value['fechallamada']))),0,19);
+          }
 
           $varFechas = date('Y-m-d H:i:s',strtotime($varCambiaFechas));
 
@@ -5987,7 +5992,6 @@ use app\models\SpeechParametrizar;
                                 ->scalar();
           if ($varGrabadora == "") {
             $varGrabadora = $value['idgrabadora'];
-            // $varGrabadora = $value['idredbox'];
           }
 
           
