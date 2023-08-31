@@ -3411,14 +3411,15 @@ use app\models\BaseAleatorio;
                             'tbl_arbols.name AS varArbol',
                             'COUNT(tbl_reglanegocio.rn) AS varConteo'
                         ])
-                        ->from(['tbl_arbols'])
+                        ->from(['tbl_base_aleatorio'])
                         ->join('LEFT OUTER JOIN', 'tbl_reglanegocio',
-                              'tbl_arbols.id = tbl_reglanegocio.pcrc')
-                        ->join('LEFT OUTER JOIN', 'tbl_base_aleatorio',
                               'tbl_reglanegocio.pcrc = tbl_base_aleatorio.arbol_id
-                                AND tbl_reglanegocio.id_formulario = tbl_base_aleatorio.form_id')
+                                    AND tbl_reglanegocio.id_formulario = tbl_base_aleatorio.form_id')
+                        ->join('LEFT OUTER JOIN', 'tbl_arbols',
+                              'tbl_arbols.id = tbl_reglanegocio.pcrc')
                         ->where(['=','tbl_base_aleatorio.anulado',0])
-                        ->all(); 
+                        ->groupby(['tbl_arbols.id'])
+                        ->all();
 
         $form = Yii::$app->request->post();
         if($model->load($form)){
