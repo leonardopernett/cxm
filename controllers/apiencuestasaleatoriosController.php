@@ -74,6 +74,10 @@ use GuzzleHttp;
       $varMes = date('m');
       $varDia = date('d',strtotime("- 1 days"));
 
+      if (date('d') == '01') {
+        $varMes = date('m',strtotime("- 1 month"));
+      }
+
       $varListaProgramas = (new \yii\db\Query())
                             ->select([
                               'tbl_base_aleatorio.arbol_id AS varPcrc',
