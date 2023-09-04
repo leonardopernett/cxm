@@ -236,6 +236,28 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php $form->end() ?>
 
 <script type="text/javascript">
+  $(document).ready( function () {
+        $('#tblListadoProcesos').DataTable({
+          responsive: true,
+          fixedColumns: true,
+          select: true,
+          "language": {
+            "lengthMenu": "Cantidad de Datos a Mostrar _MENU_",
+            "zeroRecords": "No se encontraron datos ",
+            "info": "Mostrando p&aacute;gina _PAGE_ a _PAGES_ de _MAX_ registros",
+            "infoEmpty": "No hay datos aun",
+            "infoFiltered": "(Filtrado un _MAX_ total)",
+            "search": "Buscar:",
+            "paginate": {
+              "first":      "Primero",
+              "last":       "Ultimo",
+              "next":       "Siguiente",
+              "previous":   "Anterior"
+            }
+          } 
+        });
+  });
+  
   function varVerificar(){
     var varidarboles = document.getElementById("idarboles").value;
 

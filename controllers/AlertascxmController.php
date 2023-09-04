@@ -34,7 +34,7 @@ use Exception;
         return[
             'access' => [
                 'class' => AccessControl::classname(),
-                'only' => ['index','registraalerta','parametrizaralertas','correogrupal','textcorreo','reportealerta','eliminaralerta','reportealertaeliminadas','restauraralerta','alertaencuesta','notificacionalertas'],
+                'only' => ['index','registraalerta','parametrizaralertas','correogrupal','textcorreo','reportealerta','eliminaralerta','reportealertaeliminadas','restauraralerta','alertaencuesta','notificacionalertas','descargaralertas'],
                 'rules' => [
                     [
                         'allow' => true,
@@ -1182,6 +1182,47 @@ use Exception;
             'varCantidadEncuestas_Notas' => $varCantidadEncuestas_Notas,    
         ]);
     }
+
+    public function actionDescargaralertas(){
+        $model = new Alertas();
+        $varDataResultado_D = array();
+
+
+        $form = Yii::$app->request->post();
+        if ($model->load($form)) {
+            $varFecha_BD_D = explode(" ", $model->fecha);
+
+            $varFechaInicio_BD_D = $varFecha_BD_D[0];
+            $varFechaFin_BD_D = date('Y-m-d',strtotime($varFecha_BD_D[2]));
+
+            $varDataResultado_D = (new \yii\db\Query())
+                            ->select([
+                                'tbl_alertascx.id',
+                                'tbl_alertascx.fecha', 
+                                'tbl_arbols.name',
+                                'tbl_usuarios.usua_id',
+                                'tbl_usuarios.usua_nombre', 
+                                'tbl_alertascx.tipo_alerta'
+                            ])
+                            ->from(['tbl_alertascx'])
+
+                            ->join('LEFT OUTER JOIN', 'tbl_arbols',
+                                  'tbl_arbols.id = tbl_alertascx.pcrc')
+
+                            ->join('LEFT OUTER JOIN', 'tbl_usuarios',
+                                  'tbl_usuarios.usua_id = tbl_alertascx.valorador')
+
+                            ->where(['between','tbl_alertascx.fecha',$varFechaInicio_BD_D.' 00:00:00',$varFechaFin_BD_D.' 23:59:59'])
+                            ->all(); 
+        }
+
+        return $this->render('descargaralertas',[
+            'model' => $model,
+            'varDataResultado_D' => $varDataResultado_D,
+        ]);
+    }
+
+
 
 
 }
