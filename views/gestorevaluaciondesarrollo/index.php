@@ -97,6 +97,10 @@ $options_tipo_novedad = [
         box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
     }
 
+    .color-required{
+        color: #db2c23;
+    }
+
 </style>
 
 <script src="../../js_extensions/jquery-2.1.3.min.js"></script>
@@ -291,7 +295,7 @@ $options_tipo_novedad = [
                                 <?= $form->field($model, 'cc_solicitante', ['options' => ['class' => 'hidden']])->textInput(['id' => 'cc_persona_solicitante', 'value'=>$documento])->label(false); ?>                         
                             </div>
                             <div class="col-md-4" style="display: inline;">
-                                <label style="font-size: 15px;"> Selecciona tipo de novedad</label>
+                                <label style="font-size: 15px;"> Selecciona tipo de novedad <span class="color-required"> *</span></label>
                                 <?= Html::dropDownList('seleccion', "", $options_tipo_novedad, 
                                             [
                                             "id"=>"tipo_novedad",
@@ -305,11 +309,11 @@ $options_tipo_novedad = [
                         <!-- Lista de personas a cargo-->
                         <div class="row"> 
                             <div class="col-md-4" style="display: inline;">
-                                <label style="font-size: 15px;"> Ingresar comentario</label>
+                                <label style="font-size: 15px;"> Ingresar comentario <span class="color-required"> *</span> </label>
                                 <?= $form->field($model, 'comentarios_solicitud')->textArea(['maxlength' => true, 'placeholder'=>'Agregar la justificación de la novedad', 'id'=>'comentarios_solicitante']) ?>
                             </div>
                             <div class="col-md-4" id="capatipoEvaluacion" style="display: inline;">
-                                <label style="font-size: 15px;"> Selecciona tipo evaluación</label>
+                                <label style="font-size: 15px;"> Selecciona tipo evaluación <span class="color-required"> *</span></label>
                                 <?=  $form->field($model, 'id_tipo_evaluacion')->dropDownList($opcion_tipo_evaluacion, [
                                                 'id' => 'idTipoEval',
                                                 'prompt'=>'Seleccione el tipo de evaluación...',
@@ -318,7 +322,7 @@ $options_tipo_novedad = [
                                 ?>
                             </div>                           
                             <div class="col-md-4" id="capaP" style="display: none;">
-                                <label style="font-size: 15px;"> Seleccionar persona</label>
+                                <label style="font-size: 15px;"> Seleccionar persona <span class="color-required"> *</span></label>
                                 <?= $form->field($model,'id_evaluado')->dropDownList( $opcion_personas_a_cargo, [
                                             'prompt' => 'Seleccione Una Persona',
                                             'id' => 'id_usuario_evaluado' 

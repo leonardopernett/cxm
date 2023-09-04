@@ -45,7 +45,6 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
             'class' => AccessControl::classname(),
             'only' => ['index','parametrizador', 'cargardatostablapreguntas', 'crearpregunta', 'editarpregunta', 'eliminarpregunta',
                         'cargardatostablarespuestas', 'createrespuesta', 'editrespuesta', 'deleterespuesta',
-                        'importardatoscargamasiva', 'detallecargamasiva',
                         'autoevaluacion', 'crearautoevaluacion',
                         'modalevaluacionacargo', 'evaluacionacargo', 'crearevaluacionacargo',
                         'resultados', 'resultadoindividual',
@@ -58,7 +57,7 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
                 'allow' => true,
                 'roles' => ['@'],
                 'matchCallback' => function() {
-                            return Yii::$app->user->identity->isCuadroMando()  || Yii::$app->user->identity->isVerexterno() || Yii::$app->user->identity->isVerevaluacion() || Yii::$app->user->identity->isVerdirectivo();
+                            return Yii::$app->user->identity->isCuadroMando()  || Yii::$app->user->identity->isVerexterno() || Yii::$app->user->identity->isVerevaluacion() || Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isReportes();
                         },
                 ]
             ]
@@ -227,6 +226,7 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
         $model->id_evaluacionnombre = Yii::$app->request->post('id_evaluacion');
         $model->nombrepregunta = Yii::$app->request->post('nom_pregunta');
         $model->descripcionpregunta =  Yii::$app->request->post('descripcion_pregunta');
+        $model->fechacreacion = date("Y-m-d");
         $model->usua_id = Yii::$app->user->identity->id;
         
         
@@ -348,6 +348,7 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
             'nombre_respuesta' => $nombre_respuesta,
             'valornumerico_respuesta' => $valornumerico_respuesta,
             'descripcion_respuesta' => $descripcion_respuesta,
+            'fechacreacion' => date("Y-m-d"),
             'usua_id' => Yii::$app->user->identity->id
         ])->execute();
         
@@ -492,7 +493,7 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
         $highestRow = $sheet->getHighestRow(); //Numero de ultima fila
         
         for ($row = 3; $row <= $highestRow; $row++) { 
-            $cc_jefe = $sheet->getCell("C".$row)->getValue(); 
+            $cc_jefe = trim($sheet->getCell("C".$row)->getValue()); 
                 
             if ( $cc_jefe != null) {
 
@@ -506,13 +507,13 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
                 if ($varExisteJefe['num_registros_jefe'] == "0") {                               
 
                     Yii::$app->db->createCommand()->insert('tbl_gestor_evaluacion_usuarios',[
-                                        'nombre_completo' => $sheet->getCell("B".$row)->getValue(),
+                                        'nombre_completo' => trim($sheet->getCell("B".$row)->getValue()),
                                         'identificacion' => $cc_jefe,
-                                        'genero' =>  $sheet->getCell("F".$row)->getValue(),
-                                        'cargo' => $sheet->getCell("A".$row)->getValue(),
-                                        'area_operacion' => $sheet->getCell("D".$row)->getValue(),
-                                        'ciudad' => $sheet->getCell("E".$row)->getValue(),
-                                        'sociedad' => $sheet->getCell("G".$row)->getValue(),
+                                        'genero' =>  trim($sheet->getCell("F".$row)->getValue()),
+                                        'cargo' => trim($sheet->getCell("A".$row)->getValue()),
+                                        'area_operacion' => trim($sheet->getCell("D".$row)->getValue()),
+                                        'ciudad' => trim($sheet->getCell("E".$row)->getValue()),
+                                        'sociedad' => trim($sheet->getCell("G".$row)->getValue()),
                                         'es_jefe' => 1,
                                         'fechacreacion' => date("Y-m-d"),                                        
                                         'usua_id' => Yii::$app->user->identity->id,
@@ -543,7 +544,7 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
                  
             }
 
-            $cc_colaborador = $sheet->getCell("J".$row)->getValue();
+            $cc_colaborador = trim($sheet->getCell("J".$row)->getValue());
 
             if ($cc_colaborador != null) {
                 $paramsBusqueda = [':varColaboradorCC' => $cc_colaborador];
@@ -556,13 +557,13 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
                 if ($varExisteColaborador['num_registros'] == "0") {                               
 
                     Yii::$app->db->createCommand()->insert('tbl_gestor_evaluacion_usuarios',[
-                                        'nombre_completo' => $sheet->getCell("I".$row)->getValue(),
+                                        'nombre_completo' => trim($sheet->getCell("I".$row)->getValue()),
                                         'identificacion' => $cc_colaborador,
-                                        'genero' =>  $sheet->getCell("M".$row)->getValue(),
-                                        'cargo' => $sheet->getCell("H".$row)->getValue(),
-                                        'area_operacion' => $sheet->getCell("K".$row)->getValue(),
-                                        'ciudad' => $sheet->getCell("L".$row)->getValue(),
-                                        'sociedad' => $sheet->getCell("N".$row)->getValue(),
+                                        'genero' =>  trim($sheet->getCell("M".$row)->getValue()),
+                                        'cargo' => trim($sheet->getCell("H".$row)->getValue()),
+                                        'area_operacion' => trim($sheet->getCell("K".$row)->getValue()),
+                                        'ciudad' => trim($sheet->getCell("L".$row)->getValue()),
+                                        'sociedad' => trim($sheet->getCell("N".$row)->getValue()),
                                         'es_colaborador' => 1,
                                         'fechacreacion' => date("Y-m-d"),                                        
                                         'usua_id' => Yii::$app->user->identity->id,
@@ -1005,7 +1006,7 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
 
     // REPORTERIA  -------------------------------------------------------------------->
 
-    public function actionResultadoindividual(){
+    public function actionResultadoindividual() {
 
         //Obtener id y documento del usuario logueado
         $sessiones = Yii::$app->user->identity->id;
@@ -1063,7 +1064,7 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
                 
                 $data_form = $this->obtenerDataTipoEvaluacion($ids_tipo_evalua_del_usuario, $id_user);
                
-                if(!empty($data_form && count($data_form)>1 )){
+                if(!empty($data_form) && count($data_form)>1 ){
 
                     foreach ($data_form as $row) {
                         $nombreTipoeval = $row['nombre_tipoeval'];
@@ -1851,7 +1852,7 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
                     die(json_encode(['status' => 'error', 'data' => 'Ya existe una solicitud: eliminar autoevaluación en estado "en espera"']));                
             }
 
-            //Validar si ya hizo la evlaucion y si aun tiene permitido eliminar la evaluación (fecha creacion no puede ser mayor a 5 días)
+            //Validar si ya hizo la evaluacion y si aun tiene permitido eliminar la evaluación (fecha creacion no puede ser mayor a 5 días)
             if($registro_evaluacion==1){
                 $fechaCreacionFormulario= $existeunaevaluacion['fechacreacion'];
                 $fechaActual = date('Y-m-d'); 
@@ -1932,10 +1933,10 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
             if($completo_todas_las_evaluaciones_asociadas){
                 Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
                 header('Content-Type: application/json');
-                die(json_encode(['status' => 'error', 'data' => 'Ya existen una autoevaluación asociada a esta persona.']));             
+                die(json_encode(['status' => 'error', 'data' => 'Ya existe una autoevaluación asociada a esta persona.']));             
             }
 
-            if($existeunaevaluacion==0){
+            if($registro_evaluacion==0){
                 Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
                 header('Content-Type: application/json');
                 die(json_encode(['status' => 'error', 'data' => 'No existe un registro de evaluación a cargo asociado a dicho usuario']));             
@@ -2135,7 +2136,7 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
                         $actualizar_estado_novedad = $this->actualizar_novedad_aprobada('tbl_gestor_evaluacion_novedad_jefeincorrecto', $id_novedad);
                         
                         if ($actualizar_estado_novedad === 1) {
-                            $data_actualizada = $this->obtener_data_personal_a_cargo($id_evaluacion_nombre);
+                            $data_actualizada = $this->obtener_data_jefe_incorrecto($id_evaluacion_nombre);
 
                             $response = [
                                 'status' => 'success',
@@ -3313,11 +3314,12 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
                 'usuario.nombre_completo',
                 'usuario.identificacion',
                 'total.promedio_total_evalua',
+                'entrada_colab.id_remitente',
                 'entrada_colab.id_destinatario'
             ])
             ->from('tbl_gestor_evaluacion_calificaciontotal total')
             ->leftJoin('tbl_gestor_evaluacion_feedback acuerdo', 'total.id_feedback = acuerdo.id_gestor_evaluacion_feedback')
-            ->leftJoin('tbl_gestor_evaluacion_feedbackentradas entrada_colab', 'acuerdo.id_gestor_evaluacion_feedback = entrada_colab.id_feedback')
+            ->leftJoin('tbl_gestor_evaluacion_feedbackentradas entrada_colab', 'acuerdo.id_gestor_evaluacion_feedback = entrada_colab.id_feedback AND acuerdo.id_jefe = entrada_colab.id_remitente')
             ->innerJoin('tbl_gestor_evaluacion_usuarios usuario', 'total.id_evaluado = usuario.id_gestor_evaluacion_usuarios')
             ->where([
                 'total.anulado' => 0,

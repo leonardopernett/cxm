@@ -305,7 +305,13 @@ $this->params['breadcrumbs'][] = $this->title;
     body #tablePreguntas tbody tr td,
     body #tablePreguntas tbody tr td a,
     body #tablePreguntas thead tr th a {
-        font-size: 12px !important;
+        font-size: 13px !important;
+    }
+
+    body #tableRespuestas tbody tr td,
+    body #tableRespuestas tbody tr td a,
+    body #tableRespuestas thead tr th a {
+        font-size: 13px !important;
     }
 
     .dataTables_wrapper .dataTables_paginate .paginate_button {
@@ -543,7 +549,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                     <div class="col-md-7">
                                         <div class="card1 mb" style="width:100%"> 
-                                                <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9; margin-top:1.5%;"></em> <?= Yii::t('app', 'Lista de Competencias') ?></label>
+                                                <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9; margin-top:1.5%;"></em> <?= Yii::t('app', 'Lista de Respuestas') ?></label>
                                                 <label id="emptyMessageRespuestas" style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 18px; color: #827DF9; margin-top:1.5%;"></em> <?= Yii::t('app', 'No hay datos para mostrar') ?></label>
                                                 
                                                 <div class="table-responsive table-container" id="container_table_respuestas">                                
@@ -756,8 +762,8 @@ $this->params['breadcrumbs'][] = $this->title;
         url: "crearpregunta",
         data: {
             id_evaluacion: id_evaluacion_txt,
-            nom_pregunta: nombre_pregunta_txt,
-            descripcion_pregunta: descrip_pregunta_txt,
+            nom_pregunta: nombre_pregunta_txt.trim(),
+            descripcion_pregunta: descrip_pregunta_txt.trim(),
             _csrf:'<?=\Yii::$app->request->csrfToken?>'
         },
         success: function(response) {
@@ -819,8 +825,8 @@ $this->params['breadcrumbs'][] = $this->title;
             url: "editarpregunta",
             data: {
                 id_evaluacion_pregunta: id_evaluacion_txt,
-                pregunta_edit: nombre_pregunta_txt,
-                descripcion_edit : descrip_pregunta_txt,
+                pregunta_edit: nombre_pregunta_txt.trim(),
+                descripcion_edit : descrip_pregunta_txt.trim(),
                 _csrf:'<?=\Yii::$app->request->csrfToken?>'
             },
             success: function(response) {
@@ -1206,9 +1212,9 @@ $this->params['breadcrumbs'][] = $this->title;
         url: "createrespuesta",
         data: {
             id_evaluacion: id_evaluacion_txt,
-            nom_respuesta: nombre_rta_txt,
+            nom_respuesta: nombre_rta_txt.trim(),
             valor_respuesta: valor_rta_txt,
-            descripcion_respuesta: descrip_rta_txt,
+            descripcion_respuesta: descrip_rta_txt.trim(),
             _csrf:'<?=\Yii::$app->request->csrfToken?>'
         },
         success: function(response) {
@@ -1277,9 +1283,9 @@ $this->params['breadcrumbs'][] = $this->title;
             url: "editrespuesta",
             data: {
                 id_evaluacion_rta: id_evaluacion_txt,
-                nom_rta_edit: nombre_rta_txt,
+                nom_rta_edit: nombre_rta_txt.trim(),
                 valor_rta_edit: valor_rta_txt,
-                descripcion_rta_edit : descrip_rta_txt,
+                descripcion_rta_edit : descrip_rta_txt.trim(),
                 _csrf:'<?=\Yii::$app->request->csrfToken?>'
             },
             success: function(response) {
