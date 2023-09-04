@@ -33,7 +33,7 @@ use Exception;
         return[
           'access' => [
               'class' => AccessControl::classname(),
-              'only' => ['index','parametrizarpostulacion','registrarpostulacion', 'reportepostulacion','valorapostulacion','verpostulacion','masivapostulacion'],
+              'only' => ['index','parametrizarpostulacion','registrarpostulacion', 'reportepostulacion','valorapostulacion','verpostulacion','masivapostulacion','descargarpostulacion'],
               'rules' => [
                 [
                   'allow' => true,
@@ -1835,6 +1835,51 @@ use Exception;
 
     return $this->redirect(['index']);
 
+    }
+
+    public function actionDescargarpostulacion(){
+      $model = new HeroesGeneralpostulacion();
+      $varDataResultado_Descargar = array();
+  
+      $form = Yii::$app->request->post();
+      if ($model->load($form)) {
+        $varFecha_BD_D = explode(" ", $model->fechacreacion);
+  
+        $varFechaInicio_BD_D = $varFecha_BD_D[0];
+        $varFechaFin_BD_D = date('Y-m-d',strtotime($varFecha_BD_D[2]));
+  
+        $varDataResultado_Descargar = (new \yii\db\Query())
+                              ->select([
+                                'tbl_heroes_generalpostulacion.id_generalpostulacion', 
+                                'tbl_heroes_generalpostulacion.fechacreacion',
+                                'tbl_heroes_tipopostulacion.tipopostulacion',
+                                'tbl_heroes_cargospostulacion.cargospostulacion', 
+                                'tbl_heroes_generalpostulacion.id_postulador',
+                                'tbl_heroes_generalpostulacion.id_postulante',
+                                'tbl_proceso_cliente_centrocosto.cliente', 
+                                'CONCAT(tbl_proceso_cliente_centrocosto.cod_pcrc," - ",tbl_proceso_cliente_centrocosto.pcrc) AS pcrc',
+                                'if(tbl_heroes_generalpostulacion.estado=1,"Abierto","Cerrado") AS estado',
+                                'tbl_heroes_generalpostulacion.procesos'
+                              ])
+                              ->from(['tbl_heroes_generalpostulacion'])
+                              ->join('LEFT OUTER JOIN', 'tbl_heroes_tipopostulacion',
+                                    'tbl_heroes_tipopostulacion.id_tipopostulacion = tbl_heroes_generalpostulacion.id_tipopostulacion')
+                              ->join('LEFT OUTER JOIN', 'tbl_heroes_cargospostulacion',
+                                    'tbl_heroes_cargospostulacion.id_cargospostulacion = tbl_heroes_generalpostulacion.id_cargospostulacion')
+                              ->join('LEFT OUTER JOIN', 'tbl_heroes_ciudadpostulacion',
+                                    'tbl_heroes_ciudadpostulacion.id_ciudadpostulacion = tbl_heroes_generalpostulacion.id_ciudadpostulacion')
+                              ->join('LEFT OUTER JOIN', 'tbl_proceso_cliente_centrocosto',
+                                    'tbl_proceso_cliente_centrocosto.id_dp_clientes = tbl_heroes_generalpostulacion.id_dp_clientes
+                                        AND  tbl_proceso_cliente_centrocosto.cod_pcrc = tbl_heroes_generalpostulacion.cod_pcrc')
+                              ->where(['=','tbl_heroes_generalpostulacion.anulado',0])
+                              ->andwhere(['between','tbl_heroes_generalpostulacion.fechacreacion',$varFechaInicio_BD_D,$varFechaFin_BD_D])
+                              ->all(); 
+      }
+  
+      return $this->render('descargarpostulacion',[
+        'model' => $model,
+        'varDataResultado_Descargar' => $varDataResultado_Descargar,
+      ]);
     }
 
 
