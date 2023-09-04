@@ -169,6 +169,16 @@ if ($roles == '270') {
             <br>
 
             <div class="card1 mb">
+                <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Descargar Datos') ?></label>
+                <?= Html::a('Descargar',  ['descargaralertas'], ['class' => 'btn btn-danger',
+                                                'data-toggle' => 'tooltip',
+                                                'title' => 'Descargar Alertas']) 
+                ?>
+            </div>
+
+            <br>
+
+            <div class="card1 mb">
                 <label style="font-size: 15px;"><em class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Parametrizar Datos') ?></label>
                 <?= Html::a('Parametrizar',  ['parametrizaralertas'], ['class' => 'btn btn-danger',
                                                 'data-toggle' => 'tooltip',
