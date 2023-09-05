@@ -2724,7 +2724,17 @@ class BasesatisfaccionController extends Controller {
                     $canal = Yii::$app->request->post('canal');
                     $marca = Yii::$app->request->post('marca');
                     $equivocacion = Yii::$app->request->post('equivocacion');
-                    $modelBase->comentario = $arrFormulario["dscomentario"];
+
+                    $varVerificaComentario = (new \yii\db\Query())
+                                        ->select(['tbl_base_satisfaccion.comentario'])
+                                        ->from(['tbl_base_satisfaccion']) 
+                                        ->where(['=','tbl_base_satisfaccion.id',$modelBase->id])
+                                        ->scalar();
+
+                    if ($varVerificaComentario == null) {
+                        $modelBase->comentario = $arrFormulario["dscomentario"];
+                    }                    
+                    
                     $modelBase->tipologia = Yii::$app->request->post('categoria');
                     $modelBase->estado = Yii::$app->request->post('estado');
                     $modelBase->usado = "NO";
