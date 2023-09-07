@@ -359,7 +359,6 @@ use yii\helpers\ArrayHelper;
         });
 
         function init_table_resultados(data) {
-            console.log("data...", data);
 
             if(data.length > 0) {
                 var table_resultados = $('#table_resultados').DataTable({

@@ -40,7 +40,6 @@ $vardocument = Yii::$app->db->createCommand("select usua_identificacion from tbl
                                     ['class' => 'btn btn-success',                
                                     'data-toggle' => 'tooltip',
                                     'title' => 'Evaluar Persona a Cargo',
-                                    'onclick' => 'evaluarpersonaacargo();',
                                     'id'=>'ButtonSearch',
                                     'style' => 'display: inline; margin-bottom: 20px;']) 
                     ?>
