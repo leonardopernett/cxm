@@ -69,7 +69,8 @@ use app\models\BaseAleatorio;
             'deleteareaapoyo','viewareaapoyogptw','viewprocesossatisfaccion','viewdetallepilaresgptw','viewindicadores',
             'adminusuarios','adminapiwiasae','viewtipoalertasqyr','deletealertasqyr',
             'viewareasqyr','varListAreasqyr','viewtipologiasqyr','viewrespuestaautomaticaqyr','deleterespuestaqyr',
-            'viewalertacumplimientoqyr','importardocumento','viewcartarespuestaqyr','parametrizarpcrccomdata','deletepcrcs','parametrizarpbi','aleatorioencuestas','viewheroes'],
+            'viewalertacumplimientoqyr','importardocumento','viewcartarespuestaqyr','parametrizarpcrccomdata','deletepcrcs','parametrizarpbi','aleatorioencuestas','viewheroes',
+            'parametrizarpcrcatributoscriticos', 'cargarlistapcrc', 'deletepcrcatributoscriticos'],
             'rules' => [
               [
                 'allow' => true,
@@ -3290,6 +3291,111 @@ use app\models\BaseAleatorio;
         ]);
         
     }
+
+    /* PROCESO AGREGAR PCRC PARA AJUSTAR SCORE FINAL SEGUN NOTA MALA EN ALGUN ATRIBUTO CRITICO (PEC) ----------------------------------------------------------------- 
+       Si no cumple con algun atributo critico (PEC) en una sección, se disminuye el peso total de la seccion al score final,
+       Si no cumple con algun atributo no critico (PENC) en una sección, continua disminuyendo el porcentaje de ese atributo al score final,
+       Si no cumple con algun atributo no critico y con algun no critico, le resta el peso de la seccion y el porcentaje del atributo no critico al score final
+    */
+
+    public function actionParametrizarpcrcatributoscriticos(){
+        $model = new ControlParams();
+
+        $form = Yii::$app->request->post();
+            if ($model->load($form)) {
+
+                $varidArbol = $model->arbol_id; // id PCRC
+
+                $existe_id_pcrc = (new \yii\db\Query())
+                ->select(['id_control_pcrc_pec'])
+                ->from(['tbl_control_pcrc_pec'])
+                ->where(['=','arbol_id',$varidArbol])
+                ->andwhere(['=','anulado', 0])
+                ->count();
+
+                // No existe el id del PCRC
+                if($existe_id_pcrc==0){
+
+                    $insertar_datos = Yii::$app->db->createCommand()->insert('tbl_control_pcrc_pec',[
+                        'arbol_id' => $varidArbol,
+                        'fecha_creacion' => date("Y-m-d"),
+                        'usua_id' => Yii::$app->user->identity->id,
+                    ])->execute();
+
+                    if($insertar_datos>0){
+                        Yii::$app->session->setFlash('success_creacion', 'Creación exitosa.');        
+                    } else {
+                        Yii::$app->session->setFlash('error_creacion', 'Error agregando los datos.');
+                    } 
+                }
+
+                // Ya existe en nuestra tabla el id_pcrc 
+                if($existe_id_pcrc>0){
+                    Yii::$app->session->setFlash('error_creacion', 'Ya existe el Programa/PCRC.');
+                }    
+
+                return $this->redirect('parametrizarpcrcatributoscriticos');
+                
+            }
+
+            return $this->render('parametrizarpcrcatributoscriticos',[
+                    'model' => $model,
+            ]);
+    
+    }
+
+    //Funcion para obtener la lista de los PCRC agregados que se debe ajustar su score final 
+    public function actionCargarlistapcrc() {
+
+        $varListaPcrcs= Yii::$app->db->createCommand("
+        SELECT DISTINCT (pec.arbol_id) AS id_pcrc, arbol.name AS nom_pcrc
+        FROM tbl_control_pcrc_pec pec
+        INNER JOIN tbl_arbols arbol ON arbol.id = pec.arbol_id 
+        where anulado = 0")->queryAll();
+
+        $response = [
+            'status' => 'success',
+            'data' => $varListaPcrcs,
+        ];
+
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        return $response;
+
+    }
+
+    //Eliminar logicamente un pcrc de la tabla tbl_control_pcrc_pec
+    public function actionDeletepcrcatributoscriticos() {
+        $paramsEliminar = Yii::$app->request->get('id_pcrc');   
+
+        $result = Yii::$app->db->createCommand('
+            UPDATE tbl_control_pcrc_pec 
+            SET anulado = :varAnulado
+            WHERE 
+            arbol_id = :VarId')
+        ->bindValue(':VarId', $paramsEliminar)
+        ->bindValue(':varAnulado', 1)
+        ->execute();
+
+        if ($result>0) {
+            $response = [
+                'status' => 'success',
+                'data' => 'Programa/PCRC eliminado correctamente.',
+                ];            
+        } else {
+            $response = [
+                'status' => 'error',
+                'data' => 'Error eliminando Programa/PCRC.',
+                ];                        
+        }
+
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        return $response;
+    }    
+
+    // FIN PROCESO AGREGAR PCRC PARA AJUSTAR SCORE FINAL SEGUN NOTA MALA EN ALGUN ATRIBUTO CRITICO (PEC) -----------------------------------------------------------------
+
     public function actionParametrizarpcrccomdata(){
         $model = new ControlParams();
 
