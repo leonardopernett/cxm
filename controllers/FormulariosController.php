@@ -874,7 +874,7 @@ class FormulariosController extends Controller {
                                     ->from(['tbl_control_formularios'])
                                     ->where(['=','arbol_id',$varProgramapcrc])
                                     ->count(); 
-                                    
+                                                                                                 
                 if ($varVerificaPcrc == '0') {
                     $varid_clientes = Yii::$app->request->post('id_dp_clientes');
                     $varid_centro_costo = Yii::$app->request->post('requester');  
@@ -954,9 +954,9 @@ class FormulariosController extends Controller {
                 $varcuidad = Yii::$app->db->createCommand("select ciudad from tbl_proceso_cliente_centrocosto where cod_pcrc = :varid_centro_costo")
                 ->bindValue(':varid_centro_costo',$varid_centro_costo)
                 ->queryScalar();
-	        $vargerente = Yii::$app->db->createCommand("select gerente_cuenta from tbl_proceso_cliente_centrocosto where cod_pcrc = :varid_centro_costo")
-            ->bindValue(':varid_centro_costo',$varid_centro_costo)
-            ->queryScalar();
+                $vargerente = Yii::$app->db->createCommand("select gerente_cuenta from tbl_proceso_cliente_centrocosto where cod_pcrc = :varid_centro_costo")
+                ->bindValue(':varid_centro_costo',$varid_centro_costo)
+                ->queryScalar();
                 //fin
                 
                 
@@ -1092,7 +1092,7 @@ class FormulariosController extends Controller {
 
                 /* GUARDAR EL TMP FOMULARIO A LAS EJECUCIONES */
                 $validarPasoejecucionform = \app\models\Tmpejecucionformularios::guardarFormulario($tmp_id);
-
+                
                 /* Aqui va codigo de genesys con valoraciones */
                 if ($varCampoFormularioId == 0) {
                     $varCampoFormularioId = (new \yii\db\Query())
@@ -1180,10 +1180,10 @@ class FormulariosController extends Controller {
 
                 //Proceso para guardar clientes y centro de costos
                
-		$varIdcliente = Yii::$app->db->createCommand("select id_dp_clientes from tbl_registro_ejec_cliente where anulado = 0 and ejec_form_id = :varIdformu")
-        ->bindValue(':varIdformu',$varIdformu)
-        ->queryScalar();
-                
+                $varIdcliente = Yii::$app->db->createCommand("select id_dp_clientes from tbl_registro_ejec_cliente where anulado = 0 and ejec_form_id = :varIdformu")
+                ->bindValue(':varIdformu',$varIdformu)
+                ->queryScalar();
+                        
                 if($varIdcliente){
 
                     Yii::$app->db->createCommand()->update('tbl_registro_ejec_cliente',[
@@ -1199,8 +1199,8 @@ class FormulariosController extends Controller {
                                                 ],'ejec_form_id ='.$varIdformu .'')->execute();   
                 }else{
 
-               //insertar Cliente y centro de costo
-		    $txtidejec_formu = Yii::$app->db->createCommand("select MAX(id) from tbl_ejecucionformularios where usua_id = $tmp_ejecucion->usua_id")->queryScalar(); 
+                    //insertar Cliente y centro de costo
+		            $txtidejec_formu = Yii::$app->db->createCommand("select MAX(id) from tbl_ejecucionformularios where usua_id = $tmp_ejecucion->usua_id")->queryScalar(); 
                     Yii::$app->db->createCommand()->insert('tbl_registro_ejec_cliente',[
                         'ejec_form_id' => $txtidejec_formu,
                         'id_dp_clientes' => $varid_clientes,
@@ -1209,50 +1209,215 @@ class FormulariosController extends Controller {
                         'pcrc' => $varpcrc,
                         'ciudad' => $varcuidad,
                         'director_programa' => $vardirector,
-			'gerente' => $vargerente,
+			        'gerente' => $vargerente,
                         'fechacreacion' => $txtfechacreacion,
                         'anulado' => $txtanulado,
                     ])->execute();
 		        }
-               
-            // proceso comdata Colmena
 
-            $varIdejec = (new \yii\db\Query())
-                        ->select(['max(id)'])
-                        ->from(['tbl_ejecucionformularios'])
-                        ->where(['=','usua_id',Yii::$app->user->identity->id])
-                        ->scalar();
+                // proceso comdata Colmena
 
-            $varPec = (new \yii\db\Query())
-                        ->select(['i1_nmcalculo'])
-                        ->from(['tbl_ejecucionformularios'])
-                        ->where(['=','id',$varIdejec])
-                        ->scalar();
+                $varIdejec = (new \yii\db\Query())
+                            ->select(['max(id)'])
+                            ->from(['tbl_ejecucionformularios'])
+                            ->where(['=','usua_id',Yii::$app->user->identity->id])
+                            ->scalar();
 
-            $vararbol_id = (new \yii\db\Query())
-                        ->select(['arbol_id'])
-                        ->from(['tbl_ejecucionformularios'])
-                        ->where(['=','id',$varIdejec])
-                        ->scalar();
+                $varPec = (new \yii\db\Query())
+                            ->select(['i1_nmcalculo'])
+                            ->from(['tbl_ejecucionformularios'])
+                            ->where(['=','id',$varIdejec])
+                            ->scalar();
 
-            $varexistePcrc = (new \yii\db\Query())
-                        ->select(['tbl_control_pcrc_comdata.arbol_id'])
-                        ->from(['tbl_control_pcrc_comdata'])
-                        ->where(['=','tbl_control_pcrc_comdata.arbol_id',$vararbol_id])
-                        ->count();
+                $vararbol_id = (new \yii\db\Query())
+                            ->select(['arbol_id'])
+                            ->from(['tbl_ejecucionformularios'])
+                            ->where(['=','id',$varIdejec])
+                            ->scalar();
 
-            if($varexistePcrc > 0){   
+                $varexistePcrc = (new \yii\db\Query())
+                            ->select(['tbl_control_pcrc_comdata.arbol_id'])
+                            ->from(['tbl_control_pcrc_comdata'])
+                            ->where(['=','tbl_control_pcrc_comdata.arbol_id',$vararbol_id])
+                            ->count();
 
-                if ($varPec == 0) {
-                 
-                    Yii::$app->db->createCommand()->update('tbl_ejecucionformularios',[
-                        'score' => 0,         
-                    ],"id = '$varIdejec'")->execute();
+                if($varexistePcrc > 0){   
 
-                }                        
-            }
+                    if ($varPec == 0) {
+                    
+                        Yii::$app->db->createCommand()->update('tbl_ejecucionformularios',[
+                            'score' => 0,         
+                        ],"id = '$varIdejec'")->execute();
+
+                    }                        
+                }                    
+                //fin proceso comdata
+
+                /* 
+                PROCESO ENDESA  ----------------------------------------------------------------------------------
+                AJUSTAR SCORE FINAL RESTANDO TODA LA SECCION SI TIENE ALGUNA NOTA MALA EN ATRIBUTOS CON METRICA PEC 
+                - Si no cumple con algun atributo critico (PEC) en una sección, se disminuye el peso total de la seccion al score final,
+                - Si no cumple con algun atributo no critico (PENC) en una sección, continua disminuyendo el porcentaje de ese atributo al score final,
+                - Si no cumple con algun atributo critico (PEC) y con algun atributo no critico (PENC), le resta el peso de la seccion y el porcentaje del atributo no critico al score final
+                */
                 
-        //fin proceso comdata    
+                //Validar si existe el PCRC en la lista del modulo parametrizador en la tabla tbl_control_pcrc_pec
+                $validar_pcrc_ajuste_score = (new \yii\db\Query())
+                ->select(['id_control_pcrc_pec'])
+                ->from(['tbl_control_pcrc_pec'])
+                ->where(['=','arbol_id',$vararbol_id])
+                ->andwhere(['=','anulado', 0])
+                ->count();
+
+                //Si existe el PCRC realizar modificaciones
+                if( $validar_pcrc_ajuste_score > 0 ) {
+
+                    $acumulador_total_PEC_restado = 0;                    
+                    $acumulador_peso_PEC_seccion=0;
+                    $acumulador_peso_seccion=0;
+                    $acumulador_peso_total_atributos_criticos=0;                    
+                    $cantidad_PENC_rtas_malas = 0; // Variable para contar los pesos acumulados en preguntas PENC    
+                    $peso_total_atributos_criticos = 0; //Variable para calcular peso total de todos los atributos criticos de una seccion
+                    $todos_PENC_nota_mala = false; //bandera para saber si debemos restar la seccion o solo el peso total de todos los PEC
+
+                    //Obtengo el PEC (columna) y el Score global del formulario actual
+                    $PEC_global_formulario = (new \yii\db\Query())
+                    ->select(['i1_nmcalculo', 'score'])
+                    ->from(['tbl_ejecucionformularios'])
+                    ->where(['=','arbol_id',$vararbol_id])
+                    ->andwhere(['=','usua_id',Yii::$app->user->identity->id])
+                    ->andwhere(['=','id', $varIdejec])
+                    ->one();
+
+                    $peso_PEC_global_formulario = (float) $PEC_global_formulario['i1_nmcalculo'];
+                    $score_formulario =  (float) $PEC_global_formulario['score'];
+                    
+                    //Obtengo las secciones
+                    $secciones_asociadas = (new \yii\db\Query())
+                    ->select(['id', 'i1_nmfactor', 'i2_nmfactor'])
+                    ->from(['tbl_ejecucionseccions'])
+                    ->where(['=','ejecucionformulario_id',$varIdejec])
+                    ->all();
+                    
+                    //recorro cada una en busca de notas malas 
+                    foreach ($secciones_asociadas as $id_seccion) {
+
+                        $cantidad_atributos_criticos = 0;  
+                        $cantidad_atributos_no_criticos = 0;  
+                        $cantidad_PEC_rtas_malas = 0; 
+                        $cantidad_PENC_rtas_malas = 0;   
+                        $peso_PEC_seccion = floatval($id_seccion['i1_nmfactor']); //peso COLUMNA PEC DE LA SECCION
+                        $peso_PENC_seccion = floatval($id_seccion['i2_nmfactor']); //peso COLUMNA PENC DE LA SECCION
+                        $peso_total_seccion =  $peso_PEC_seccion + $peso_PENC_seccion; //peso TOTAL DE LA SECCION
+                        
+                        
+                        $id_ejecucionseccions = intval($id_seccion['id']);
+
+                        $params = [
+                            ':arbolId' => $vararbol_id,
+                            ':seccionId' => $id_ejecucionseccions,
+                            ':usuaId' => Yii::$app->user->identity->id,
+                        ];
+                        
+                        //Obtengo los bloques y bloques detalles de cada sección
+                        $consulta_respuesta_preguntas = Yii::$app->db->createCommand('select 
+                            form.arbol_id AS id_pcrc, form.id AS id_ejecucionformulario, form.formulario_id AS id_formulario,
+                            sec.id AS id_ejecucionseccion, sec.seccion_id AS id_seccion, 
+                            sec.i1_nmcalculo AS score_PEC_seccion, sec.i2_nmcalculo AS score_PENC_seccion,
+                            bl.id AS id_ejecucionbloque, bl.bloque_id AS id_bloque, bl.name AS nom_bloque,
+                            bl_det.bloquedetalle_id AS id_pregunta, bl_det.name AS nom_pregunta,
+                            bl_det.i1_nmfactor AS es_atributo_PEC, bl_det.i1_nmcalculo AS PEC_bloquedetalle,
+                            bl_det.i2_nmfactor AS es_atributo_PENC, bl_det.i2_nmcalculo AS PENC_bloquedetalle
+                        FROM tbl_ejecucionformularios AS form
+                            LEFT JOIN tbl_ejecucionseccions AS sec ON sec.ejecucionformulario_id = form.id
+                            LEFT JOIN tbl_ejecucionbloques AS bl ON bl.ejecucionseccion_id = sec.id
+                            LEFT JOIN tbl_ejecucionbloquedetalles AS bl_det ON bl_det.ejecucionbloque_id = bl.id
+                        WHERE form.arbol_id = :arbolId AND sec.id=:seccionId AND form.usua_id = :usuaId')->bindValues($params)->queryAll();
+        
+                        foreach ($consulta_respuesta_preguntas as $value) {
+        
+                            $score_PENC_seccion =  floatval($value['score_PENC_seccion']);
+
+                            $es_atributo_PEC = $value['es_atributo_PEC']; 
+                            $rta_pregunta_PEC = $value['PEC_bloquedetalle']; 
+
+                            $es_atributo_PENC = $value['es_atributo_PENC']; 
+                            $rta_pregunta_PENC = $value['PENC_bloquedetalle'];
+        
+                            //Es un atributo con métrica PEC
+                            if ($es_atributo_PEC>0) {                                
+                                $cantidad_atributos_criticos++; //contador de atributos criticos por seccion
+                                
+                                //Fue nota mala
+                                if($rta_pregunta_PEC=='0') {                                   
+                                    $cantidad_PEC_rtas_malas++;
+                                }
+                                
+                            } 
+
+                            //Es un atributo con métrica PENC
+                            if ($es_atributo_PENC>0) {                                
+                                $cantidad_atributos_no_criticos++;
+                                
+                                //Fue nota mala
+                                if($rta_pregunta_PENC=='0'){
+                                    $cantidad_PENC_rtas_malas++; 
+                                }
+                            }
+                        }  
+
+                        if($cantidad_PEC_rtas_malas>0) {
+
+                            //obtengo peso del atributo
+                            $peso_atributo_PEC = $peso_PEC_seccion/$cantidad_atributos_criticos;
+                            $valor_restado_PEC = $peso_atributo_PEC*$cantidad_PEC_rtas_malas;
+                   
+                            //Actualizamos el score en cero de la SECCIÓN en la métrica PEC (i1_nmcalculo)
+                            $actualizar_score_seccion = Yii::$app->db->createCommand()->update('tbl_ejecucionseccions',[
+                                'i1_nmcalculo' => 0
+                            ],'id ='.$id_ejecucionseccions.'')->execute(); 
+
+                            //Acumular valor de los atributos restados con nota mala                            
+                            $acumulador_total_PEC_restado += $valor_restado_PEC;     
+                            
+                            //Acumular peso de la columna PEC
+                            $acumulador_peso_PEC_seccion += $peso_PEC_seccion;
+                            
+                            //Acumular peso de la seccion total 
+                            $acumulador_peso_seccion += $peso_total_seccion; 
+
+                            // Si alguno de los CRITICOS tienen NOTA MALA  y todos los NO CRITICOS tienen NOTA MALA 
+                            if ($cantidad_atributos_no_criticos==$cantidad_PENC_rtas_malas) {
+                                $todos_PENC_nota_mala= true;                                
+                                $peso_total_atributos_criticos= $peso_atributo_PEC*$cantidad_atributos_criticos; //obtengo peso total de los atributos criticos
+                                $acumulador_peso_total_atributos_criticos += $peso_total_atributos_criticos;                                
+                            }
+                           
+                        }                            
+
+                    }
+
+                    //CALCULO DE PENC Y SCORE DEL FORMULARIO 
+                    
+                    //Si todos los PENC o alguno estan sin NINGUNA nota mala, solo restauro los no criticos restados y solo resto la seccion total al score final
+                    if (!$todos_PENC_nota_mala) {
+                        $nuevo_score_PEC_global = ($peso_PEC_global_formulario + $acumulador_total_PEC_restado) - $acumulador_peso_PEC_seccion;
+                        $nuevo_score_global = ($score_formulario + $acumulador_total_PEC_restado) - $acumulador_peso_seccion;                        
+
+                    } else { //Si todos los PENC TIENEN nota mala y alguno de los PEC tiene nota mala, restauro el valor de los atributos criticos previamente restados y resto de nuevo el peso total de todos los no criticos al score final
+                        $nuevo_score_PEC_global = ($peso_PEC_global_formulario + $acumulador_total_PEC_restado) - $acumulador_peso_total_atributos_criticos;
+                        $nuevo_score_global = ($score_formulario + $acumulador_total_PEC_restado) - $acumulador_peso_total_atributos_criticos;                        
+                    }                 
+                         
+                    // Actualizamos valores en el formulario 
+                    $actualizar_score_formulario_metrica_PENC = Yii::$app->db->createCommand()->update('tbl_ejecucionformularios',[
+                        'i1_nmcalculo' => $nuevo_score_PEC_global,
+                        'score' => $nuevo_score_global
+                    ],'id ='.$varIdejec.'')->execute();
+                                    
+                }
+
+                /* FIN PROCESO ENDESA ------------------------------------------------------------------------------------------*/
 
                 Yii::$app->session->setFlash('success', Yii::t('app', 'Formulario guardado'));
 
