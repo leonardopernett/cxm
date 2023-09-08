@@ -321,7 +321,7 @@ class ReportesAdministracion extends Model
     $id_user = $sessiones;
     $id_accion = $id;
         
-    if($id_user == 3205 || $id_user == 2953 || $id_user == 3468 || $id_user == 69 || $id_user == 8 || $id_user == 57 || $id_user == 3229 || $id_user == 1515 || $id_user == 2991 || $id_user == 6636 || $id_user == 4457 || $id_user == 2511 || $id_user == 6639 || $id_user == 637 || $id_user == 1083 || $sessiones == 5658 || $sessiones == 1475 || $sessiones == 1699 || $sessiones == 7952 || $sessiones == 1317 || $sessiones == 9297 || $sessiones == 8031){ 
+    if($id_user == 3205 || $id_user == 2953 || $id_user == 3468 || $id_user == 69 || $id_user == 8 || $id_user == 57 || $id_user == 3229 || $id_user == 1515 || $id_user == 2991 || $id_user == 6636 || $id_user == 4457 || $id_user == 2511 || $id_user == 6639 || $id_user == 637 || $id_user == 1083 || $sessiones == 5658 || $sessiones == 1475 || $sessiones == 1699 || $sessiones == 7952 || $sessiones == 1317 || $sessiones == 9297 || $sessiones == 8031 || $sessiones == 1483 || $sessiones == 8031 || $sessiones == 2668 || $sessiones == 9486 || $id_user == 9297 || $id_user == 637 || $id_user == 9326){ 
       return $data;
     }
     else{

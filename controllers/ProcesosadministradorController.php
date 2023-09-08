@@ -51,6 +51,7 @@ use app\models\RespuestaAutomatica;
 use app\models\Estadosqyr;
 use app\models\Cumplimientoqyr;
 use app\models\WorspaceReportesPowerbi;
+use app\models\BaseAleatorio;
 
   class ProcesosadministradorController extends \yii\web\Controller {
 
@@ -68,7 +69,7 @@ use app\models\WorspaceReportesPowerbi;
             'deleteareaapoyo','viewareaapoyogptw','viewprocesossatisfaccion','viewdetallepilaresgptw','viewindicadores',
             'adminusuarios','adminapiwiasae','viewtipoalertasqyr','deletealertasqyr',
             'viewareasqyr','varListAreasqyr','viewtipologiasqyr','viewrespuestaautomaticaqyr','deleterespuestaqyr',
-            'viewalertacumplimientoqyr','importardocumento','viewcartarespuestaqyr','parametrizarpcrccomdata','deletepcrcs','parametrizarpbi',
+            'viewalertacumplimientoqyr','importardocumento','viewcartarespuestaqyr','parametrizarpcrccomdata','deletepcrcs','parametrizarpbi','aleatorioencuestas','viewheroes',
             'parametrizarpcrcatributoscriticos', 'cargarlistapcrc', 'deletepcrcatributoscriticos'],
             'rules' => [
               [
@@ -3507,6 +3508,190 @@ use app\models\WorspaceReportesPowerbi;
             'varListCredenciales' => $varListCredenciales,
         ]);
     }
+
+    public function actionAleatorioencuestas(){
+        $model = new BaseAleatorio();
+
+        $varListaAleatorio = (new \yii\db\Query())
+                        ->select([
+                            'tbl_arbols.name AS varArbol',
+                            'COUNT(tbl_reglanegocio.rn) AS varConteo'
+                        ])
+                        ->from(['tbl_base_aleatorio'])
+                        ->join('LEFT OUTER JOIN', 'tbl_reglanegocio',
+                              'tbl_reglanegocio.pcrc = tbl_base_aleatorio.arbol_id
+                                    AND tbl_reglanegocio.id_formulario = tbl_base_aleatorio.form_id')
+                        ->join('LEFT OUTER JOIN', 'tbl_arbols',
+                              'tbl_arbols.id = tbl_reglanegocio.pcrc')
+                        ->where(['=','tbl_base_aleatorio.anulado',0])
+                        ->groupby(['tbl_arbols.id'])
+                        ->all();
+
+        $form = Yii::$app->request->post();
+        if($model->load($form)){
+            $varPcrc = $model->arbol_id;
+            $varCliente = (new \yii\db\Query())
+                            ->select(['tbl_arbols.formulario_id'])
+                            ->from(['tbl_arbols'])
+                            ->where(['=','tbl_arbols.id',$varPcrc])
+                            ->scalar();
+
+            $varValida = (new \yii\db\Query())
+                            ->select(['tbl_base_aleatorio.id_aleatorio'])
+                            ->from(['tbl_base_aleatorio'])
+                            ->where(['=','tbl_base_aleatorio.arbol_id',$varPcrc])
+                            ->andwhere(['=','tbl_base_aleatorio.anulado',0])
+                            ->count();
+
+            if ($varValida == 0) {
+                Yii::$app->db->createCommand()->insert('tbl_base_aleatorio',[
+                    'arbol_id' => $varPcrc,
+                    'form_id' => $varCliente,
+                    'fechacreacion' => date('Y-m-d'),
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,                                       
+                ])->execute(); 
+            }            
+
+            return $this->redirect('aleatorioencuestas');
+        }
+
+        return $this->render('aleatorioencuestas',[
+            'model' => $model,
+            'varListaAleatorio' => $varListaAleatorio,
+        ]);
+    }
+
+    public function actionViewheroes(){
+
+        $varFechaInicio_H = date('Y-m-d', strtotime('first day of last month'));
+        
+        $varFechaFin_H = date('Y-m-d', strtotime('last day of last month'));
+        
+        $varListadoHeroesValoraciones = (new \yii\db\Query())
+                            ->select([
+                                'ef.id',
+                                'ef.created',
+                                'tbl_arbols.name AS varProgramaPcrc',
+                                'tbl_usuarios.usua_identificacion AS varCCValorador',
+                                'tbl_usuarios.usua_nombre AS varValorador',
+                                'tbl_evaluados.identificacion AS varCCAsesor',
+                                'tbl_evaluados.name AS varAsesor',
+                                '(
+                                    SELECT 
+                                        tbl_bloquedetalles.name 
+                                    FROM tbl_bloquedetalles
+                                        inner join tbl_bloques on
+                                            tbl_bloques.id = tbl_bloquedetalles.bloque_id
+                                        inner join tbl_ejecucionbloques on
+                                            tbl_bloques.id = tbl_ejecucionbloques.bloque_id
+                                        inner join tbl_ejecucionseccions on
+                                            tbl_ejecucionbloques.ejecucionseccion_id = tbl_ejecucionseccions.id
+                                        inner join tbl_seccions on
+                                            tbl_seccions.id = tbl_ejecucionseccions.seccion_id
+                                    WHERE
+                                        tbl_bloques.nmorden = 1 
+                                        and tbl_bloquedetalles.nmorden = 2 
+                                        and tbl_seccions.nmorden = 1 
+                                        and  tbl_ejecucionseccions.ejecucionformulario_id = ef.id) as Pregunta_Analista',
+                                '(
+                                    SELECT 
+                                        tbl_calificaciondetalles.name 
+                                    FROM tbl_calificaciondetalles
+                                        inner join tbl_ejecucionbloquedetalles on
+                                            tbl_ejecucionbloquedetalles.calificaciondetalle_id =tbl_calificaciondetalles.id
+                                        inner join tbl_bloquedetalles on
+                                            tbl_ejecucionbloquedetalles.bloquedetalle_id = tbl_bloquedetalles.id  
+                                        inner join tbl_bloques on
+                                            tbl_bloques.id = tbl_bloquedetalles.bloque_id
+                                        inner join tbl_ejecucionbloques on
+                                            tbl_bloques.id = tbl_ejecucionbloques.bloque_id AND tbl_ejecucionbloques.id = tbl_ejecucionbloquedetalles.ejecucionbloque_id
+                                        inner join tbl_ejecucionseccions on
+                                            tbl_ejecucionbloques.ejecucionseccion_id = tbl_ejecucionseccions.id
+                                        inner join tbl_seccions on
+                                            tbl_seccions.id = tbl_ejecucionseccions.seccion_id
+                                    where
+                                        tbl_seccions.nmorden = 1 
+                                        and tbl_bloques.nmorden = 1 
+                                        and tbl_bloquedetalles.nmorden = 2 
+                                        and  tbl_ejecucionseccions.ejecucionformulario_id = ef.id) AS Respuesta_Analista',
+                                '(
+                                    SELECT 
+                                        tbl_bloquedetalles.name 
+                                    FROM tbl_bloquedetalles
+                                        inner join tbl_bloques on
+                                            tbl_bloques.id = tbl_bloquedetalles.bloque_id
+                                        inner join tbl_ejecucionbloques on
+                                            tbl_bloques.id = tbl_ejecucionbloques.bloque_id
+                                        inner join tbl_ejecucionseccions on
+                                            tbl_ejecucionbloques.ejecucionseccion_id = tbl_ejecucionseccions.id
+                                        inner join tbl_seccions on
+                                            tbl_seccions.id = tbl_ejecucionseccions.seccion_id
+                                    where
+                                        tbl_bloques.nmorden = 1 
+                                        and tbl_bloquedetalles.nmorden = 1 
+                                        and tbl_seccions.nmorden = 1 
+                                        and  tbl_ejecucionseccions.ejecucionformulario_id = ef.id) as Pregunta_Operacion',
+                                '(
+                                    SELECT 
+                                        tbl_calificaciondetalles.name 
+                                    FROM tbl_calificaciondetalles
+                                        INNER JOIN tbl_ejecucionbloquedetalles on
+                                            tbl_ejecucionbloquedetalles.calificaciondetalle_id =tbl_calificaciondetalles.id
+                                        INNER JOIN tbl_bloquedetalles on
+                                            tbl_ejecucionbloquedetalles.bloquedetalle_id = tbl_bloquedetalles.id  
+                                        inner join tbl_bloques on
+                                            tbl_bloques.id = tbl_bloquedetalles.bloque_id
+                                        inner join tbl_ejecucionbloques on
+                                            tbl_bloques.id = tbl_ejecucionbloques.bloque_id AND tbl_ejecucionbloques.id = tbl_ejecucionbloquedetalles.ejecucionbloque_id
+                                        inner join tbl_ejecucionseccions on
+                                            tbl_ejecucionbloques.ejecucionseccion_id = tbl_ejecucionseccions.id
+                                        inner join tbl_seccions on
+                                            tbl_seccions.id = tbl_ejecucionseccions.seccion_id
+                                        where
+                                            tbl_seccions.nmorden = 1 
+                                            and tbl_bloques.nmorden = 1 
+                                            and tbl_bloquedetalles.nmorden = 1 
+                                            and  tbl_ejecucionseccions.ejecucionformulario_id = ef.id) as Respuesta_Operacion',
+                                '(
+                                    SELECT 
+                                        tbl_tipificaciondetalles.name 
+                                    FROM tbl_ejecucionformularios
+                                        LEFT JOIN tbl_ejecucionseccions ON 
+                                            tbl_ejecucionseccions.ejecucionformulario_id = tbl_ejecucionformularios.id
+                                        LEFT JOIN tbl_ejecucionbloques ON 
+                                            tbl_ejecucionbloques.ejecucionseccion_id = tbl_ejecucionseccions.id
+                                        LEFT JOIN tbl_ejecucionbloquedetalles ON 
+                                            tbl_ejecucionbloquedetalles.ejecucionbloque_id = tbl_ejecucionbloques.id
+                                        LEFT JOIN tbl_ejecucionbloquedetalles_tipificaciones ON 
+                                            tbl_ejecucionbloquedetalles_tipificaciones.ejecucionbloquedetalle_id = tbl_ejecucionbloquedetalles.id
+                                        LEFT JOIN tbl_tipificaciondetalles ON 
+                                            tbl_tipificaciondetalles.id = tbl_ejecucionbloquedetalles_tipificaciones.tipificaciondetalle_id
+                                    WHERE 
+                                        tbl_ejecucionformularios.id = ef.id
+                                    GROUP BY tbl_ejecucionformularios.id) as Cliente'
+                            ])
+                            ->from(['tbl_ejecucionformularios ef'])
+
+                            ->join('LEFT OUTER JOIN', 'tbl_usuarios',
+                                  'tbl_usuarios.usua_id = ef.usua_id')
+
+                            ->join('LEFT OUTER JOIN', 'tbl_arbols',
+                                  'tbl_arbols.id = ef.arbol_id')
+
+                            ->join('LEFT OUTER JOIN', 'tbl_evaluados',
+                                  'tbl_evaluados.id = ef.evaluado_id')
+
+                            ->where(['between','ef.created',$varFechaInicio_H.' 00:00:00',$varFechaFin_H.' 23:59:59'])
+                            ->andwhere(['=','ef.arbol_id',2119])
+                            ->all(); 
+
+
+        return $this->render('viewheroes',[
+            'varListadoHeroesValoraciones' => $varListadoHeroesValoraciones,
+        ]);
+    }
+    
 
   }
 

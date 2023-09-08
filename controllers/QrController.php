@@ -62,7 +62,7 @@ use app\models\UsuariosEvalua;
 
       $sessiones = Yii::$app->user->identity->id;
      
-      if($sessiones == "3205" || $sessiones == "2953" || $sessiones == "57" || $sessiones == "1475" || $sessiones == "69" || $sessiones == "1699" || $sessiones == "5658" || $sessiones == "3468" || $sessiones == "7952"){ 
+      if($sessiones == "3205" || $sessiones == "2953" || $sessiones == "57" || $sessiones == "1475" || $sessiones == "69" || $sessiones == "1699" || $sessiones == "5658" || $sessiones == "3468" || $sessiones == "7952" || $sessiones == "4308"){ 
         $model = (new \yii\db\Query())
                   ->select(['tbl_qr_casos.id as idcaso','tbl_qr_casos.numero_caso','tbl_qr_tipos_de_solicitud.tipo_de_dato','tbl_qr_casos.comentario','tbl_qr_casos.cliente','tbl_usuarios_evalua.clientearea','tbl_qr_casos.nombre','tbl_qr_casos.documento','tbl_qr_casos.correo','tbl_qr_estados_casos.estado','tbl_qr_estados_casos.id as idestado','tbl_qr_casos.fecha_creacion', 'tbl_qr_areas.nombre area','tbl_qr_tipologias.tipologia','tbl_qr_casos.id_estado','tbl_qr_estados.nombre estado1'])
                   ->from(['tbl_qr_casos'])

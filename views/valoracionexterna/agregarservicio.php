@@ -46,7 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="row">
                     <div class="col-md-6">
                         <label style="font-size: 15px;"><em class="fas fa-check" style="font-size: 20px; color: #337ab7;"></em><?= Yii::t('app', ' Seleccionar Cliente') ?></label>
-                        <?=  $form->field($model, 'id_dp_clientes', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\Arboles::find()->where(['=','activo',0])->andwhere(['IN','arbol_id',[2,98,4216,4008]])->andwhere(['NOT LIKE','name','no usar'])->orderBy(['name'=> SORT_ASC])->all(), 'id', 'name'),
+                        <?=  $form->field($model, 'id_dp_clientes', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\Arboles::find()->select(['id','CONCAT(name," - ",id) as name'])->where(['=','activo',0])->andwhere(['IN','arbol_id',[2,98,4216,4008]])->andwhere(['NOT LIKE','name','no usar'])->orderBy(['name'=> SORT_ASC])->all(), 'id', 'name'),
                                                         [
                                                             'id' => 'idProcesos',
                                                             'prompt'=>'Seleccionar...',

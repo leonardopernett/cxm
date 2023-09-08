@@ -420,6 +420,26 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="row">
                 <div class="col-md-4">
                     <div class="card1 mb">
+                        <label style="font-size: 15px;"><em class="fas fa-users" style="font-size: 15px; color: #ffc034;"></em><?= Yii::t('app', ' Parametrizar Encuestas Aleatorias') ?></label>
+                        <?= Html::a('Procesos Aleatorios',  ['aleatorioencuestas'], ['class' => 'btn btn-primary',                                        
+                                        'data-toggle' => 'tooltip',
+                                        'title' => 'Parametrizar Procesos Aleatorios Encuestas']) 
+                            ?>
+                    </div>
+                </div>
+               
+                <div class="col-md-4">
+                    <div class="card1 mb">
+                        <label style="font-size: 15px;"><em class="fas fa-users" style="font-size: 15px; color: #ffc034;"></em><?= Yii::t('app', ' Procesos de Héroes') ?></label>
+                        <?= Html::a('Descargar Listados',  ['viewheroes'], ['class' => 'btn btn-primary',                                        
+                                        'data-toggle' => 'tooltip',
+                                        'title' => 'Descargar Listados']) 
+                        ?>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card1 mb">
                         <label style="font-size: 15px;"><em class="fas fa-users" style="font-size: 15px; color: #ffc034;"></em><?= Yii::t('app', ' Agregar PCRC para atributos críticos ') ?></label>
                         <?= Html::a('Aceptar',  ['parametrizarpcrcatributoscriticos'], ['class' => 'btn btn-primary',                                        
                                         'data-toggle' => 'tooltip',
@@ -427,7 +447,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         ?>
                     </div>
                 </div>
-            </div> 
+
+            </div>
         </div>
     </div>
 </div>

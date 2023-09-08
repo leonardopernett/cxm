@@ -439,7 +439,8 @@ $contadorSecciones = 0;
                                                 , [
                                             "id" => "fuente",
                                             "class" => "form-control droplabel",
-                                            "placeholder" => Yii::t("app", "Ingrese la fuente")
+                                            "placeholder" => Yii::t("app", "Ingrese la fuente"),
+                                            "readonly" => "readonly"
                                         ]);
                                         ?>
                                     <?php endif; ?>

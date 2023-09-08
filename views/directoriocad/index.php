@@ -60,6 +60,7 @@ $this->title = 'Directorio CAD';
   $varSectortwo = (new \yii\db\Query())
                 ->select(['id_sectorcad','nombre'])
                 ->from(['tbl_sector_cad'])
+                ->where(['=','tbl_sector_cad.anulado',0])
                 ->all(); 
   
   $listData2 = ArrayHelper::map($varSectortwo, 'id_sectorcad', 'nombre');
@@ -67,6 +68,7 @@ $this->title = 'Directorio CAD';
   $varProveedorestwo = (new \yii\db\Query())
             ->select(['id_proveedorescad','name'])
             ->from(['tbl_proveedores_cad'])
+            ->where(['=','tbl_proveedores_cad.anulado',0])
             ->all(); 
 
   $listData3 = ArrayHelper::map($varProveedorestwo, 'id_proveedorescad', 'name');
@@ -75,6 +77,7 @@ $this->title = 'Directorio CAD';
   $varTipotwo = (new \yii\db\Query())
             ->select(['id_tipocad','nombre'])
             ->from(['tbl_tipo_cad'])
+            ->where(['=','tbl_tipo_cad.anulado',0])
             ->all(); 
 
   $listData4 = ArrayHelper::map($varTipotwo, 'id_tipocad', 'nombre');
@@ -83,6 +86,7 @@ $this->title = 'Directorio CAD';
   $varTipoCanaltwo = (new \yii\db\Query())
             ->select(['id_tipocanalcad','nombre'])
             ->from(['tbl_tipocanal_cad'])
+            ->where(['=','tbl_tipocanal_cad.anulado',0])
             ->all(); 
 
   $listData5 = ArrayHelper::map($varTipoCanaltwo, 'id_tipocanalcad', 'nombre');
@@ -91,6 +95,7 @@ $this->title = 'Directorio CAD';
   $varEtapatwo = (new \yii\db\Query())
             ->select(['id_etapacad','nombre'])
             ->from(['tbl_etapa_cad'])
+            ->where(['=','tbl_etapa_cad.anulado',0])
             ->all(); 
 
   $listData6 = ArrayHelper::map($varEtapatwo, 'id_etapacad', 'nombre');
@@ -98,6 +103,7 @@ $this->title = 'Directorio CAD';
   $varSociedadtwo = (new \yii\db\Query())
             ->select(['id_sociedadcad','nombre'])
             ->from(['tbl_sociedad_cad'])
+            ->where(['=','tbl_sociedad_cad.anulado',0])
             ->all(); 
 
   $listData9 = ArrayHelper::map($varSociedadtwo, 'id_sociedadcad', 'nombre');
@@ -105,6 +111,7 @@ $this->title = 'Directorio CAD';
   $varCiudadtwo = (new \yii\db\Query())
             ->select(['id_ciudad_cad','nombre'])
             ->from(['tbl_ciudad_cad'])
+            ->where(['=','tbl_ciudad_cad.anulado',0])
             ->all(); 
 
   $listData7 = ArrayHelper::map($varCiudadtwo, 'id_ciudad_cad', 'nombre');
@@ -112,6 +119,7 @@ $this->title = 'Directorio CAD';
   $varVicetwo = (new \yii\db\Query())
             ->select(['id_vicepresidentecad','nombre'])
             ->from(['tbl_vicepresidente_cad'])
+            ->where(['=','tbl_vicepresidente_cad.anulado',0])
             ->all();
 
   $listData8 = ArrayHelper::map($varVicetwo, 'id_vicepresidentecad', 'nombre');
@@ -119,29 +127,34 @@ $this->title = 'Directorio CAD';
   $varCantidades = (new \yii\db\Query())
               ->select(['COUNT(tipo) as cantidad','tipo'])
               ->from(['tbl_directorio_cad'])
+              ->where(['=','tbl_directorio_cad.anulado',0])
               ->groupBy(['tipo'])
               ->all(); 
 
   $canClientes = (new \yii\db\Query())
               ->select(['*'])
               ->from(['tbl_directorio_cad'])
+              ->where(['=','tbl_directorio_cad.anulado',0])
               ->count();
 
   $varTotalCAD = (new \yii\db\Query())
               ->select(['count(distinct(cliente))'])
               ->from(['tbl_directorio_cad'])
+              ->where(['=','tbl_directorio_cad.anulado',0])
               ->scalar();
               
   $canRedes  = (new \yii\db\Query())
               ->select(['tipo'])
               ->from(['tbl_directorio_cad'])
               ->where(['=','tipo',1])
+              ->andwhere(['=','tbl_directorio_cad.anulado',0])
               ->count();
 
   $canCanales = (new \yii\db\Query())
               ->select(['tipo'])
               ->from(['tbl_directorio_cad'])
               ->where(['=','tipo',2])
+              ->andwhere(['=','tbl_directorio_cad.anulado',0])
               ->count();
 
   $varCanal = 0;
@@ -164,6 +177,7 @@ $this->title = 'Directorio CAD';
                           tbl_proceso_cliente_centrocosto.documento_director = tbl_directorio_cad.directorprog
                           ) AS NombreDirector','tbl_directorio_cad.directorprog','COUNT(tbl_directorio_cad.cliente) AS cantidadesD'])
               ->from(['tbl_directorio_cad'])
+              ->where(['=','tbl_directorio_cad.anulado',0])
               ->groupBy(['tbl_directorio_cad.directorprog'])
               ->all(); 
               
@@ -173,6 +187,7 @@ $this->title = 'Directorio CAD';
                           tbl_proveedores_cad.id_proveedorescad = tbl_directorio_cad.proveedores
                           ) AS Proveedores','tbl_directorio_cad.proveedores','COUNT(tbl_directorio_cad.proveedores) AS cantidadesP'])
               ->from(['tbl_directorio_cad'])
+              ->where(['=','tbl_directorio_cad.anulado',0])
               ->groupBy(['tbl_directorio_cad.proveedores'])
               ->all();
 
@@ -559,7 +574,7 @@ $this->title = 'Directorio CAD';
 
                                   <br><hr><br>
 
-                                  <div class=row style="display:none;">
+                                  <div class="row" >
                                     <div class="col-md-6">
                                       <div class="card1 mb">
                                         <label style="font-size: 15px;"><em class="fas fa-list" style="font-size: 20px; color: #827DF9;"></em><?= Yii::t('app', ' Modulo Parametrizador') ?></label>
@@ -786,7 +801,9 @@ $this->title = 'Directorio CAD';
                                       <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Proveedores') ?></label></th>
                                       <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Nombre Plataforma') ?></label></th>
                                       <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Etapa') ?></label></th>
-                                      <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Acción') ?></label></th>
+                                      <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Editar') ?></label></th>
+                                      <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Eliminar') ?></label></th>
+
                                     </tr>
                                   </thead>
                                   <tbody>
@@ -803,18 +820,31 @@ $this->title = 'Directorio CAD';
                                                   ->where(['=','tbl_etapamultiple_cad.anulado',0])
                                                   ->andwhere(['=','tbl_etapamultiple_cad.id_directorcad',$value['id_directorcad']])
                                                   ->limit(1)
-                                                  ->scalar(); 
-                                        
+                                                  ->scalar();
+                                                  
+                                  $varCliente  = (new \yii\db\Query()) 
+                                                  ->select([
+                                                  'pc.cliente'
+                                                  ])
+                                                  ->from(['tbl_directorio_cad'])  
+                                                  ->join('INNER JOIN','tbl_proceso_cliente_centrocosto pc',
+                                                  'pc.id_dp_clientes = tbl_directorio_cad.cliente ') 
+                                                  ->where(['=','tbl_directorio_cad.anulado',0])
+                                                  ->andwhere(['=','tbl_directorio_cad.id_directorcad',$value['id_directorcad']])
+                                                  ->groupBy(['tbl_directorio_cad.id_directorcad'])
+                                                  ->scalar();
+                                    
                                   ?>
                                   
-                                    <tr>
+                                  <tr>
                                       <td><label style="font-size: 12px;"><?php echo  $value['vicepresidente']; ?></label></td>
                                       <td><label style="font-size: 12px;"><?php echo  $value['director_programa']; ?></label></td>
                                       <td><label style="font-size: 12px;"><?php echo  $value['gerente_cuenta']; ?></label></td>
                                       <td><label style="font-size: 12px;"><?php echo  $value['sociedad']; ?></label></td>
                                       <td><label style="font-size: 12px;"><?php echo  $value['ciudad']; ?></label></td>
                                       <td><label style="font-size: 12px;"><?php echo  $value['sector']; ?></label></td>
-                                      <td><label style="font-size: 12px;"><?php echo  $value['cliente']; ?></label></td>
+                                      
+                                      <td><label style="font-size: 12px;"><?= Yii::t('app', $varCliente) ?></label></td> 
                                       <td><label style="font-size: 12px;"><?php echo  $value['tipo']; ?></label></td>
                                       <td><label style="font-size: 12px;"><?php echo  $value['tipo_canal']; ?></label></td>
                                       <?php if (isset($value['otro_canal']) && $value['otro_canal'] != "") {?>
@@ -837,6 +867,11 @@ $this->title = 'Directorio CAD';
                                           Html::a('<em class="fas fa-edit" style="font-size: 15px; color: #FFC72C;"></em>',  ['editarusu','id_directorcad'=> $value['id_directorcad']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Editar Usuario']) 
                                         ?>
 
+                                      </td>
+                                      <td class="text-center">
+
+                                        <?= 
+                                          Html::a('<em class="fas fa-times" style="font-size: 15px; color: red;"></em>', ['eliminarcuenta','id_directorcad'=> $value['id_directorcad']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar Cuenta'])  ?>
                                       </td>
                                     </tr>
                                     <?php

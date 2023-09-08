@@ -2724,7 +2724,17 @@ class BasesatisfaccionController extends Controller {
                     $canal = Yii::$app->request->post('canal');
                     $marca = Yii::$app->request->post('marca');
                     $equivocacion = Yii::$app->request->post('equivocacion');
-                    $modelBase->comentario = $arrFormulario["dscomentario"];
+
+                    $varVerificaComentario = (new \yii\db\Query())
+                                        ->select(['tbl_base_satisfaccion.comentario'])
+                                        ->from(['tbl_base_satisfaccion']) 
+                                        ->where(['=','tbl_base_satisfaccion.id',$modelBase->id])
+                                        ->scalar();
+
+                    if ($varVerificaComentario == null) {
+                        $modelBase->comentario = $arrFormulario["dscomentario"];
+                    }                    
+                    
                     $modelBase->tipologia = Yii::$app->request->post('categoria');
                     $modelBase->estado = Yii::$app->request->post('estado');
                     $modelBase->usado = "NO";
@@ -5526,6 +5536,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                 CURLOPT_CUSTOMREQUEST => 'POST',
                 CURLOPT_POSTFIELDS =>'{"connid":"'.$varconnids.'", "valencia": "'.$varvalencia.'"}',
                 CURLOPT_HTTPHEADER => array(
+                    'x-api-key: gFMiqdNjw55uel1Sxvszka2mArOfrcDhPoNjEZyi',
                     'Content-Type: application/json'
                   ),
                 ));
@@ -5550,7 +5561,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                 $curl = curl_init();
 
                 curl_setopt_array($curl, array(
-                CURLOPT_URL => 'https://api-kaliope.analiticagrupokonectacloud.com/update/transcription',
+                CURLOPT_URL => 'https://api-kaliope-cxm.analiticagrupokonectacloud.com/update/transcription',
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
                 CURLOPT_MAXREDIRS => 10,
@@ -5562,6 +5573,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                 CURLOPT_CUSTOMREQUEST => 'POST',
                 CURLOPT_POSTFIELDS =>'{"connid":"'.$varconnidst.'", "transcription": "'.$varTextos.'"}',
                 CURLOPT_HTTPHEADER => array(
+                    'x-api-key: gFMiqdNjw55uel1Sxvszka2mArOfrcDhPoNjEZyi',
                     'Content-Type: application/json'
                   ),
                 ));

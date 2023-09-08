@@ -54,6 +54,26 @@ $this->params['breadcrumbs'][] = $this->title;
     text-align: left;    
   }
 
+  .card2 {
+    height: 180px;
+    width: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+    background: #FFFFFF;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 5px;    
+    font-family: "Nunito",sans-serif;
+    font-size: 150%;    
+    text-align: left;    
+  }
+
   .masthead {
     height: 25vh;
     min-height: 100px;
@@ -139,6 +159,26 @@ if ($roles == '270') {
             <br>
 
             <div class="card1 mb">
+                <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Buscar Alertas Eliminadas') ?></label>
+                <?= Html::a('Buscar',  ['reportealertaeliminadas'], ['class' => 'btn btn-success',
+                                                'data-toggle' => 'tooltip',
+                                                'title' => 'Buscar Alertas Eliminadas']) 
+                ?>
+            </div>
+
+            <br>
+
+            <div class="card1 mb">
+                <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Descargar Datos') ?></label>
+                <?= Html::a('Descargar',  ['descargaralertas'], ['class' => 'btn btn-danger',
+                                                'data-toggle' => 'tooltip',
+                                                'title' => 'Descargar Alertas']) 
+                ?>
+            </div>
+
+            <br>
+
+            <div class="card1 mb">
                 <label style="font-size: 15px;"><em class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Parametrizar Datos') ?></label>
                 <?= Html::a('Parametrizar',  ['parametrizaralertas'], ['class' => 'btn btn-danger',
                                                 'data-toggle' => 'tooltip',
@@ -148,10 +188,39 @@ if ($roles == '270') {
         </div>
 
         <div class="col-md-8">
-            <div class="card1 mb">
-                <label style="font-size: 15px;"><em class="fas fa-chart-line" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Gráficas de Alertas - (Mes Pasado & Mes Actual)') ?></label>
 
-                
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card2 mb">
+                        <label style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Información Alertas') ?></label>
+                        <label  style="font-size: 15px; text-align: left;"><?= Yii::t('app', ' Hola '.$varNameJarvis_Index.' te comentamos que el actual módulo te permite conocer los diferentes estados y acciones permitidos al modulo de Alertas 3.0.') ?></label>                
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card2 mb">
+                        <label style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Información Alertas Eliminadas') ?></label>
+                        <label  style="font-size: 15px; text-align: left;"><?= Yii::t('app', ' Actualmente existen un total de '.$varEliminadasMesActual.' alertas eliminadas sobre el mes actual.') ?></label>                
+                    </div>
+                </div>
+            </div>
+
+            <br>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card2 mb">
+                        <label style="font-size: 15px;"><em class="fas fa-chart-line" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Tipo de Alertas') ?></label>
+                        <div id="containerA" class="highcharts-container" style="height: 150px;"></div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card2 mb">
+                        <label style="font-size: 15px;"><em class="fas fa-chart-line" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Tipo de Encuestas') ?></label>
+                        <div id="containerB" class="highcharts-container" style="height: 150px;"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -200,3 +269,113 @@ if ($roles == '270') {
 }
 ?>
 <hr>
+
+<script type="text/javascript">
+    Highcharts.chart('containerA', {
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: 0,
+            plotShadow: false
+        },
+        title: {
+            text: '<label style="font-size: 20px;"><?php echo ''; ?></label>',
+            align: 'center',
+            verticalAlign: 'middle',
+            y: 60
+        },
+        accessibility: {
+            point: {
+                valueSuffix: '%'
+            }
+        },
+        plotOptions: {
+            pie: {
+                dataLabels: {
+                    enabled: true,
+                    distance: -50,
+                    style: {
+                        fontWeight: 'bold',
+                        color: 'white'
+                    }
+                },
+                startAngle: -90,
+                endAngle: 90,
+                center: ['50%', '110%'],
+                size: '220%',
+                width: '200%'
+            }
+        },
+        series: [{
+            type: 'pie',
+            name: '',
+            innerSize: '50%',
+            data: [
+                <?php                         
+                    foreach($varAlertasMesActual as $value){?>
+                    {
+                        name: "<?php echo $value['tipo_alerta'];?>",
+                        y: parseFloat("<?php echo $value['varCantidadTipo'];?>"),                            
+                        dataLabels: {
+                            enabled: false
+                        }
+                    },
+                <?php }?>
+                        
+            ]
+        }]
+    });
+
+    Highcharts.chart('containerB', {
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: 0,
+            plotShadow: false
+        },
+        title: {
+            text: '<label style="font-size: 20px;"><?php echo ''; ?></label>',
+            align: 'center',
+            verticalAlign: 'middle',
+            y: 60
+        },
+        accessibility: {
+            point: {
+                valueSuffix: '%'
+            }
+        },
+        plotOptions: {
+            pie: {
+                dataLabels: {
+                    enabled: true,
+                    distance: -50,
+                    style: {
+                        fontWeight: 'bold',
+                        color: 'white'
+                    }
+                },
+                startAngle: -90,
+                endAngle: 90,
+                center: ['50%', '110%'],
+                size: '220%',
+                width: '200%'
+            }
+        },
+        series: [{
+            type: 'pie',
+            name: '',
+            innerSize: '50%',
+            data: [
+                <?php                         
+                    foreach($varEncuestasMesActual as $value){?>
+                    {
+                        name: "<?php echo $value['tipoencuestas'];?>",
+                        y: parseFloat("<?php echo $value['varCantidadEncuestas'];?>"),                            
+                        dataLabels: {
+                            enabled: false
+                        }
+                    },
+                <?php }?>
+                        
+            ]
+        }]
+    });
+</script>

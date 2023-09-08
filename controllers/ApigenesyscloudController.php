@@ -44,7 +44,7 @@ use GuzzleHttp;
             
             'rules' => [
               [
-                'actions' => ['apignsasesores','apignsencuestas'],
+                'actions' => ['apignsasesores','apignsencuestas','apignstemporal'],
                 'allow' => true,
                 'roles' => ['@'],
                 'matchCallback' => function() {
@@ -52,7 +52,7 @@ use GuzzleHttp;
                         },
               ],
               [
-                'actions' => ['apignsasesores','apignsencuestas'],
+                'actions' => ['apignsasesores','apignsencuestas','apignstemporal'],
                 'allow' => true,
 
               ],
@@ -566,6 +566,240 @@ use GuzzleHttp;
             }
           }
           
+        }
+
+      }
+
+      die();
+    }
+
+    public function actionApignstemporal(){
+
+      $varListado_Temporal = (new \yii\db\Query())
+                                    ->select([
+                                        '*'
+                                    ])
+                                    ->from(['tbl_gnsfeebak_tmpencuestas'])
+                                    ->where(['=','tbl_gnsfeebak_tmpencuestas.anulado',0])
+                                    ->all();
+
+      if ($varListado_Temporal) {
+
+        foreach ($varListado_Temporal as $value) {
+
+          $varIdentifacion = $value['CustomerId'];
+          if ($varIdentifacion == "") {
+            $varIdentifacion = "Sin información";
+          }
+          $varNombre = $value['CustomerName'];
+          if ($varNombre == "") {
+            $varNombre = "Sin información";
+          }
+
+          // Se genera busqueda del proceso agente para la cc y el usuario de red 
+          $varNombreAgente = $value['AgentName'];
+          $paramsBusqueda = [':varAgenteCompleto' => $varNombreAgente];
+          
+          $varDataJarvis_CC = Yii::$app->dbjarvis->createCommand('
+                SELECT dp_usuarios_red.documento FROM dp_usuarios_red 
+                  WHERE 
+                    dp_usuarios_red.nombre IN (:varAgenteCompleto)
+                ')->bindValues($paramsBusqueda)->queryScalar();
+
+          $varDataJarvis_User = Yii::$app->dbjarvis->createCommand('
+            SELECT dp_usuarios_red.usuario_red FROM dp_usuarios_red 
+              WHERE 
+                dp_usuarios_red.nombre IN (:varAgenteCompleto)
+          ')->bindValues($paramsBusqueda)->queryScalar();
+
+          if ($varDataJarvis_CC != null) {
+            $varDataJarvis_CC = (new \yii\db\Query())
+                          ->select(['tbl_evaluados.identificacion'])
+                          ->from(['tbl_evaluados']) 
+                          ->where(['=','tbl_evaluados.identificacion',$varDataJarvis_CC])
+                          ->scalar();
+
+            $varDataJarvis_User = (new \yii\db\Query())
+                          ->select(['tbl_evaluados.dsusuario_red'])
+                          ->from(['tbl_evaluados']) 
+                          ->where(['=','tbl_evaluados.identificacion',$varDataJarvis_CC])
+                          ->scalar();
+          }else{
+            $varDataJarvis_CC = 'NA';
+            $varDataJarvis_User = 'NA';
+          }
+
+          // Se genera procesos para el detalle de Año, Mes, Dia y Hora
+          $varAnnioGNS = date("Y",strtotime($value['AddedDate']));
+          $varMesGNS = date("m",strtotime($value['AddedDate']));
+          $vardiaGNS = substr($value['AddedDate'], 8, -14);
+
+          $varReplaceHour = str_replace("T", " ", $value['AddedDate']);
+          $varHoraGNS = substr($varReplaceHour, 11, -11).date("is",strtotime($varReplaceHour));
+          
+          $varTiempoInteraccion = $varAnnioGNS."-".$varMesGNS."-".$vardiaGNS." ".substr($varReplaceHour, 11, -11).date(":i:s",strtotime($varReplaceHour));
+
+          $varTiempoRestado = date('Y-m-d H:i:s', strtotime('-5 hour', strtotime($varTiempoInteraccion)));
+
+          // Se genera proceso para revision de Cliente, Pcrc, RN, Cod_Ind y Cod_Ins
+          $varNombreCola = $value['QueueName'];
+          $varPcrc = (new \yii\db\Query())
+                            ->select(['tbl_genesys_formularios.arbol_id'])
+                            ->from(['tbl_genesys_formularios']) 
+                            ->where(['=','tbl_genesys_formularios.anulado',0])
+                            ->andwhere(['like','tbl_genesys_formularios.cola_genesys',$varNombreCola])
+                            ->groupby(['tbl_genesys_formularios.arbol_id'])
+                            ->scalar();
+
+          $varCliente = (new \yii\db\Query())
+                            ->select(['tbl_arbols.arbol_id'])
+                            ->from(['tbl_arbols']) 
+                            ->where(['=','tbl_arbols.id',$varPcrc])
+                            ->groupby(['tbl_arbols.arbol_id'])
+                            ->scalar();
+
+
+          $varListaParametrizaRn = (new \yii\db\Query())
+                            ->select(['*'])
+                            ->from(['tbl_reglanegocio']) 
+                            ->where(['=','tbl_reglanegocio.pcrc',$varPcrc])
+                            ->andwhere(['=','tbl_reglanegocio.cliente',$varCliente])
+                            ->groupby(['tbl_reglanegocio.pcrc'])
+                            ->all();
+
+          $varConnid = $value['ConversationID'];
+
+          // Se genera proceso para repartir las preguntas  
+          $varPreguntas_Uno = $value['Answers_0'];
+          $varPreguntas_Dos = $value['Answers_1'];
+          $varPreguntas_Tres = $value['Answers_2'];
+
+          $varComentarios = $value['FeedbackText'];
+
+          $varScoreAnswer = ['ScoreAnswer_0'];
+          $varNombrePregunta = ['NombrePregunta_0'];
+          $varNombreNivel = ['NombreNivel_0'];
+          $varInteraccion = ['Interaccion_0'];
+
+          $varRn = null;
+          $varConInstitucion = null;
+          $varConIndustria = null;
+          foreach ($varListaParametrizaRn as $value) {
+            $varRn = $value['rn'];
+            $varConInstitucion = $value['cod_institucion'];
+            $varConIndustria = $value['cod_industria'];
+          }
+
+          $varListaEquipos = (new \yii\db\Query())
+                                    ->select([
+                                        'tbl_usuarios.usua_id', 'tbl_usuarios.usua_nombre', 'tbl_usuarios.usua_identificacion'
+                                    ])
+                                    ->from(['tbl_usuarios'])
+                                    ->join('LEFT OUTER JOIN', 'tbl_equipos',
+                                          'tbl_usuarios.usua_id = tbl_equipos.usua_id')
+                                    ->join('LEFT OUTER JOIN', 'tbl_equipos_evaluados',
+                                          'tbl_equipos.id = tbl_equipos_evaluados.equipo_id')
+                                    ->join('LEFT OUTER JOIN', 'tbl_evaluados',
+                                          'tbl_equipos_evaluados.evaluado_id = tbl_evaluados.id')
+                                    ->where(['=','tbl_evaluados.identificacion',$varDataJarvis_CC])
+                                    ->all();
+
+          $varUsuaLider = null;
+          $varLider = null;
+          $varCCLider = null;
+          foreach ($varListaEquipos as $value) {
+            $varUsuaLider = $value['usua_id'];
+            $varLider = $value['usua_nombre'];
+            $varCCLider = $value['usua_identificacion'];
+          }
+          
+          $varNoAplica = "NO APLICA";
+
+          // Se genera proceso para verificar la existencia del Connid como encuesta
+          $varExisteConnid = (new \yii\db\Query())
+                                  ->select([
+                                      'tbl_base_satisfaccion.connid'
+                                  ])
+                                  ->from(['tbl_base_satisfaccion'])
+                                  ->where(['=','tbl_base_satisfaccion.connid',$varConnid])
+                                  ->count();
+
+          
+          if ($varExisteConnid == 0) {
+            
+            if ($varPreguntas_Uno != "0") {
+              Yii::$app->db->createCommand()->insert('tbl_base_satisfaccion',[
+                        'identificacion' => $varIdentifacion,
+                        'nombre' => $varNombre,
+                        'ani' => 'GNS_Feebak',
+                        'agente' => $varDataJarvis_User,
+                        'cc_agente' => $varDataJarvis_CC,
+                        'agente2' => null,
+                        'ano' => $varAnnioGNS,
+                        'mes' => $varMesGNS,
+                        'dia' => $vardiaGNS,
+                        'hora' => $varHoraGNS,
+                        'chat_transfer' => null,
+                        'ext' => null,
+                        'rn' => $varRn,
+                        'industria' => $varConIndustria,
+                        'institucion' => $varConInstitucion,
+                        'pcrc' => $varPcrc,
+                        'cliente' => $varCliente,
+                        'tipo_servicio' => 'GNS',
+                        'pregunta1' => $varPreguntas_Uno,
+                        'pregunta2' => $varPreguntas_Dos,
+                        'pregunta3' => $varPreguntas_Tres,
+                        'pregunta4' => $varNoAplica,
+                        'pregunta5' => $varNoAplica,
+                        'pregunta6' => $varNoAplica,
+                        'pregunta7' => $varNoAplica,
+                        'pregunta8' => $varNoAplica,
+                        'pregunta9' => $varNoAplica,
+                        'pregunta10' => $varNoAplica,
+                        'connid' => $varConnid,
+                        'tipo_encuesta' => 'A',
+                        'comentario' => $varComentarios,
+                        'id_lider_equipo' => $varUsuaLider,
+                        'lider_equipo' => $varLider,
+                        'cc_lider' => $varCCLider,
+                        'coordinador' => null,
+                        'jefe_operaciones' => null,
+                        'tipologia' => null,
+                        'estado' => 'Abierto',
+                        'llamada' => null,
+                        'buzon' => null,
+                        'responsable' => null,
+                        'usado' => 'NO',
+                        'fecha_gestion' => null,
+                        'created' => date("Y-m-d h:i:s"),
+                        'tipo_inbox' => 'NORMAL',
+                        'responsabilidad' => null,
+                        'canal' => null,
+                        'marca' => null,
+                        'equivocacion' => null,
+                        'fecha_satu' => $varTiempoInteraccion,
+                        'aliados' => 'GNB',
+                        'modalidad_encuesta' => null,
+              ])->execute();
+
+              Yii::$app->db->createCommand()->insert('tbl_base_genesysencuestas',[
+                        'arbol_id' => $varPcrc,
+                        'cola_genesys' => $varNombreCola,
+                        'connid' => $varConnid,
+                        'score_respuesta' => $varScoreAnswer,
+                        'nombre_pregunta' => $varNombrePregunta,
+                        'nombre_nivel' => $varNombreNivel,
+                        'fecha_interaccion' => $varTiempoInteraccion,
+                        'call_id' => $varInteraccion,
+                        'anulado' => 0,
+                        'usua_id' => 1,
+                        'fechacreacion' => date("Y-m-d"),
+              ])->execute();
+            }
+
+          }
+
         }
 
       }

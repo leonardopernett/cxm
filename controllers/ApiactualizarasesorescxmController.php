@@ -72,6 +72,7 @@ class ApiactualizarasesorescxmController extends \yii\web\Controller {
         ->select(['COUNT(*)'])
         ->from('tbl_evaluados')
         ->where(['usua_activo' => 'S'])
+        ->andWhere(['excepcion_jarvis' => '0'])
         ->scalar();
 
         $limite = 1000; // Número de registros por página
@@ -87,10 +88,11 @@ class ApiactualizarasesorescxmController extends \yii\web\Controller {
             ->select(['ev.id', 'ev.name AS nombre_completo', 'ev.dsusuario_red AS usuario_red', 'ev.identificacion AS documento', 'ev.es_operativo'])
             ->from('tbl_evaluados ev')
             ->where(['ev.usua_activo' => 'S'])
+            ->andWhere(['ev.excepcion_jarvis' => '0'])
             ->limit($limite)
             ->offset($offset)
             ->all();
-
+            
             $array_deshabilitar_usuarios= [];
             $array_habilitar_usuarios= [];
             
@@ -271,8 +273,8 @@ class ApiactualizarasesorescxmController extends \yii\web\Controller {
                 }
 
                 $this->deshabilitar_usuarios($array_deshabilitar_usuarios);
-                $this->habilitar_usuarios($array_habilitar_usuarios);
-            
+                $this->habilitar_usuarios($array_habilitar_usuarios); 
+
             } else {
                 // $usuarios_asesores no es un array válido o no tiene elementos en el índice 0
                 die(json_encode(array("status"=>"0","data"=>"Error: No se puede acceder al elemento 0 del array usuarios_asesores")));
