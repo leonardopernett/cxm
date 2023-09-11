@@ -401,7 +401,7 @@ if ($varDataResultado != null) {
         <div class="col-md-6">
             <div class="card1 mb">
                 <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Resumen Técnico') ?></label>                
-                <div class="col-md-12" align="right">
+                <div class="col-md-12 right">
                     <div onclick="opennovedad();" class="btn btn-primary"  style="background-color: #4298b400; border-color: #4298b500 !important; color:#000000; display: inline" method='post' id="idtbnt1" ><?= Yii::t('app', '[ Abrir + ]') ?>                                
                     </div> 
                     <div onclick="closenovedad();" class="btn btn-primary"  style="background-color: #4298b400; border-color: #4298b500 !important; color:#000000; display: none" method='post' id="idtbnt2" ><?= Yii::t('app', '[ Cerrar - ]') ?>                                
@@ -831,59 +831,6 @@ if ($varDataResultado != null) {
         }]
     });
 
-    Highcharts.chart('containerB', {
-        chart: {
-            plotBackgroundColor: null,
-            plotBorderWidth: 0,
-            plotShadow: false
-        },
-        title: {
-            text: '<label style="font-size: 20px;"><?php echo ''; ?></label>',
-            align: 'center',
-            verticalAlign: 'middle',
-            y: 60
-        },
-        accessibility: {
-            point: {
-                valueSuffix: '%'
-            }
-        },
-        plotOptions: {
-            pie: {
-                dataLabels: {
-                    enabled: true,
-                    distance: -50,
-                    style: {
-                        fontWeight: 'bold',
-                        color: 'white'
-                    }
-                },
-                startAngle: -90,
-                endAngle: 90,
-                center: ['50%', '110%'],
-                size: '220%',
-                width: '200%'
-            }
-        },
-        series: [{
-            type: 'pie',
-            name: '',
-            innerSize: '50%',
-            data: [
-                <?php                         
-                    foreach($varDataEncuestas as $value){?>
-                    {
-                        name: "<?php echo $value['tipoencuestas'];?>",
-                        y: parseFloat("<?php echo $value['varCantidadEncuestas'];?>"),                            
-                        dataLabels: {
-                            enabled: false
-                        }
-                    },
-                <?php }?>
-                        
-            ]
-        }]
-    });
 
     var tableToExcel = (function () {
         var uri = 'data:application/vnd.ms-excel;base64,',
