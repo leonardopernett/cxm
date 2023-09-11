@@ -239,42 +239,72 @@ use yii\helpers\ArrayHelper;
                     <div class="card1 mb">
                         <div class="row">
                             <div class="col-md-12">
-                            <label style="font-size: 18px; margin-bottom:10px;"><em class="fas fa-cubes" style="font-size: 30px; color: #ffc034;"></em> <?= Yii::t('app', 'Competencias Organizacionales') ?> </label>                           
-                            
-                            <?php
-                                $contenido = '<em class="fa fa-info-circle" style="font-size: 20px; color: #827DF9;"></em> A continuación encontrarás las <span style="font-style: italic;">competencias organizacionales</span>. Debes seleccionar una valoración para cada una de estas competencias, siguiendo este modelo de medición: ';
-                                ?> 
-                                <?= Html::tag('p', Html::decode(Html::encode($contenido))) ?>
+                                <label style="font-size: 18px; margin-bottom:10px;"><em class="fas fa-cubes" style="font-size: 30px; color: #ffc034;"></em> <?= Yii::t('app', 'Competencias Organizacionales') ?> </label>                           
+                                
+                                <?php
+                                    $contenido = '<em class="fa fa-info-circle" style="font-size: 20px; color: #827DF9;"></em> A continuación encontrarás las <span style="font-style: italic;">competencias organizacionales</span>. Debes seleccionar una valoración para cada una de estas competencias, siguiendo este modelo de medición: ';
+                                    ?> 
+                                    <?= Html::tag('p', Html::decode(Html::encode($contenido))) ?>
                             </div>
                         </div>
                         <br>
                         <!-- TABLA MODELO DE RESPUESTAS -------------------------->
                         <div class="row">
                             <div class="col-md-12">
-                                <table class="table table-bordered table-hover center">
-                                    <thead style="background-color: #F5F3F3;">
-                                        <tr>
-                                            <th scope="col"><label style="font-size: 15px; text-align: center;"><?= Yii::t('app', 'Nombre') ?></label></th>
-                                            <th scope="col"><label style="font-size: 15px; text-align: center;"><?= Yii::t('app', 'Valor') ?></label></th>
-                                            <th scope="col"><label style="font-size: 15px; text-align: center;"><?= Yii::t('app', 'Descripción') ?></label></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php foreach ($array_respuestas as $fila): ?>
+                                <?php
+                                if ( empty($array_respuestas) ) {
+                                    $existe_respuestas = false;
+                                ?>
+                                    <div class="card1 mb" >
+                                            <label  style="font-size: 17px; color: #db2c23; "><em class="fas fa-exclamation-triangle" style="font-size: 18px; color: #db2c23;"></em> <?= Yii::t('app', 'Ingresar respuestas en módulo parametrizador') ?></label>
+                                            
+                                        </div>
+                                <?php
+                                } else {
+                                    $existe_respuestas = true;
+                                ?>
+                                    <table class="table table-bordered table-hover center">
+                                        <thead style="background-color: #F5F3F3;">
                                             <tr>
-                                                <td><label style="font-size: 15px; text-align: center;"><?= $fila['nombre_respuesta']; ?></label></td>
-                                                <td><label style="font-size: 15px; text-align: center;"><?= $fila['valor']; ?></label></td>
-                                                <td><label style="font-size: 15px; text-align: center;"><?= $fila['descripcion_respuesta']; ?></label></td>                                        
+                                                <th scope="col"><label style="font-size: 15px; text-align: center;"><?= Yii::t('app', 'Nombre') ?></label></th>
+                                                <th scope="col"><label style="font-size: 15px; text-align: center;"><?= Yii::t('app', 'Valor') ?></label></th>
+                                                <th scope="col"><label style="font-size: 15px; text-align: center;"><?= Yii::t('app', 'Descripción') ?></label></th>
                                             </tr>
-                                        <?php endforeach; ?>                           
-                                    </tbody>
-                                </table>
-                            </div>
+                                        </thead>
+                                        <tbody>
+                                            <?php foreach ($array_respuestas as $fila): ?>
+                                                <tr>
+                                                    <td><label style="font-size: 15px; text-align: center;"><?= $fila['nombre_respuesta']; ?></label></td>
+                                                    <td><label style="font-size: 15px; text-align: center;"><?= $fila['valor']; ?></label></td>
+                                                    <td><label style="font-size: 15px; text-align: center;"><?= $fila['descripcion_respuesta']; ?></label></td>                                        
+                                                </tr>
+                                            <?php endforeach; ?>                           
+                                        </tbody>
+                                    </table>
+                                <?php
+                                    }
+                                ?>                            
                             </div>                                                        
                         </div>
                         <br>  
 
                         <!-- PREGUNTAS Y RESPUESTAS (COMPETENCIAS ORGANIZACIONALES) -------------------------->
+                        <?php
+                        if ( empty($array_preguntas) ) {
+                            $existe_preguntas = false;
+                        ?>
+                            <div class="row"> 
+                                <div class="col-md-12">
+                                    <div class="card1 mb" >
+                                        <label  style="font-size: 17px; color: #db2c23; "><em class="fas fa-exclamation-triangle" style="font-size: 18px; color: #db2c23;"></em> <?= Yii::t('app', 'Ingresar competencias en módulo parametrizador') ?></label>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        <?php
+                        } else {
+                            $existe_preguntas = false;
+                        ?>
                         <?php foreach ($array_preguntas as $fila): 
                             $id_pregunta = 'id_pregunta_selected_' . $contador;
                             $id_respuesta = 'id_respuesta_selected_' . $contador;
@@ -330,6 +360,9 @@ use yii\helpers\ArrayHelper;
                         <?php                       
                         $contador++; // Incrementar el contador
                         endforeach; ?>
+                        <?php
+                            }
+                        ?>
                     </div>
                 </div>
             </div>
@@ -409,6 +442,9 @@ use yii\helpers\ArrayHelper;
 <script>
 
     function enviar_formulario() {         
+        var existe_respuestas = '<?php echo $existe_respuestas; ?>';
+        var existe_preguntas = '<?php echo $existe_preguntas; ?>';
+
         var id_user = '<?php echo $id_usuario_logueado; ?>';
         var id_evalua_nombre = '<?php echo $id_evaluacion_actual; ?>';
         var id_tipo_evalua = '<?php echo $id_tipo_evalua; ?>';
@@ -423,6 +459,20 @@ use yii\helpers\ArrayHelper;
         
         var contador_pregunta_respuesta = parseInt('<?php echo $contador; ?>');   
         var datosArray = [];
+
+        //Respuestas asociadas a la evaluación
+        if (!existe_respuestas) {
+            event.preventDefault();
+            swal.fire("!!! Advertencia !!!","No existen respuestas asociadas a la evaluación, por favor notificar al administrador.","warning");
+            return; 
+        }
+
+        //Competencias asociadas a la evaluación
+        if (!existe_preguntas) {
+            event.preventDefault();
+            swal.fire("!!! Advertencia !!!","No existen competencias asociadas a la evaluación, por favor notificar al administrador.","warning");
+            return; 
+        }
         
         //Validacion jefe
         if (nom_jefe_txt == "NO EXISTE UN JEFE DIRECTO") {

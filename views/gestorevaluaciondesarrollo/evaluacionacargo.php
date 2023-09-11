@@ -254,6 +254,18 @@ use yii\helpers\ArrayHelper;
                         <!-- TABLA MODELO DE RESPUESTAS -------------------------->
                         <div class="row">
                             <div class="col-md-12">
+                            <?php
+                            if ( empty($array_respuestas) ) {
+                                $existe_respuestas = false;
+                            ?>
+                                <div class="card1 mb" >
+                                        <label  style="font-size: 17px; color: #db2c23; "><em class="fas fa-exclamation-triangle" style="font-size: 18px; color: #db2c23;"></em> <?= Yii::t('app', 'Ingresar respuestas en módulo parametrizador') ?></label>
+                                        
+                                    </div>
+                            <?php
+                            } else {
+                                $existe_respuestas = true;
+                            ?>
                                 <table class="table table-bordered table-striped table-hover center">
                                 <thead>
                                     <tr>
@@ -271,12 +283,31 @@ use yii\helpers\ArrayHelper;
                                         </tr>
                                     <?php endforeach; ?> 
                                 </tbody>
-                                </table>                            
+                                </table> 
+                                <?php
+                                    }
+                                ?>                           
                             </div>                                                        
                         </div>
                         <br>      
                                     
                         <!-- PREGUNTAS Y RESPUESTAS (COMPETENCIAS ORGANIZACIONALES) -------------------------->
+                        <?php
+                        if ( empty($array_preguntas) ) {
+                            $existe_preguntas = false;
+                        ?>
+                            <div class="row"> 
+                                <div class="col-md-12">
+                                    <div class="card1 mb" >
+                                        <label  style="font-size: 17px; color: #db2c23; "><em class="fas fa-exclamation-triangle" style="font-size: 18px; color: #db2c23;"></em> <?= Yii::t('app', 'Ingresar competencias en módulo parametrizador') ?></label>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        <?php
+                        } else {
+                            $existe_preguntas = false;
+                        ?>
                         <?php foreach ($array_preguntas as $fila): 
                             $id_pregunta = 'id_pregunta_selected_' . $contador;
                             $id_respuesta = 'id_respuesta_selected_' . $contador;
@@ -330,8 +361,9 @@ use yii\helpers\ArrayHelper;
                         <?php
                         $contador++; // Incrementar el contador
                         endforeach; ?>
-                                
-
+                        <?php
+                            }
+                        ?>
                     </div>
                 </div>
             </div>
@@ -341,6 +373,7 @@ use yii\helpers\ArrayHelper;
     </div>
 
     <hr>
+    <!-- SECCION ACCIONES-------------------------->
     <div id="capaCinco" style="display: inline"> 
         <div class="row">
             <div class="col-md-12">
@@ -395,6 +428,9 @@ use yii\helpers\ArrayHelper;
     <script>
 
     function enviar_formulario() { 
+        var existe_respuestas = '<?php echo $existe_respuestas; ?>';
+        var existe_preguntas = '<?php echo $existe_preguntas; ?>';
+
         var id_user = '<?php echo $id_user; ?>';
         var id_evalua_nombre = '<?php echo $id_evaluac; ?>';
         var id_tipo_evalua = '<?php echo $id_tipo_evaluac; ?>';
@@ -410,6 +446,20 @@ use yii\helpers\ArrayHelper;
         
         var contador_pregunta_respuesta = parseInt('<?php echo $contador; ?>');   
         var datosArray = [];
+
+        //Respuestas asociadas a la evaluación
+        if (!existe_respuestas) {
+            event.preventDefault();
+            swal.fire("!!! Advertencia !!!","No existen respuestas asociadas a la evaluación, por favor notificar al administrador.","warning");
+            return; 
+        }
+
+        //Competencias asociadas a la evaluación
+        if (!existe_preguntas) {
+            event.preventDefault();
+            swal.fire("!!! Advertencia !!!","No existen competencias asociadas a la evaluación, por favor notificar al administrador.","warning");
+            return; 
+        }
 
         //Validacion respuesta
         if (tiempo_laborado == "") {

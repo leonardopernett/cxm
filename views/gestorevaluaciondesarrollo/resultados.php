@@ -279,9 +279,9 @@ use yii\helpers\ArrayHelper;
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card1 mb" style="width:100%">
-                            <label style="font-size: 20px; margin-bottom:10px;"><em class="fa fa-user" style="font-size: 25px; color: #ffc034;"></em> <?= Yii::t('app', 'Reporte Evaluación de Desarrollo') ?> </label>
+                            <label style="font-size: 20px; margin-bottom:10px;"><em class="fa fa-user" style="font-size: 25px; color: #ffc034;"></em> <?= Yii::t('app', 'Reporte General Evaluación de Desarrollo') ?> </label>
 
-                            <!-- <label id="emptyMessage" style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 18px; color: #827DF9; margin-top:1.5%;"></em> <?= Yii::t('app', 'No se ha completado evaluación para mostrar los resultados.') ?></label> -->
+                            <label id="emptyMessageTableResultados" style="font-size: 17px;"><em class="fas fa-info-circle" style="font-size: 18px; color: #827DF9; margin-top:1.5%;"></em> <?= Yii::t('app', 'No hay datos para mostrar.') ?></label>
 
                             <div class="table-responsive table-container" id="container_table">
                                 <table id="table_resultados" class="table table-bordered table-hover center">
@@ -327,10 +327,11 @@ use yii\helpers\ArrayHelper;
     <div id="capaTres" style="display: inline">
         <div class="row">
             <div class="col-md-12">
-                <div class="row">
+                <div class="row" id="div_competencias" style="display: none">
                     <div class="col-md-12">
                         <div class="card1 mb" style="width:100%">
-                            <label style="font-size: 20px; margin-bottom:10px;"><em class="fa fa-user" style="font-size: 25px; color: #ffc034;"></em> <?= Yii::t('app', 'Reporte Evaluación por Competencias') ?> </label>
+                            <label style="font-size: 20px; margin-bottom:5px;"><em class="fa fa-user" style="font-size: 25px; color: #ffc034;"></em> <?= Yii::t('app', 'Reporte Evaluación por Competencias') ?> </label>
+                            <label id="emptyMessage_table_competencias" style="font-size: 17px;"><em class="fas fa-info-circle" style="font-size: 18px; color: #827DF9; margin-top:1.5%;"></em> <?= Yii::t('app', 'Sin datos para mostrar') ?></label>
                             <div class="table-responsive table-container" id="container_table_competencias">
                                 <table id="table_competencias" class="table table-bordered table-hover center">
 
@@ -349,18 +350,16 @@ use yii\helpers\ArrayHelper;
 
     <script>
         $(document).ready(function() {
-            var data = <?php echo json_encode($data_calificacion_total); ?>;            
+            var data = <?php echo json_encode($data_calificacion_total); ?>;
+            var varcapaP = document.getElementById("div_competencias");
+            varcapaP.style.display = "none"; // Mostrar el div
             init_table_resultados(data);
-
-            if(data.length==0){
-                    $( "#container_table_respuestas" ).hide();
-                    $( "#emptyMessageRespuestas" ).show();
-            }
-        });
+        });        
 
         function init_table_resultados(data) {
 
             if(data.length > 0) {
+                $( "#emptyMessageTableResultados" ).hide();
                 var table_resultados = $('#table_resultados').DataTable({
 
                 select: true,
@@ -496,6 +495,8 @@ use yii\helpers\ArrayHelper;
             //Inicializar en la primer página del datatable
             $("#table_resultados").DataTable().page( 0 ).draw( false );
 
+            } else {
+                $( "#emptyMessageTableResultados" ).show();
             }
         }
 
@@ -504,6 +505,12 @@ use yii\helpers\ArrayHelper;
         function init_table_competencias(data) {
 
             if(data.length > 0) {
+
+                // Obtener el div para mostrar u ocultar
+            var varcapaP = document.getElementById("div_competencias");
+
+                varcapaP.style.display = "inline"; // Mostrar el div
+
                 var table_competencias = $('#table_competencias').DataTable({
 
                 select: true,
@@ -569,6 +576,9 @@ use yii\helpers\ArrayHelper;
             //Inicializar en la primer página del datatable
             $("#table_competencias").DataTable().page( 0 ).draw( false );
 
+            } else {
+                swal.fire("!!! Advertencia !!!","No existen datos para mostrar","warning");
+                return;
             }
         }
 
