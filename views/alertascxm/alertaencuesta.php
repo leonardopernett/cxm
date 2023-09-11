@@ -134,7 +134,7 @@ if ($varMensajes_encuestas != 0) {
                         <label style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 50px; color: #FFC72C;"></em></label>
                     </div>
 
-                    <div class="col-md-10 text-left">
+                    <div class="col-md-10 left">
                         <label style="font-size: 15px;"><?= Yii::t('app', ' En hora buena '.$varNameJarvis.'! Te comentamos que la encuesta ya fue guardada, te invitamos a revisar el histórico de alertas.') ?></label>
                     </div>
                 </div>          
@@ -150,7 +150,7 @@ if ($varMensajes_encuestas != 0) {
                         <label style="font-size: 15px;"><em class="fas fa-search" style="font-size: 50px; color: #FFC72C;"></em></label>
                     </div>
 
-                    <div class="col-md-10 text-left">
+                    <div class="col-md-10 left">
                         <label style="font-size: 15px;"><em class="fas fa-arrow-left" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Reportes de Alertas') ?></label> 
                         <?= Html::a('Reportes',  ['reportealerta'], ['class' => 'btn btn-success',
                                                             'style' => 'background-color: #707372',
@@ -174,6 +174,7 @@ if ($varMensajes_encuestas != 0) {
 
 <?php $form = ActiveForm::begin(); ?>
 
+
 <!-- Capa Procesos -->
 <div class="capaProcesos" id="capaIdProcesos" style="display: inline;">
 	
@@ -188,50 +189,80 @@ if ($varMensajes_encuestas != 0) {
     <br>
 
     <div class="row">
-    	<div class="col-md-9">
-    		<div class="card2 mb">
-    			<label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Seleccionar Indicador de Satisfacción') ?></label> 
+        <div class="col-md-7">
+            <div class="card1 mb">
+                <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Datos de la Alerta') ?></label> 
+                <table id="myTableInfo" class="table table-hover table-bordered" style="margin-top:12px">
+                    <caption><label style="font-size: 15px;"><?= Yii::t('app', ' ...') ?></label></caption>
+                    <tr>
+                        <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Fecha de Envio') ?></label></th>
+                        <td><label style="font-size: 12px;"><?php echo $varFecha_encuesta; ?></label></td>
 
-    			<table id="tblListadoSatu" style="width:100%">
+                        <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Programa PCRC') ?></label></th>
+                        <td><label style="font-size: 12px;"><?php echo $varName_encuesta; ?></label></td>         
+                    </tr>
+                    <tr>
+                        <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Tipo de Alerta') ?></label></th>
+                        <td><label style="font-size: 12px;"><?php echo $varTipoAlerta_encuesta; ?></label></td>
+
+                        <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Valorador') ?></label></th>
+                        <td><label style="font-size: 12px;"><?php echo $varUsuaNombre_encuesta; ?></label></td>      
+                    </tr>
+                    <tr>
+                        <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Asunto') ?></label></th>
+                        <td><label style="font-size: 12px;"><?php echo $varAsunto_encuesta; ?></label></td>
+
+                        <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Destinatarios') ?></label></th>
+                        <td ><label style="font-size: 12px;"><?php echo $varRemitentes_encuesta; ?></label></td>         
+                    </tr>
+                    <tr>
+                        <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Comentarios') ?></label></th>
+                        <td colspan="3"><label style="font-size: 12px;"><?php echo $varComentarios_encuesta; ?></label></td>
+                    </tr>
+                </table>
+            </div>
+
+            <br>
+
+            <div class="card1 mb">
+                <label style="font-size: 15px;"><em class="fas fa-star" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Seleccionar Indicador de Satisfacción') ?></label> 
+
+                <table id="tblListadoSatu" style="width:100%">
                     <caption><?= Yii::t('app', ' .') ?></caption>
                         <tr>
                           <th scope="col" class="text-center" style="width: 100px;">
-                          	<img src='../../images/satisfecho.png' alt="satisafecho">
+                            <img src='../../images/satisfecho.png' alt="satisafecho">
                           </th>
                           <th scope="col" class="text-center" style="width: 100px;">
-                          	<img src='../../images/mediosatisfecho.png' class="img-responsive" alt="medio">
+                            <img src='../../images/mediosatisfecho.png' class="img-responsive" alt="medio">
                           </th>
                           <th scope="col" class="text-center" style="width: 100px;">
-                          	<img src='../../images/neutro.png' class="img-responsive" alt="neutro">
+                            <img src='../../images/neutro.png' class="img-responsive" alt="neutro">
                           </th>
                           <th scope="col" class="text-center" style="width: 100px;">
-                          	<img src='../../images/medioinsatisfecho.png' class="img-responsive" alt="medioinsatu">
+                            <img src='../../images/medioinsatisfecho.png' class="img-responsive" alt="medioinsatu">
                           </th>
                           <th scope="col" class="text-center" style="width: 100px;">
-                          	<img src='../../images/insatisfecho.png' class="img-responsive" alt="insatu">
+                            <img src='../../images/insatisfecho.png' class="img-responsive" alt="insatu">
                           </th>
                         </tr>
-                    	<tr>
-                    	<?php
-                    	foreach ($varListEncuestas as $value) {
-                    	?>
-                    	
-                    		<td  class="text-center" style="width: 100px;">
-                    			<div class="d-md-flex justify-content-left align-content-left flex-column text-left">
-                    				<?= $form->field($model, 'id_tipoencuestas', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->radio(['style'=>'font-size: smaller;', 'value' => $value['id_tipoencuestas'], 'uncheck' => null])->label($value['peso'].' - '.$value['tipoencuestas']);?> 
-                    			</div>
-                    		</td>
-                    	
-                    	<?php
-                    	}
-                    	?>
-                    	</tr>
-				</table>
-
-				<br>
-
-				<label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Ingresar Comentarios a la Encuesta') ?></label>
-                <?= $form->field($model, 'comentarios', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textArea(['id'=>'varIdComentarios','rows'=>3,'placeholder'=>'Ingresar Comentarios'])?>
+                        <tr>
+                        <?php
+                        foreach ($varListEncuestas as $value) {
+                        ?>
+                        
+                            <td  class="text-center" style="width: 100px;">
+                                <div class="d-md-flex justify-content-left align-content-left flex-column text-left">
+                                    <?= $form->field($model, 'id_tipoencuestas', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->radio(['style'=>'font-size: smaller;', 'value' => $value['id_tipoencuestas'], 'uncheck' => null])->label($value['peso'].' - '.$value['tipoencuestas']);?> 
+                                </div>
+                            </td>
+                        
+                        <?php
+                        }
+                        ?>
+                        </tr>
+                </table>
+                <?= $form->field($model, 'comentarios', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textArea(['id'=>'varIdComentarios','class'=>'hidden','value'=>$varComentarios_encuesta])?>
 
                 <br>
 
@@ -241,21 +272,19 @@ if ($varMensajes_encuestas != 0) {
                         'title' => 'Guardar Encuesta',
                         'id'=>'ButtonSearch']) 
                 ?>
-    		</div>
-    	</div>
+            </div>
+        </div>
 
-    	<div class="col-md-3">
-    		<div class="card2 mb">
+        <div class="col-md-5">
+            <div class="card1 mb">
                 <?php
                 if ($varConteoUrl == "png" || $varConteoUrl == "jpg" || $varConteoUrl == "bmp" || $varConteoUrl == "gif") {
                     
                 ?>
-        			<label style="font-size: 15px;"><em class="fas fa-paper-plane" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Archivo Adjunto Tipo Imagen') ?></label>
-        			<br>
-        			<img src="<?= Url::to("@web/alertas/".$varUrlArchivo.""); ?>" alt="Card image cap" style="height: 250px;">
-        			<br>
-        			<br>
-        			<?= Html::button('Ver imagen', ['value' => url::to(['verimagenalerta','varArchivo'=>$varUrlArchivo]), 'class' => 'btn btn-success', 'id'=>'modalButton1',
+                    <label style="font-size: 15px;"><em class="fas fa-paper-plane" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Archivo Adjunto Tipo Imagen') ?></label>
+                    <img src="<?= Url::to("@web/alertas/".$varUrlArchivo.""); ?>" alt="Card image cap" style="height: 550px;">
+                    <br>
+                    <?= Html::button('Ver imagen', ['value' => url::to(['verimagenalerta','varArchivo'=>$varUrlArchivo]), 'class' => 'btn btn-success', 'id'=>'modalButton1',
                                     'data-toggle' => 'tooltip',
                                     'title' => 'Imagen de la alerta']) 
                     ?> 
@@ -273,16 +302,14 @@ if ($varMensajes_encuestas != 0) {
                 <?php
                 }else{
                 ?>
-                    <label style="font-size: 15px;"><em class="fas fa-paper-plane" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Archivo Adjunto Tipo Documento') ?></label>
-                    <br>
-                    <br>
+                    <label style="font-size: 15px;"><em class="fas fa-paper-plane" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Archivo Adjunto Tipo Archivo') ?></label>
                     <br>
                     <a style="font-size: 18px;" rel="stylesheet" type="text/css" href="<?= Url::to("@web/alertas/".$varUrlArchivo.""); ?>" target="_blank"><?= Yii::t('app', ' Descargar Archivo') ?></a>
                 <?php
                 }
                 ?>
-    		</div>
-    	</div>
+            </div>
+        </div>
     </div>
 
 </div>
@@ -321,7 +348,7 @@ if ($varMensajes_encuestas != 0) {
                         <label style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 50px; color: #FFC72C;"></em></label>
                     </div>
 
-                    <div class="col-md-10 text-left">
+                    <div class="col-md-10 left">
                         <label style="font-size: 15px;"><?= Yii::t('app', ' ¡Hola '.$varNameJarvis.'! Te comentamos que la encuesta ya ha sido diligencia por ti, te invitamos a revisar el histórico de alertas.') ?></label>
                     </div>
                 </div>          

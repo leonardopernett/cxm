@@ -333,8 +333,23 @@ if ($varDataResultado != null) {
 
         <div class="col-md-4">
             <div class="card2 mb">
-                <label style="font-size: 15px;"><em class="fas fa-chart-line" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Tipos de Encuestas') ?></label>
-                <div id="containerB" class="highcharts-container" style="height: 150px;"></div> 
+                <label style="font-size: 15px;"><em class="fas fa-hashtag" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Cantidad de Encuestas') ?></label><br>
+
+                <div class="row">
+                    <div class="col-md-6 text-center">
+                        <label  style="font-size: 70px; text-align: center;"><?php echo count($varDataEncuestas); ?></label>
+                    </div>
+
+                    <div class="col-md-6">
+                        <?php
+                        foreach ($varDataEncuestasTipos as $value) {
+                        ?>
+                            <label  style="font-size: 15px; text-align: center;"><?php echo '* '.$value['tipoencuestas'].': '.$value['varCantidadEncuestas']; ?></label><br>
+                        <?php
+                        }
+                        ?>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -346,7 +361,7 @@ if ($varDataResultado != null) {
         <div class="col-md-6">
             <div class="card1 mb">
                 <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Resumen Proceso') ?></label>
-                <div class="col-md-12" align="right">
+                <div class="col-md-12 right">
                     <div onclick="opennovedadp();" class="btn btn-primary"  style="background-color: #4298b400; border-color: #4298b500 !important; color:#000000; display: inline" method='post' id="idtbnp1" ><?= Yii::t('app', '[ Abrir + ]') ?>                                
                     </div> 
                     <div onclick="closenovedadp();" class="btn btn-primary"  style="background-color: #4298b400; border-color: #4298b500 !important; color:#000000; display: none" method='post' id="idtbnp2" ><?= Yii::t('app', '[ Cerrar - ]') ?>                                
@@ -443,7 +458,7 @@ if ($varDataResultado != null) {
                           <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Programa/Pcrc') ?></label></th>
                           <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Valorador') ?></label></th>
                           <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Tipo de Alerta') ?></label></th>
-                          <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Encuesta') ?></label></th>
+                          <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Satisfacción') ?></label></th>
                           <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Acciones') ?></label></th>
                         </tr>
                     </thead>
@@ -574,7 +589,7 @@ if ($varDataResultado != null) {
                           <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Programa/Pcrc') ?></label></th>
                           <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Valorador') ?></label></th>
                           <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Tipo de Alerta') ?></label></th>
-                          <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Encuesta') ?></label></th>
+                          <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Satisfacción') ?></label></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -747,6 +762,7 @@ if ($varDataResultado != null) {
     function varVerificar(){
         var varalertasfecha = document.getElementById("alertas-fecha").value;
         var varIdPcrc = document.getElementById("varIdPcrc").value;
+        var vars2id_varIdUsuario = document.getElementById("varIdUsuario").value;
 
         if (varalertasfecha == "") {
             event.preventDefault();
@@ -754,9 +770,9 @@ if ($varDataResultado != null) {
             return;
         }
 
-        if (varIdPcrc == "") {
+        if (varIdPcrc == ""  && vars2id_varIdUsuario == "") {
             event.preventDefault();
-            swal.fire("!!! Advertencia !!!","Para seguir con la búsqueda, debe de seleccionar un Programa/Pcrc.","warning");
+            swal.fire("!!! Advertencia !!!","Para seguir con la búsqueda, debe de seleccionar un Programa/Pcrc ó debe de seleccionar un responsable valorador.","warning");
             return;
         }
     };
