@@ -248,6 +248,7 @@ use Exception;
         $modelArchivo = new UploadForm2();
         $varCorreos = null;
         $ruta = null;
+        $varEnvios = 0;
 
         $form = Yii::$app->request->post();
         if ($model->load($form)) {
@@ -312,13 +313,15 @@ use Exception;
 
             $this->enviarcorreos($varIdAlertas);
 
-            return $this->redirect(array('registraalerta','id_procesos'=>$id_procesos));
+            $varEnvios = 1;
+            
         }
 
         return $this->render('registraalerta',[
             'model' => $model,
             'modelArchivo' => $modelArchivo,
             'id_procesos' => $id_procesos,
+            'varEnvios' => $varEnvios,
         ]);
     }
 
@@ -372,7 +375,10 @@ use Exception;
                 <h1><label style='font-family: sans-serif; color: #1d2d4f;'>Informe de Alertas CX-Management</label></h1>
                 <hr>
                 <h4><label style='font-family: sans-serif;'>Actualmente se tiene una alerta que fue realizada desde CX-Management. Para validar la alerta te recomendamos ingresar al módulo de reporte alertas de CXM y buscarlo para ver resultados.</a></label></h4>
-                <br>
+                <hr>
+                <h3><label style='font-family: sans-serif;'>Comentario Alerta...</a></h3><br>
+                <h5><label style='font-family: sans-serif;'>".$varComentarios_correo."</a></h5>
+                <hr>
                 <h4><label style='font-family: sans-serif;'>¡Hola equipo! Te comentamos que nos encantaria saber tú opinión, por eso te invitamos a ingresar a CXM y responder la encuesta en el siguiente link <a href='https://qa.grupokonecta.local/qa_managementv2/web/index.php/alertascxm/alertaencuesta?id_alerta=".$varIdAlertas."'>Ingresar a la encuesta</a></label></h4>
                 <hr>
                 <h7><label style='font-family: sans-serif;'>© CX-Management 2023 - Desarrollado por Konecta</a></label></h>
@@ -456,6 +462,7 @@ use Exception;
         $varDataEncuestas = array();
         $varDataProceso = array();
         $varDataTecnico = array();
+        $varDataEncuestasTipos = array();
 
 
         $form = Yii::$app->request->post();
@@ -466,13 +473,12 @@ use Exception;
             $varFechaFin_BD = date('Y-m-d',strtotime($varFecha_BD[2]));
             
             if ($model->pcrc) {
-              for ($i=0; $i < count($model->pcrc); $i++) { 
-                array_push($arrayDataPcrc, $model->pcrc);
-              }
-              $varDataPcrc =  explode(",", str_replace(array("#", "'", ";", " "), '', implode(", ",$arrayDataPcrc)));
-            } 
+                for ($i=0; $i < count($model->pcrc); $i++) { 
+                    array_push($arrayDataPcrc, $model->pcrc);
+                }
+                $varDataPcrc =  explode(",", str_replace(array("#", "'", ";", " "), '', implode(", ",$arrayDataPcrc)));
 
-            $varClientes = (new \yii\db\Query())
+                $varClientes = (new \yii\db\Query())
                             ->select([
                                 'tbl_arbols.id'
                             ])
@@ -481,28 +487,30 @@ use Exception;
                             ->andwhere(['=','tbl_arbols.snhoja',0])
                             ->all();
 
-            if (count($varClientes) > 0) {
-                $arrayListaPcrcClientes = array();
-                foreach ($varClientes as $value) {
-                    array_push($arrayListaPcrcClientes, $value['id']);
-                }
+                if (count($varClientes) > 0) {
+                    $arrayListaPcrcClientes = array();
+                    foreach ($varClientes as $value) {
+                        array_push($arrayListaPcrcClientes, $value['id']);
+                    }
 
-                $varListaPcrcCliente = (new \yii\db\Query())
-                                        ->select([
-                                            'tbl_arbols.id'
-                                        ])
-                                        ->from(['tbl_arbols'])
-                                        ->where(['in','tbl_arbols.arbol_id',$arrayListaPcrcClientes])
-                                        ->andwhere(['=','tbl_arbols.activo',0])     
-                                        ->all();
+                    $varListaPcrcCliente = (new \yii\db\Query())
+                                            ->select([
+                                                'tbl_arbols.id'
+                                            ])
+                                            ->from(['tbl_arbols'])
+                                            ->where(['in','tbl_arbols.arbol_id',$arrayListaPcrcClientes])
+                                            ->andwhere(['=','tbl_arbols.activo',0])     
+                                            ->all();
 
-                foreach ($varListaPcrcCliente as $value) {
-                    array_push($arrayDataPcrc, $value['id']);
+                    foreach ($varListaPcrcCliente as $value) {
+                        array_push($arrayDataPcrc, $value['id']);
+                    }
+                    
+                }else{
+                    $arrayDataPcrc = $varDataPcrc;
                 }
-                
-            }else{
-                $arrayDataPcrc = $varDataPcrc;
-            }
+            } 
+            
 
             if ($model->valorador) {
                 for ($i=0; $i < count($model->valorador); $i++) { 
@@ -575,6 +583,29 @@ use Exception;
                             ->groupby(['tbl_alertas_encuestasalertas.id_encuestasalertas'])
                             ->all(); 
 
+            $varDataEncuestasTipos = (new \yii\db\Query())
+                            ->select([
+                                'tbl_alertas_tipoencuestas.tipoencuestas',
+                                'COUNT(tbl_alertas_encuestasalertas.id_encuestasalertas) AS varCantidadEncuestas'
+                            ])
+                            ->from(['tbl_alertascx'])
+
+                            ->join('LEFT OUTER JOIN', 'tbl_arbols',
+                                  'tbl_arbols.id = tbl_alertascx.pcrc')
+
+                            ->join('LEFT OUTER JOIN', 'tbl_alertas_encuestasalertas',
+                                  'tbl_alertas_encuestasalertas.id_alerta = tbl_alertascx.id')
+
+                            ->join('LEFT OUTER JOIN', 'tbl_alertas_tipoencuestas',
+                                  'tbl_alertas_tipoencuestas.id_tipoencuestas = tbl_alertas_encuestasalertas.id_tipoencuestas')
+
+                            ->where(['between','tbl_alertascx.fecha',$varFechaInicio_BD.' 00:00:00',$varFechaFin_BD.' 23:59:59'])
+                            ->andfilterwhere(['in','tbl_alertascx.valorador',$arrayDataUsers])
+                            ->andfilterwhere(['in','tbl_alertascx.pcrc',$arrayDataPcrc])
+                            ->andwhere(['=','tbl_alertas_encuestasalertas.anulado',0])
+                            ->groupby(['tbl_alertas_tipoencuestas.tipoencuestas'])
+                            ->all(); 
+
 
             $varDataProceso = (new \yii\db\Query())
                             ->select([
@@ -633,6 +664,7 @@ use Exception;
             'varDataEncuestas' => $varDataEncuestas,
             'varDataProceso' => $varDataProceso,
             'varDataTecnico' => $varDataTecnico,
+            'varDataEncuestasTipos' => $varDataEncuestasTipos,
         ]);
     }
 
@@ -856,6 +888,51 @@ use Exception;
                             ->where(['=','tbl_alertascx.id',$id_alerta])
                             ->scalar(); 
 
+        $varDataListAlertaEncuesta = (new \yii\db\Query())
+                            ->select([
+                                'tbl_alertascx.id',
+                                'tbl_alertascx.fecha', 
+                                'tbl_arbols.name',
+                                'tbl_usuarios.usua_id',
+                                'tbl_usuarios.usua_nombre', 
+                                'tbl_alertascx.tipo_alerta',
+                                'tbl_alertascx.archivo_adjunto',
+                                'tbl_alertascx.remitentes',
+                                'tbl_alertascx.asunto',
+                                'tbl_alertascx.comentario',
+                            ])
+                            ->from(['tbl_alertascx'])
+
+                            ->join('LEFT OUTER JOIN', 'tbl_arbols',
+                                  'tbl_arbols.id = tbl_alertascx.pcrc')
+
+                            ->join('LEFT OUTER JOIN', 'tbl_usuarios',
+                                  'tbl_usuarios.usua_id = tbl_alertascx.valorador')
+
+                            ->where(['=','tbl_alertascx.id',$id_alerta])
+                            ->all(); 
+
+        $varId_encuesta = null;
+        $varFecha_encuesta = null;
+        $varName_encuesta = null;
+        $varUsuaNombre_encuesta = null;
+        $varTipoAlerta_encuesta = null;
+        $varArchivo_encuesta = null;
+        $varRemitentes_encuesta = null;
+        $varAsunto_encuesta = null;
+        $varComentarios_encuesta = null;
+        foreach ($varDataListAlertaEncuesta as $value) {
+            $varId_encuesta = $value['id'];
+            $varFecha_encuesta = $value['fecha'];
+            $varName_encuesta = $value['name'];
+            $varUsuaNombre_encuesta = $value['usua_nombre'];
+            $varTipoAlerta_encuesta = $value['tipo_alerta'];
+            $varArchivo_encuesta = $value['archivo_adjunto'];
+            $varRemitentes_encuesta = $value['remitentes'];
+            $varAsunto_encuesta = $value['asunto'];
+            $varComentarios_encuesta = $value['comentario'];
+        }
+
         $varConteoArchivo = strlen($varUrlArchivo);
         $varConteoUrl = substr($varUrlArchivo, -3);
 
@@ -885,6 +962,15 @@ use Exception;
             'varNameJarvis' => $varNameJarvis,
             'varMensajes_encuestas' => $varMensajes_encuestas,
             'varConteoUrl' => $varConteoUrl,
+            'varId_encuesta' => $varId_encuesta,
+            'varFecha_encuesta' => $varFecha_encuesta,
+            'varName_encuesta' => $varName_encuesta,
+            'varUsuaNombre_encuesta' => $varUsuaNombre_encuesta,
+            'varTipoAlerta_encuesta' => $varTipoAlerta_encuesta,
+            'varArchivo_encuesta' => $varArchivo_encuesta,
+            'varRemitentes_encuesta' => $varRemitentes_encuesta,
+            'varAsunto_encuesta' => $varAsunto_encuesta,
+            'varComentarios_encuesta' => $varComentarios_encuesta,
         ]);
     }
 
@@ -1036,7 +1122,10 @@ use Exception;
                     <h1><label style='font-family: sans-serif; color: #1d2d4f;'>Informe de Alertas CX-Management</label></h1>
                     <hr>
                     <h5><label style='font-family: sans-serif;'>Actualmente se tiene una alerta que fue realizada desde CX-Management. Para validar la alerta te recomendamos ingresar al módulo de reporte alertas de CXM y buscarlo para ver resultados.</a></label></h5>
-                    <br>
+                    <hr>
+                    <h3><label style='font-family: sans-serif;'>Comentario Alerta...</a></h3><br>
+                    <h5><label style='font-family: sans-serif;'>".$varComentarios_enviados."</a></h5>
+                    <hr>
                     <h5><label style='font-family: sans-serif;'>¡Hola equipo! Te comentamos que nos encantaria saber tú opinión, por eso te invitamos a ingresar a CXM y responder la encuesta en el siguiente link <a href='https://qa.grupokonecta.local/qa_managementv2/web/index.php/alertascxm/alertaencuesta?id_alerta=".$id_enviados."'>Ingresar a la encuesta</a></label></h5>
                     <hr>
                     <h7><label style='font-family: sans-serif;'>© CX-Management 2023 - Desarrollado por Konecta</a></label></h>
@@ -1089,6 +1178,10 @@ use Exception;
     }
 
     public function actionNotificacionalertas(){
+        $model = new Alertas();
+        $varDataResultado_Notas = null;
+        $varCantidadEncuestas_Notas = null;
+
         $varUsuarioActual = Yii::$app->user->identity->id;
         $varCCUsuario = (new \yii\db\Query())
                             ->select(['tbl_usuarios.usua_identificacion'])
@@ -1110,76 +1203,88 @@ use Exception;
                             ->where(['=','tbl_usuarios.usua_id',$varUsuarioActual])
                             ->scalar(); 
 
-        $varDataResultado_Notas = (new \yii\db\Query())
-                            ->select([
-                                'tbl_alertascx.id',
-                                'tbl_alertascx.fecha', 
-                                'tbl_arbols.name',
-                                'tbl_usuarios.usua_id',
-                                'tbl_usuarios.usua_nombre', 
-                                'tbl_alertascx.tipo_alerta'
-                            ])
-                            ->from(['tbl_alertascx'])
+        $form = Yii::$app->request->post();
+        if ($model->load($form)) {
+            $varFecha_BD_N = explode(" ", $model->fecha);
 
-                            ->join('LEFT OUTER JOIN', 'tbl_arbols',
-                                  'tbl_arbols.id = tbl_alertascx.pcrc')
-
-                            ->join('LEFT OUTER JOIN', 'tbl_usuarios',
-                                  'tbl_usuarios.usua_id = tbl_alertascx.valorador')
-
-                            ->where(['like','tbl_alertascx.remitentes',$varUsuarioRed])
-                            ->andwhere(['>=','tbl_alertascx.fecha',date('Y-m-01').' 00:00:00'])
-                            ->all();
-
-        if (count($varDataResultado_Notas) == 0) {
-
-            $varCorreoJarvis_Notas = Yii::$app->dbjarvis->createCommand('
-            SELECT dp_usuarios_red.email FROM dp_usuarios_red
-                WHERE 
-                    dp_usuarios_red.documento =  :varDocumentoName')->bindValues($varDocumentos_Notas)->queryScalar();
+            $varFechaInicio_BD_N = $varFecha_BD_N[0];
+            $varFechaFin_BD_N = date('Y-m-d',strtotime($varFecha_BD_N[2]));
 
             $varDataResultado_Notas = (new \yii\db\Query())
-                            ->select([
-                                'tbl_alertascx.id',
-                                'tbl_alertascx.fecha', 
-                                'tbl_arbols.name',
-                                'tbl_usuarios.usua_id',
-                                'tbl_usuarios.usua_nombre', 
-                                'tbl_alertascx.tipo_alerta'
-                            ])
-                            ->from(['tbl_alertascx'])
+                                ->select([
+                                    'tbl_alertascx.id',
+                                    'tbl_alertascx.fecha', 
+                                    'tbl_arbols.name',
+                                    'tbl_usuarios.usua_id',
+                                    'tbl_usuarios.usua_nombre', 
+                                    'tbl_alertascx.tipo_alerta',
+                                    'tbl_alertascx.asunto'
+                                ])
+                                ->from(['tbl_alertascx'])
 
-                            ->join('LEFT OUTER JOIN', 'tbl_arbols',
-                                  'tbl_arbols.id = tbl_alertascx.pcrc')
+                                ->join('LEFT OUTER JOIN', 'tbl_arbols',
+                                    'tbl_arbols.id = tbl_alertascx.pcrc')
 
-                            ->join('LEFT OUTER JOIN', 'tbl_usuarios',
-                                  'tbl_usuarios.usua_id = tbl_alertascx.valorador')
+                                ->join('LEFT OUTER JOIN', 'tbl_usuarios',
+                                    'tbl_usuarios.usua_id = tbl_alertascx.valorador')
 
-                            ->where(['like','tbl_alertascx.remitentes',$varCorreoJarvis_Notas])
-                            ->andwhere(['>=','tbl_alertascx.fecha',date('Y-m-01').' 00:00:00'])
-                            ->all();
+                                ->where(['like','tbl_alertascx.remitentes',$varUsuarioRed])
+                                ->andwhere(['between','tbl_alertascx.fecha',$varFechaInicio_BD_N,$varFechaFin_BD_N])
+                                ->all();
+
+            if (count($varDataResultado_Notas) == 0) {
+
+                $varCorreoJarvis_Notas = Yii::$app->dbjarvis->createCommand('
+                SELECT dp_usuarios_red.email FROM dp_usuarios_red
+                    WHERE 
+                        dp_usuarios_red.documento =  :varDocumentoName')->bindValues($varDocumentos_Notas)->queryScalar();
+
+                $varDataResultado_Notas = (new \yii\db\Query())
+                                ->select([
+                                    'tbl_alertascx.id',
+                                    'tbl_alertascx.fecha', 
+                                    'tbl_arbols.name',
+                                    'tbl_usuarios.usua_id',
+                                    'tbl_usuarios.usua_nombre', 
+                                    'tbl_alertascx.tipo_alerta',
+                                    'tbl_alertascx.asunto'
+                                ])
+                                ->from(['tbl_alertascx'])
+
+                                ->join('LEFT OUTER JOIN', 'tbl_arbols',
+                                    'tbl_arbols.id = tbl_alertascx.pcrc')
+
+                                ->join('LEFT OUTER JOIN', 'tbl_usuarios',
+                                    'tbl_usuarios.usua_id = tbl_alertascx.valorador')
+
+                                ->where(['like','tbl_alertascx.remitentes',$varCorreoJarvis_Notas])
+                                ->andwhere(['between','tbl_alertascx.fecha',$varFechaInicio_BD_N,$varFechaFin_BD_N])
+                                ->all();
+            }
+
+
+            $varArraIdAlertas = array();
+            foreach ($varDataResultado_Notas as $value) {
+                array_push($varArraIdAlertas, $value['id']);
+            }
+            $varListadoIdAlertas =  explode(",", str_replace(array("#", "'", ";", " "), '', implode(", ",$varArraIdAlertas)));
+
+            $varCantidadEncuestas_Notas = (new \yii\db\Query())
+                                ->select(['tbl_alertas_tipoencuestas.id_tipoencuestas'])
+                                ->from(['tbl_alertas_tipoencuestas'])
+                                ->join('LEFT OUTER JOIN', 'tbl_alertas_encuestasalertas',
+                                        'tbl_alertas_tipoencuestas.id_tipoencuestas = tbl_alertas_encuestasalertas.id_tipoencuestas')
+                                ->where(['in','tbl_alertas_encuestasalertas.id_alerta',$varListadoIdAlertas])
+                                ->andwhere(['=','tbl_alertas_encuestasalertas.usua_id',Yii::$app->user->identity->id])
+                                ->andwhere(['=','tbl_alertas_encuestasalertas.anulado',0])
+                                ->count(); 
         }
-
-
-        $varArraIdAlertas = array();
-        foreach ($varDataResultado_Notas as $value) {
-            array_push($varArraIdAlertas, $value['id']);
-        }
-        $varListadoIdAlertas =  explode(",", str_replace(array("#", "'", ";", " "), '', implode(", ",$varArraIdAlertas)));
-
-        $varCantidadEncuestas_Notas = (new \yii\db\Query())
-                            ->select(['tbl_alertas_tipoencuestas.id_tipoencuestas'])
-                            ->from(['tbl_alertas_tipoencuestas'])
-                            ->join('LEFT OUTER JOIN', 'tbl_alertas_encuestasalertas',
-                                    'tbl_alertas_tipoencuestas.id_tipoencuestas = tbl_alertas_encuestasalertas.id_tipoencuestas')
-                            ->where(['in','tbl_alertas_encuestasalertas.id_alerta',$varListadoIdAlertas])
-                            ->andwhere(['=','tbl_alertas_encuestasalertas.anulado',0])
-                            ->count(); 
 
         return $this->render('notificacionalertas',[
             'varNameJarvis_Notas' => $varNameJarvis_Notas,
             'varDataResultado_Notas' => $varDataResultado_Notas,
-            'varCantidadEncuestas_Notas' => $varCantidadEncuestas_Notas,    
+            'varCantidadEncuestas_Notas' => $varCantidadEncuestas_Notas,   
+            'model' => $model,    
         ]);
     }
 

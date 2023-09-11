@@ -155,6 +155,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <br>
 <br>
+
+<?php
+if ($varEnvios == 0) {  
+?>
+
 <!-- Capa General que contiene todas las capas -->
 <div class="capaGeneral" id="capaIdGeneral" style="display: inline;">
 
@@ -178,11 +183,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="card2 mb">
 
                     <div class="row">
-                        <div class="col-md-2" align="text-center">
+                        <div class="col-md-2 text-center">
                             <label style="font-size: 15px;"><em class="fas fa-envelope" style="font-size: 50px; color: #FFC72C;"></em></label>
                         </div>
 
-                        <div class="col-md-10" align="left">
+                        <div class="col-md-10 left">
                             <label style="font-size: 15px;"><?= Yii::t('app', ' ¡Qué bueno que estés aquí! Te comentamos que el módulo actual permite el envio de alertas a varios correos al tiempo y adjuntar un archivo para evidencias.') ?></label>
                         </div>
                     </div>          
@@ -194,11 +199,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="card2 mb">
 
                     <div class="row">
-                        <div class="col-md-2" align="text-center">
+                        <div class="col-md-2 text-center">
                             <label style="font-size: 15px;"><em class="fas fa-edit" style="font-size: 50px; color: #FFC72C;"></em></label>
                         </div>
 
-                        <div class="col-md-10" align="left">
+                        <div class="col-md-10 left">
                             <label style="font-size: 15px;"><?= Yii::t('app', ' Es importante recordar...') ?></label>  <label style="font-size: 15px; color: #981F40"> <?= Yii::t('app', ' Si se envia una alerta a varios correos, estos deben estar separados por una coma (,).') ?></label>
                         </div>
                     </div>   
@@ -363,7 +368,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <table align="center">
+                <table class="center">
                     <thead>
                         <tr>
                             <th class="text-center"><div class="lds-ring"><div></div><div></div><div></div><div></div></div></th>
@@ -377,6 +382,79 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
     <hr>
 </div>
+
+<?php
+}else{
+?>
+
+<!-- Capa Mensaje de Guardado con exito -->
+<div class="capaMensajes" id="capaIdMensajes" style="display: inline;">
+    
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card1 mb" style="background: #6b97b1; ">
+                <label style="font-size: 20px; color: #FFFFFF;"> <?= Yii::t('app', 'Nota Informativa') ?></label>
+            </div>
+        </div>
+    </div>
+
+    <br>
+
+    <div class="row">
+        <div class="col-md-6">
+            
+                <div class="card2 mb">
+
+                    <div class="row">
+                        <div class="col-md-2 text-center">
+                            <label style="font-size: 15px;"><em class="fas fa-thumbs-up" style="font-size: 50px; color: #FFC72C;"></em></label>
+                        </div>
+
+                        <div class="col-md-10 left">
+                            <label style="font-size: 15px;"><?= Yii::t('app', ' En hora buena...') ?></label>  <label style="font-size: 15px; "> <?= Yii::t('app', ' La alerta ha sido enviada y registrada adecuamente, te invitamos a seguir con los procesos que necesites en CXM, gracias.') ?></label>
+                        </div>
+                    </div>   
+                </div>
+            
+        </div>
+
+        <div class="col-md-6">
+            
+                <div class="card2 mb">
+
+                    
+                            <?php
+                                if ($id_procesos == "0") {
+                            ?>
+                                <?= Html::a('Nueva Alerta',  ['registraalerta','id_procesos'=>0], ['class' => 'btn btn-success',
+                                                                'style' => 'background-color: #707372',
+                                                                'data-toggle' => 'tooltip',
+                                                                'title' => 'Nuevo Registro']) 
+                                ?>
+                            <?php
+                                }else{
+                            ?>
+                                <?= Html::a('Nueva Alerta',  ['registraalerta','id_procesos'=>1], ['class' => 'btn btn-success',
+                                                                'style' => 'background-color: #707372',
+                                                                'data-toggle' => 'tooltip',
+                                                                'title' => 'Nuevo Registro']) 
+                                ?>
+                            <?php
+                                }
+                            ?>
+                          
+                </div>
+            
+        </div>
+    </div>
+
+</div>
+
+<hr>
+
+<?php
+}
+?>
 
 <script type="text/javascript">
     function varCambios(){
