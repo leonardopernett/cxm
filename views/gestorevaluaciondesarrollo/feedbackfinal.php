@@ -172,7 +172,7 @@
                 <div class="card1 mb" style="width:100%"> 
                     <label style="font-size: 20px; margin-bottom:10px;"><em class="fa fa-list-alt" style="font-size: 25px; color: #ffc034;"></em> <?= Yii::t('app', 'Feedback Equipo') ?> </label>                      
 
-                    <label id="emptyMessage" style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 18px; color: #827DF9; margin-top:1.5%;"></em> <?= Yii::t('app', 'Sin novedades a gestionar') ?></label>
+                    <label id="emptyMessage" style="font-size: 17px;"><em class="fas fa-info-circle" style="font-size: 18px; color: #827DF9; margin-top:1.5%;"></em> <?= Yii::t('app', 'No se ha completado el proceso de evaluación de tu equipo para realizar feedbacks.') ?></label>
                     
                     <div class="table-responsive table-container" id="container_table">                                
                         <table id="table_feedback" class="table table-hover table-striped table-bordered table-condensed dataTable no-footer">

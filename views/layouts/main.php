@@ -257,17 +257,17 @@ AppAsset::register($this);
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Realizar Evaluaciones&nbsp;&nbsp;'),
                                                     'url' => ['/gestorevaluaciondesarrollo/index'],
-                                                    'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isVerevaluacion()|| Yii::$app->user->identity->isVerdirectivo(),
+                                                    'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isVerevaluacion()|| Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isReportes(),
                                                 ],
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Realizar Feedbacks&nbsp;&nbsp;'),
                                                     'url' => ['/gestorevaluaciondesarrollo/resultados','model'=>"",'documento'=>0],
-                                                    'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isVerevaluacion()|| Yii::$app->user->identity->isVerdirectivo(),
+                                                    'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isVerevaluacion()|| Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isReportes(),
                                                 ],
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Mis Resultados&nbsp;&nbsp;'),
                                                     'url' => ['/gestorevaluaciondesarrollo/resultadoindividual','model'=>""],
-                                                    'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isVerevaluacion()|| Yii::$app->user->identity->isVerdirectivo(),
+                                                    'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isVerevaluacion()|| Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isReportes(),
                                                 ],
                                                 '<br>',
                                                 '<li class="dropdown-headercx ico1">&nbsp;Universo&nbsp;&nbsp;</li>',
@@ -287,11 +287,11 @@ AppAsset::register($this);
                                                 ],
                                             '<br>',
                                             '<li class="dropdown-headercx2">&nbsp;Analizar y Decidir</li>',
-                                                [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Resultados Evaluaci&oacute;n Desarrollo&nbsp;&nbsp;'),
-                                                    'url' => ['/evaluaciondesarrollo/resultadodashboard'],
-                                                    'visible' => Yii::$app->user->identity->isCuadroMando()|| Yii::$app->user->identity->isVerdirectivo(),
-                                                ],
+                                                // [
+                                                //     'label' => Yii::t('app', '&nbsp;&nbsp;Resultados Evaluaci&oacute;n Desarrollo&nbsp;&nbsp;'),
+                                                //     'url' => ['/evaluaciondesarrollo/resultadodashboard'],
+                                                //     'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isReportes(),
+                                                // ],
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Extractar Resultados&nbsp;&nbsp;'),
                                                     'url' => ['/evaluaciondesarrollo/exportarrtadashboard'],
@@ -302,12 +302,12 @@ AppAsset::register($this);
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Realizar Parametrización&nbsp;&nbsp;'),
                                                     'url' => ['/gestorevaluaciondesarrollo/parametrizador'],
-                                                    'visible' => Yii::$app->user->identity->isCuadroMando(),
+                                                    'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isReportes(),
                                                 ],
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Novedades Evaluaci&oacute;n Desarrollo&nbsp;&nbsp;'),
                                                     'url' => ['/gestorevaluaciondesarrollo/novedades'],
-                                                    'visible' => Yii::$app->user->identity->isCuadroMando(),
+                                                    'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isReportes(),
                                                 ],
                                             '<br>',                                           
                                             '<li class="dropdown-headercx2">&nbsp;Resultados&nbsp;</li>',    

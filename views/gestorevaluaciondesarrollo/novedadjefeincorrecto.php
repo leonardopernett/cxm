@@ -291,7 +291,7 @@
                         data: 'solicitante'
                     },
                     {   title: "Documento Jefe Actual",
-                        data: 'cc_jefe_correcto'
+                        data: 'cc_jefe_actual'
                     },
                     {   title: "Documento Jefe Correcto",
                         data: 'cc_jefe_correcto'
