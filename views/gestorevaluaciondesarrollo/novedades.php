@@ -101,7 +101,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <br><br>
 
 <?php 
-    if ($roles==270 || $roles==300) || $roles==293) {    
+    if ($roles==270 || $roles==300 || $roles==293) {    
 ?>
 
 <div class="CapaUno" style="display: inline;">
