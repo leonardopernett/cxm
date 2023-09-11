@@ -162,11 +162,6 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
             }
 
         }
-        //$id_estado = Yii::$app->db->createCommand("select id_gestor_evaluacion_estadoeval FROM tbl_gestor_evaluacion_estadoeval WHERE  estado= 'Incompleto' and anulado = 0")->queryScalar();
-       
-        //SI YA TIENE TODAS LAS CALIFICACIONES MOSTRAR MENSAJE DE QUE PUEDE IR  A VERLAS SINO EN ESPERA DE EVALAUCION A CARGO***
-
-        //Si ya no tienes personas a cargo para evaluar mostrar completado
        
 
       return $this->render('index', [
@@ -617,7 +612,7 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
     }
 
     //----- EVALUACIÓN AUTOEVALUACION ------------
-    public function actionAutoevaluacion($id_user, $id_evalua){       
+    public function actionAutoevaluacion($id_user, $id_evalua) {       
        
         $id_usuario_logueado = $id_user;
         $id_evaluacion_actual = $id_evalua;
