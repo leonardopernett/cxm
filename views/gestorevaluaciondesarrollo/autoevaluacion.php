@@ -303,7 +303,7 @@ use yii\helpers\ArrayHelper;
                             </div>
                         <?php
                         } else {
-                            $existe_preguntas = false;
+                            $existe_preguntas = true;
                         ?>
                         <?php foreach ($array_preguntas as $fila): 
                             $id_pregunta = 'id_pregunta_selected_' . $contador;
