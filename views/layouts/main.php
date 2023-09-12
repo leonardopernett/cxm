@@ -314,7 +314,7 @@ AppAsset::register($this);
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Reporte Voe BI&nbsp;&nbsp;'),
                                                     'url' => ['/reportepbi/reporte?varid=2'],
-                                                    'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isAdminSistema() || Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerdirectivo(),
+                                                    'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isAdminSistema() || Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerdirectivo()  || Yii::$app->user->identity->isVerDesempeno(),
                                                 ],
                                         '</div>',
 
