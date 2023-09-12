@@ -19,11 +19,8 @@ use yii\helpers\ArrayHelper;
     $sessiones = Yii::$app->user->identity->id;
 
 
-    $vardocument = Yii::$app->db->createCommand("select usua_identificacion from tbl_usuarios where usua_id = $sessiones")->queryScalar();
-
-    // id iveth para pruebas 456
-    $vardocument = '456';   
-
+    //$vardocument = Yii::$app->db->createCommand("select usua_identificacion from tbl_usuarios where usua_id = $sessiones")->queryScalar();
+ 
     
     $id_colaborador =  $datos_colaborador['id_user'];
     $nombre_completo = $datos_colaborador['nombre_completo'];
@@ -306,7 +303,7 @@ use yii\helpers\ArrayHelper;
                             </div>
                         <?php
                         } else {
-                            $existe_preguntas = false;
+                            $existe_preguntas = true;
                         ?>
                         <?php foreach ($array_preguntas as $fila): 
                             $id_pregunta = 'id_pregunta_selected_' . $contador;

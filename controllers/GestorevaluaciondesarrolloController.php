@@ -655,8 +655,9 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
         $option_tiempo_en_el_cargo = [
             '1' => 'Inferior a 6 meses',
             '2' => '6 meses a 1 año',
-            '3' => '2 años a 3 años',
-            '4' => '3 años en adelante',
+            '3' => '1 año a 2 años',
+            '4' => '2 años a 3 años',
+            '5' => '3 años en adelante',
         ];
       
         return $this->render('autoevaluacion',[
@@ -860,8 +861,9 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
         $option_tiempo_en_el_cargo = [
             '1' => 'Inferior a 6 meses',
             '2' => '6 meses a 1 año',
-            '3' => '2 años a 3 años',
-            '4' => '3 años en adelante',
+            '3' => '1 año a 2 años',
+            '4' => '2 años a 3 años',
+            '5' => '3 años en adelante',
         ];
 
 
@@ -1483,7 +1485,8 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
 
 
         return $this->render('novedades',[
-            'roles'=>$roles
+            'roles'=>$roles,
+            'sessiones'=>$sessiones
         ] );
     }
 

@@ -379,7 +379,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <br>
 <br>
 <?php 
-    if ($roles==270 || $roles==300 || $roles==293) {    
+    if ($roles==270 || $roles==300 || $roles==293 || $sessiones == '728' || $sessiones == '8103') {    
 ?>
 <!-- Capa principal -->
 <div id="capaIdPrincipal" class="capaPrincipal" style="display: inline;">
