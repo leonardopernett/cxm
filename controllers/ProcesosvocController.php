@@ -6012,6 +6012,7 @@ use app\models\SpeechParametrizar;
                                   ->andwhere(['=','tbl_comdata_llamadaurl.id_dp_clientes',$varIdClienteLlamadaEspecial_BD])
                                   ->andwhere(['=','tbl_comdata_llamadaurl.idredbox',$value['idredbox']])
                                   ->andwhere(['=','tbl_comdata_llamadaurl.bolsita',$value['servicio']])
+                                  ->andwhere(['=','tbl_comdata_llamadaurl.extension',$value['extension']])
                                   ->count();
 
           if ($varUlComprobacion == 0) {
@@ -6022,6 +6023,7 @@ use app\models\SpeechParametrizar;
                     'url_llamada' => $varGrabadora,
                     'fechareal' => $varFechas,
                     'bolsita' => $value['servicio'],
+                    'extension' => $value['extension'],
                     'fechacreacion' => date('Y-m-d'),
                     'anulado' => 0,
                     'usua_id' => Yii::$app->user->identity->id,
