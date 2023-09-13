@@ -284,6 +284,17 @@ use Exception;
                 $varCorreos = implode(", ", $varArrayCorreos);
             }else{
                 $varCorreos = $model->remitentes;
+
+                $varStringContiene = strstr($varCorreos,',');
+                
+                if ($varStringContiene) {
+                    $varArrayCorreosLista = array();
+                    $varArrayListaCorreos = explode(",", $varCorreos);
+                    for ($i=0; $i < count($varArrayListaCorreos); $i++) { 
+                        array_push($varArrayCorreosLista, $varArrayListaCorreos[$i]);
+                    }
+                    $varCorreos = implode(", ", $varArrayCorreosLista);
+                }
             }
             
             $varFechas = date('Y-m-d H:i:s');

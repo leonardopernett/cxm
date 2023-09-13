@@ -804,17 +804,14 @@ if ($varDataResultado != null) {
                         color: 'white'
                     }
                 },
-                startAngle: -90,
-                endAngle: 90,
-                center: ['50%', '110%'],
-                size: '220%',
-                width: '200%'
+                center: ['50%', '50%'],
+                size: '150%',
+                width: '150%'
             }
         },
         series: [{
             type: 'pie',
             name: '',
-            innerSize: '50%',
             data: [
                 <?php                         
                     foreach($varDataTipos as $value){?>
