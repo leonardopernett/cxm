@@ -77,6 +77,8 @@ use app\models\UploadForm2;
         $varFechainicio_P = date('Y-m-d H:00:00', strtotime('-1 hour'));
         $varFechafin_P = date('Y-m-d H:59:59', strtotime('-1 hour'));
 
+        $varHora = date('H', strtotime('-1 hour'));
+
         /* Inicio Variables */
         //INICIO DE TRANSPOSICION DE DATOS
         $textos = $this->getTextosPreguntas();
@@ -107,9 +109,9 @@ use app\models\UploadForm2;
 
         /* Archivos */
         $fileName = Yii::$app->basePath . DIRECTORY_SEPARATOR . "web" .
-                DIRECTORY_SEPARATOR . "files" . DIRECTORY_SEPARATOR
+                DIRECTORY_SEPARATOR . "valoacionescxm_comdata" . DIRECTORY_SEPARATOR
                 . Yii::t('app', 'Reporte_extractar') . '_' . date('Ymd') . "_" .
-                Yii::$app->user->identity->id . ".xlsx";
+                $varHora . ".xlsx";
 
         /* Titulos */
         $titulos[0] = ['header' => 'Fecha y Hora', 'value' => '0'];
