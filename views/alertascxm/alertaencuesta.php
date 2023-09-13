@@ -262,7 +262,7 @@ if ($varMensajes_encuestas != 0) {
                         ?>
                         </tr>
                 </table>
-                <?= $form->field($model, 'comentarios', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textArea(['id'=>'varIdComentarios','class'=>'hidden','value'=>$varComentarios_encuesta])?>
+                <?= $form->field($model, 'comentarios', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textArea(['id'=>'varIdComentarios'])?>
 
                 <br>
 

@@ -247,7 +247,7 @@ if ($varEnvios == 0) {
                             <?= $form->field($model, 'asunto', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['id'=>'varIdAsuntos','placeholder'=>'Ingresar Asunto de la Alerta'])?>                                              
 
                             <label style="font-size: 15px;"><span class="texto" style="color: #FFC72C"><?= Yii::t('app', '*') ?></span> <?= Yii::t('app', ' Ingresar Comentarios ') ?></label>
-                            <?= $form->field($model, 'comentario', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textArea(['id'=>'varIdComentarios','rows'=>4,'placeholder'=>'Ingresar Comentarios'])?>
+                            <?= $form->field($model, 'comentario', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textArea(['id'=>'varIdComentarios','rows'=>6,'placeholder'=>'Ingresar Comentarios'])?>
                         </div>
 
                         <div class="col-md-6">
@@ -276,7 +276,7 @@ if ($varEnvios == 0) {
 
                             <?= 
                                 Html::radioList('anulado', 1, 
-                                ['Grupal','Normal'], 
+                                ['Grupal','Individual'], 
                                 ['separator'=>'&nbsp;&nbsp;&nbsp;&nbsp;','name'=>'contact','id'=>'varidInteracciones','onclick'=>'varCambios();']) 
                             ?>
 
@@ -296,7 +296,11 @@ if ($varEnvios == 0) {
                             
 
                             <label style="font-size: 15px;"> <?= Yii::t('app', ' ___________________ ') ?></label>
-                            <?= $form->field($modelArchivo, 'file', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->fileInput(["class"=>"input-file" ,'id'=>'idfile'])->label('') ?>
+                            <?= $form->field($modelArchivo, 'file', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->fileInput(["class"=>"input-file" ,'id'=>'idfile'])->label('') ?>                            
+                            <label style="font-size: 15px;"> <?= Yii::t('app', ' ___________________ ') ?></label><br>
+                            <label style="font-size: 15px;"> <?= Yii::t('app', ' Tener en cuenta... ') ?></label><br>
+                            <label style="font-size: 15px; color: #981F40"> <?= Yii::t('app', ' * Los archivos a subir deben tener la extensión correcta .jpg, .png o .pdf ') ?></label><br>
+                            <label style="font-size: 15px; color: #981F40"> <?= Yii::t('app', ' * Recomendable que los archivos no tengan espacios o signos de puntuación demás') ?></label>
                         </div>
                     </div>
 
