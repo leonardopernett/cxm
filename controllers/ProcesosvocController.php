@@ -6021,7 +6021,7 @@ use app\models\SpeechParametrizar;
                     'idredbox' => $value['idredbox'],
                     'url_llamada' => $varGrabadora,
                     'fechareal' => $varFechas,
-                    'bolsitas' => $value['servicio'],
+                    'bolsita' => $value['servicio'],
                     'fechacreacion' => date('Y-m-d'),
                     'anulado' => 0,
                     'usua_id' => Yii::$app->user->identity->id,
