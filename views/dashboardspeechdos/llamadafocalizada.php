@@ -710,16 +710,39 @@ $this->title = 'Análisis Focalizados - Escuchar +';
                                             $txtidgrabadora = "002";
                                         }
                                         
-                                        if ($txtidredbox == 'WIA_SAE' && $txtidgrabadora == '<NA>') {
-                                            
-                                            $varLinkUrl = (new \yii\db\Query())
-                                                ->select(['idredbox'])
-                                                ->from(['tbl_comdata_llamadaurl'])
-                                                ->where(['=','tbl_comdata_llamadaurl.anulado',0])
-                                                ->andwhere(['=','tbl_comdata_llamadaurl.callid',$txtcallid])
-                                                ->groupby(['tbl_comdata_llamadaurl.callid'])
-                                                ->Scalar();
-                                                                                  
+
+                                        $varLinkUrl = null;
+
+                                        $varUlComprobacion = (new \yii\db\Query())
+                                                            ->select([
+                                                                'tbl_comdata_llamadaurl.idredbox',
+                                                                'tbl_comdata_llamadaurl.url_llamada'
+                                                            ])
+                                                            ->from(['tbl_comdata_llamadaurl'])
+                                                            ->where(['=','tbl_comdata_llamadaurl.anulado',0])
+                                                            ->andwhere(['=','tbl_comdata_llamadaurl.cod_pcrc',$paramsvarcodigopcrc])
+                                                            ->andwhere(['=','tbl_comdata_llamadaurl.id_dp_clientes',$varIdClientes])
+                                                            ->andwhere(['=','tbl_comdata_llamadaurl.fechareal',$txtfechasreal])
+                                                            ->andwhere(['=','tbl_comdata_llamadaurl.bolsita',$txtServicio])
+                                                            ->all();
+
+                                        if (count($varUlComprobacion) != 0) {
+                                            $varIdRedbox_url = null;
+                                            $varIdUrl_url = null;
+                                            foreach ($varUlComprobacion as $value) {
+                                                $varIdRedbox_url = $value['idredbox'];
+                                                $varIdUrl_url = $value['url_llamada'];
+                                            }
+
+                                            if ($varIdUrl_url == 'nan' || $varIdUrl_url == '<NA>') {
+                                                $varLinkUrl = $varIdRedbox_url;
+                                            }else{
+                                                $varLinkUrl = $varIdUrl_url;
+                                            }
+                                        }
+                                        
+
+                                        if ($varLinkUrl != null) {               
                                     ?>
                                     
                                         <a title="Interacciones" href="<?php echo $varLinkUrl; ?>" target="_blank"><em id="idimage" class="fas fa-play-circle" style="font-size: 17px; color: #4CB0EC; display: inline;"></em></a>
