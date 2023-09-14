@@ -284,6 +284,17 @@ use Exception;
                 $varCorreos = implode(", ", $varArrayCorreos);
             }else{
                 $varCorreos = $model->remitentes;
+
+                $varStringContiene = strstr($varCorreos,',');
+                
+                if ($varStringContiene) {
+                    $varArrayCorreosLista = array();
+                    $varArrayListaCorreos = explode(",", $varCorreos);
+                    for ($i=0; $i < count($varArrayListaCorreos); $i++) { 
+                        array_push($varArrayCorreosLista, $varArrayListaCorreos[$i]);
+                    }
+                    $varCorreos = implode(", ", $varArrayCorreosLista);
+                }
             }
             
             $varFechas = date('Y-m-d H:i:s');
@@ -366,25 +377,58 @@ use Exception;
 
         $varHtml = 
         "
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <title>Envio de Alertas</title>
-            </head>
-            <body class='text-center'>
-                <h1><label style='font-family: sans-serif; color: #1d2d4f;'>Informe de Alertas CX-Management</label></h1>
-                <hr>
-                <h4><label style='font-family: sans-serif;'>Actualmente se tiene una alerta que fue realizada desde CX-Management. Para validar la alerta te recomendamos ingresar al módulo de reporte alertas de CXM y buscarlo para ver resultados.</a></label></h4>
-                <hr>
-                <h3><label style='font-family: sans-serif;'>Comentario Alerta...</a></h3><br>
-                <h5><label style='font-family: sans-serif;'>".$varComentarios_correo."</a></h5>
-                <hr>
-                <h4><label style='font-family: sans-serif;'>¡Hola equipo! Te comentamos que nos encantaria saber tú opinión, por eso te invitamos a ingresar a CXM y responder la encuesta en el siguiente link <a href='https://qa.grupokonecta.local/qa_managementv2/web/index.php/alertascxm/alertaencuesta?id_alerta=".$varIdAlertas."'>Ingresar a la encuesta</a></label></h4>
-                <hr>
-                <h7><label style='font-family: sans-serif;'>© CX-Management 2023 - Desarrollado por Konecta</a></label></h>
+        <html lang='en'>
 
-            </body>
-            </html>        
+        <head>
+        <meta charset='UTF-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+        <title>Document</title>
+        </head>
+
+        <body style='font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 12px;'>
+        <br><br><br><br>
+        <div style='width: 450px; position: relative;'>
+            <img src='https://i.ibb.co/8xbhr7W/k.png' alt='' width='80' style='position: absolute; top:-35px;right: -20px; border: 2px solid #002855 ;'>
+            <div style='  box-shadow: -1px 0px 5px 0px rgba(0,0,0,0.75); border-radius: 10px; padding: 5px 50px; display: flex;'>
+
+        
+            <div style='width: 100%;'>
+                <h2 style='color: #002855; margin-bottom: 5px; font-size: 35px;'>
+                ¡Hola equipo! 
+                </h2>
+                
+                <div style='width: 50px; height: 5px; background-color: #FFC72C; margin-bottom: 15px;'></div>
+
+                <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>Actualmente se tiene una alerta que fue realizada desde CX-Management.
+                Para validar la alerta te recomendamos ingresar al módulo de reporte alertas de CXM y buscarlo para ver
+                resultados.</a>
+                </p>
+                <br>
+                <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>Comentarios de la Alerta:
+                </p>
+                <p style='color:#040B25;text-align: justify'>
+                ".$varComentarios_correo."</a>
+                </p>                
+                <div style='width: 50px; height: 2px; background-color: #FFC72C; margin-bottom: 15px;'></div>
+                <br>
+                <p style='color:#040B25;text-align: justify'>Te comentamos que nos encantaria saber tú opinión, por eso te invitamos a ingresar a CXM y responde la encuesta.
+                </p>
+                <br>
+                <div style='text-align: center; margin-bottom: 10px;'>
+                <a style='border:1px solid #FFC72C; background-color: #FFC72C; color:white; padding: 3px 10px; border-radius: 40px; font-weight: bold; text-decoration: none;' href='https://qa.grupokonecta.local/qa_managementv2/web/index.php/alertascxm/alertaencuesta?id_alerta=".$varIdAlertas."'>Ingresar a la encuesta</a>
+                </div>
+        
+            </div>
+
+            <div class='div'>
+                <img src='' alt=''>
+            </div>
+
+            </div>
+        </div>
+        </body>
+
+        </html>      
         ";
 
         $varListData_correos = explode(", ", $varRemitentes_correo);        
@@ -463,6 +507,7 @@ use Exception;
         $varDataProceso = array();
         $varDataTecnico = array();
         $varDataEncuestasTipos = array();
+        $dataValoradores = array();
 
 
         $form = Yii::$app->request->post();
@@ -516,6 +561,9 @@ use Exception;
                 for ($i=0; $i < count($model->valorador); $i++) { 
                     array_push($arrayDataUsers, $model->valorador);
                 }
+
+                $listavariablesarray = implode(", ", $arrayDataUsers);
+                $dataValoradores = explode(",", str_replace(array("#", "'", ";", " "), '', $listavariablesarray));
             }
             
 
@@ -537,7 +585,7 @@ use Exception;
                                   'tbl_usuarios.usua_id = tbl_alertascx.valorador')
 
                             ->where(['between','tbl_alertascx.fecha',$varFechaInicio_BD.' 00:00:00',$varFechaFin_BD.' 23:59:59'])
-                            ->andfilterwhere(['in','tbl_alertascx.valorador',$arrayDataUsers])
+                            ->andfilterwhere(['in','tbl_alertascx.valorador',$dataValoradores])
                             ->andfilterwhere(['in','tbl_alertascx.pcrc',$arrayDataPcrc])
                             ->all(); 
 
@@ -555,7 +603,7 @@ use Exception;
                                   'tbl_alertas_tipoalerta.tipoalerta = tbl_alertascx.tipo_alerta')
 
                             ->where(['between','tbl_alertascx.fecha',$varFechaInicio_BD.' 00:00:00',$varFechaFin_BD.' 23:59:59'])
-                            ->andfilterwhere(['in','tbl_alertascx.valorador',$arrayDataUsers])
+                            ->andfilterwhere(['in','tbl_alertascx.valorador',$dataValoradores])
                             ->andfilterwhere(['in','tbl_alertascx.pcrc',$arrayDataPcrc])
                             ->groupby(['tbl_alertas_tipoalerta.id_tipoalerta'])
                             ->all(); 
@@ -577,7 +625,7 @@ use Exception;
                                   'tbl_alertas_tipoencuestas.id_tipoencuestas = tbl_alertas_encuestasalertas.id_tipoencuestas')
 
                             ->where(['between','tbl_alertascx.fecha',$varFechaInicio_BD.' 00:00:00',$varFechaFin_BD.' 23:59:59'])
-                            ->andfilterwhere(['in','tbl_alertascx.valorador',$arrayDataUsers])
+                            ->andfilterwhere(['in','tbl_alertascx.valorador',$dataValoradores])
                             ->andfilterwhere(['in','tbl_alertascx.pcrc',$arrayDataPcrc])
                             ->andwhere(['=','tbl_alertas_encuestasalertas.anulado',0])
                             ->groupby(['tbl_alertas_encuestasalertas.id_encuestasalertas'])
@@ -600,7 +648,7 @@ use Exception;
                                   'tbl_alertas_tipoencuestas.id_tipoencuestas = tbl_alertas_encuestasalertas.id_tipoencuestas')
 
                             ->where(['between','tbl_alertascx.fecha',$varFechaInicio_BD.' 00:00:00',$varFechaFin_BD.' 23:59:59'])
-                            ->andfilterwhere(['in','tbl_alertascx.valorador',$arrayDataUsers])
+                            ->andfilterwhere(['in','tbl_alertascx.valorador',$dataValoradores])
                             ->andfilterwhere(['in','tbl_alertascx.pcrc',$arrayDataPcrc])
                             ->andwhere(['=','tbl_alertas_encuestasalertas.anulado',0])
                             ->groupby(['tbl_alertas_tipoencuestas.tipoencuestas'])
@@ -624,7 +672,7 @@ use Exception;
                                   'tbl_alertas_encuestasalertas.id_alerta = tbl_alertascx.id')
 
                             ->where(['between','tbl_alertascx.fecha',$varFechaInicio_BD.' 00:00:00',$varFechaFin_BD.' 23:59:59'])
-                            ->andfilterwhere(['in','tbl_alertascx.valorador',$arrayDataUsers])
+                            ->andfilterwhere(['in','tbl_alertascx.valorador',$dataValoradores])
                             ->andfilterwhere(['in','tbl_alertascx.pcrc',$arrayDataPcrc])
                             ->groupby(['a.id'])
                             ->all();
@@ -650,7 +698,7 @@ use Exception;
                                   'tbl_usuarios.usua_id = tbl_alertascx.valorador')
 
                             ->where(['between','tbl_alertascx.fecha',$varFechaInicio_BD.' 00:00:00',$varFechaFin_BD.' 23:59:59'])
-                            ->andfilterwhere(['in','tbl_alertascx.valorador',$arrayDataUsers])
+                            ->andfilterwhere(['in','tbl_alertascx.valorador',$dataValoradores])
                             ->andfilterwhere(['in','tbl_alertascx.pcrc',$arrayDataPcrc])
                             ->groupby(['tbl_usuarios.usua_id'])
                             ->all();
@@ -1113,25 +1161,58 @@ use Exception;
         if ($model->load($form)) {
             $varHtml_enviados = 
             "
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <title>Envio de Alertas</title>
-                </head>
-                <body class='text-center'>
-                    <h1><label style='font-family: sans-serif; color: #1d2d4f;'>Informe de Alertas CX-Management</label></h1>
-                    <hr>
-                    <h5><label style='font-family: sans-serif;'>Actualmente se tiene una alerta que fue realizada desde CX-Management. Para validar la alerta te recomendamos ingresar al módulo de reporte alertas de CXM y buscarlo para ver resultados.</a></label></h5>
-                    <hr>
-                    <h3><label style='font-family: sans-serif;'>Comentario Alerta...</a></h3><br>
-                    <h5><label style='font-family: sans-serif;'>".$varComentarios_enviados."</a></h5>
-                    <hr>
-                    <h5><label style='font-family: sans-serif;'>¡Hola equipo! Te comentamos que nos encantaria saber tú opinión, por eso te invitamos a ingresar a CXM y responder la encuesta en el siguiente link <a href='https://qa.grupokonecta.local/qa_managementv2/web/index.php/alertascxm/alertaencuesta?id_alerta=".$id_enviados."'>Ingresar a la encuesta</a></label></h5>
-                    <hr>
-                    <h7><label style='font-family: sans-serif;'>© CX-Management 2023 - Desarrollado por Konecta</a></label></h>
+            <html lang='en'>
 
-                </body>
-                </html>   
+            <head>
+            <meta charset='UTF-8'>
+            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+            <title>Document</title>
+            </head>
+
+            <body style='font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 12px;'>
+            <br><br><br><br>
+            <div style='width: 450px; position: relative;'>
+                <img src='https://i.ibb.co/8xbhr7W/k.png' alt='' width='80' style='position: absolute; top:-35px;right: -20px; border: 2px solid #002855 ;'>
+                <div style='  box-shadow: -1px 0px 5px 0px rgba(0,0,0,0.75); border-radius: 10px; padding: 5px 50px; display: flex;'>
+
+            
+                <div style='width: 100%;'>
+                    <h2 style='color: #002855; margin-bottom: 5px; font-size: 35px;'>
+                    ¡Hola equipo! 
+                    </h2>
+                    
+                    <div style='width: 50px; height: 5px; background-color: #FFC72C; margin-bottom: 15px;'></div>
+
+                    <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>Actualmente se tiene una alerta que fue realizada desde CX-Management.
+                    Para validar la alerta te recomendamos ingresar al módulo de reporte alertas de CXM y buscarlo para ver
+                    resultados.</a>
+                    </p>
+                    <br>
+                    <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'><strong>Comentarios de la Alerta:</strong>
+                    </p>
+                    <p style='color:#040B25;text-align: justify'>
+                    ".$varComentarios_enviados."</a>
+                    </p>                
+                    <div style='width: 50px; height: 2px; background-color: #FFC72C; margin-bottom: 15px;'></div>
+                    <br>
+                    <p style='color:#040B25;text-align: justify'>Te comentamos que nos encantaria saber tú opinión, por eso te invitamos a ingresar a CXM y responde la encuesta.
+                    </p>
+                    <br>
+                    <div style='text-align: center; margin-bottom: 10px;'>
+                    <a style='border:1px solid #FFC72C; background-color: #FFC72C; color:white; padding: 3px 10px; border-radius: 40px; font-weight: bold; text-decoration: none;' href='https://qa.grupokonecta.local/qa_managementv2/web/index.php/alertascxm/alertaencuesta?id_alerta=".$id_enviados."'>Ingresar a la encuesta</a>
+                    </div>
+            
+                </div>
+
+                <div class='div'>
+                    <img src='' alt=''>
+                </div>
+
+                </div>
+            </div>
+            </body>
+
+            </html>                  
             ";
 
             $target_path_enviados = "alertas/" . $varArchivo_enviados;

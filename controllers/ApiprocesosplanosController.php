@@ -81,6 +81,7 @@ use app\models\ControlValoracionesComdata;
 
         $varFechainicio_P = date('Y-m-d H:00:00', strtotime('-1 hour'));
         $varFechafin_P = date('Y-m-d H:59:59', strtotime('-1 hour'));
+        $varHora = date('H', strtotime('-1 hour'));
 
         //Obtener lista de PCRC para exportar
         $array_pcrc = ControlValoracionesComdata::find()
@@ -137,7 +138,7 @@ use app\models\ControlValoracionesComdata;
             $fileName = Yii::$app->basePath . DIRECTORY_SEPARATOR . "web" .
                     DIRECTORY_SEPARATOR . "valoracioncxm_comdata" . DIRECTORY_SEPARATOR
                     . Yii::t('app', 'Reporte_extractar') . '_' . date('Ymd') . "_" .
-                    date('H') . ':00' . ".xlsx";
+                    $varHora . ".xlsx";
 
             /* Titulos */
             $titulos[0] = ['header' => 'Fecha y Hora', 'value' => '0'];

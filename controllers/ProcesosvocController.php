@@ -5981,19 +5981,8 @@ use app\models\SpeechParametrizar;
           }else{
             $varIdRedBox = 'WIA_SAE';
           }
-
-          $varGrabadora = (new \yii\db\Query())
-                                ->select([
-                                    'tbl_speech_urlgrabadoras.id_grabadora'
-                                ])
-                                ->from(['tbl_speech_urlgrabadoras'])
-                                ->where(['=','tbl_speech_urlgrabadoras.anulado',0])
-                                ->andwhere(['=','tbl_speech_urlgrabadoras.ipgrabadora',$value['idgrabadora']])
-                                ->scalar();
-          if ($varGrabadora == "") {
-            $varGrabadora = $value['idgrabadora'];
-          }
-
+         
+          $varGrabadora = $value['idgrabadora'];         
           
           Yii::$app->db->createCommand()->insert('tbl_dashboardspeechcalls',[
                 'callId' => $value['callid'],
@@ -6013,31 +6002,37 @@ use app\models\SpeechParametrizar;
                 'anulado' => 0,
           ])->execute();
 
-        }
-        
-        foreach ($objet_json as $key => $value) {
-          $varGrabadora_count = (new \yii\db\Query())
+          $varUlComprobacion = (new \yii\db\Query())
                                   ->select([
-                                      'tbl_speech_urlgrabadoras.id_grabadora'
+                                      'tbl_comdata_llamadaurl.id_llamadaurl'
                                   ])
-                                  ->from(['tbl_speech_urlgrabadoras'])
-                                  ->where(['=','tbl_speech_urlgrabadoras.anulado',0])
-                                  ->andwhere(['=','tbl_speech_urlgrabadoras.ipgrabadora',$value['idgrabadora']])
-                                  ->scalar();
+                                  ->from(['tbl_comdata_llamadaurl'])
+                                  ->where(['=','tbl_comdata_llamadaurl.anulado',0])
+                                  ->andwhere(['=','tbl_comdata_llamadaurl.cod_pcrc',$varCodpcrc])
+                                  ->andwhere(['=','tbl_comdata_llamadaurl.id_dp_clientes',$varIdClienteLlamadaEspecial_BD])
+                                  ->andwhere(['=','tbl_comdata_llamadaurl.idredbox',$value['idredbox']])
+                                  ->andwhere(['=','tbl_comdata_llamadaurl.bolsita',$value['servicio']])
+                                  ->andwhere(['=','tbl_comdata_llamadaurl.extension',$value['extension']])
+                                  ->count();
 
-          if ($varGrabadora_count == "") {
+          if ($varUlComprobacion == 0) {
             Yii::$app->db->createCommand()->insert('tbl_comdata_llamadaurl',[
-                    'callid' => $value['callid'],
                     'id_dp_clientes' => $varIdClienteLlamadaEspecial_BD,
+                    'cod_pcrc' => $varCodpcrc,
                     'idredbox' => $value['idredbox'],
-                    'servicio' => $value['servicio'],
+                    'url_llamada' => $varGrabadora,
+                    'fechareal' => $varFechas,
+                    'bolsita' => $value['servicio'],
+                    'extension' => $value['extension'],
                     'fechacreacion' => date('Y-m-d'),
                     'anulado' => 0,
                     'usua_id' => Yii::$app->user->identity->id,
             ])->execute();
           }
-            
+
         }
+        
+        
 
         $varBolsitaCX_String = (new \yii\db\Query())
                               ->select(['tbl_speech_categorias.programacategoria'])
