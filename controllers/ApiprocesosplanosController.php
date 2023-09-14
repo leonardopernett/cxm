@@ -77,6 +77,7 @@ use app\models\ControlValoracionesComdata;
     }
 
     public function actionProcesosplanos() {
+        set_time_limit(0);
         //$modelArchivo = new UploadForm2();
 
         $varFechainicio_P = date('Y-m-d H:00:00', strtotime('-1 hour'));
@@ -254,6 +255,10 @@ use app\models\ControlValoracionesComdata;
                     xcd.i8_povalor 'i8_poRespuesta', xcd.i9_povalor 'i9_poRespuesta', xcd.i10_povalor 'i10_poRespuesta', 
                     rol.role_nombre rol, f.hora_inicial 'hora_inicial', f.hora_final 'hora_final', f.score 'score', f.cant_modificaciones 'cant_modificaciones', f.tiempo_modificaciones 'tiempo_modificaciones'";
 
+            if($arbol_id == '3104'){
+                $sql .= ", ba.reason3 'reason3', ba.reason4 'reason4', ba.idnps 'idnps', ba.email 'email', ba.nmusuario 'nmusuario', ba.user_seg 'user_seg', ba.nota_anterior 'nota_anterior', bsa.identificacion 'identificacion', bsa.nombre 'nombre', bsa.ani 'ani', bsa.rn 'rn', bsa.tipologia 'tipologia', bsa.pregunta1 'pregunta1'";
+            }
+
             $sql .= " FROM (tbl_ejecucionformularios f, tbl_formularios xf, tbl_arbols xarbol,  
                     tbl_usuarios xusuarios, tbl_evaluados xevaluados, tbl_transacions xtransacions,
                     tbl_usuarios xusuarios2, tbl_equipos xequipos, rel_usuarios_roles urol, tbl_roles rol, 
@@ -267,6 +272,10 @@ use app\models\ControlValoracionesComdata;
                     LEFT JOIN tbl_tipificaciondetalles xstd ON xtd.subtipificacion_id = xstd.tipificacion_id  AND xstd.`snen_uso` = 1 
                     LEFT JOIN tbl_ejecucionbloquedetalles_subtipificaciones st 
                     ON xstd.id = st.tipificaciondetalle_id AND t.id =  st.ejecucionbloquedetalles_tipificacion_id";
+            
+            if($arbol_id == '3104'){
+                $sql .= " LEFT JOIN  tbl_base_Avon ba ON f.basesatisfaccion_id = ba.id LEFT JOIN tbl_base_satisfaccion bsa ON f.basesatisfaccion_id = bsa.id";
+            }
 
             $sql .= " WHERE f.arbol_id in (" . $arbol_id . ") AND f.created BETWEEN '2023-09-13 04:00:00' AND '2023-09-13 05:59:59' 
                     AND xf.id = f.formulario_id AND f.arbol_id = xarbol.id AND xtransacions.id = f.transacion_id 
@@ -578,7 +587,14 @@ use app\models\ControlValoracionesComdata;
             var_dump("export...", $export); 
 
             $objWriter = new \PHPExcel_Writer_Excel2007($objPHPexcel);
-            $objWriter->save($fileName);  
+            $objWriter->save($fileName); 
+            
+            // Desconectar la hoja de cálculo y liberar recursos
+            $objPHPexcel->disconnectWorksheets();
+            $objWriter->finish();
+
+            // Destruir el objeto PHPExcel para liberar memoria
+            unset($objPHPexcel);
 
         }
         //fin foreach array_pcrc
