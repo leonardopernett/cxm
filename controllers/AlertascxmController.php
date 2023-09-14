@@ -474,6 +474,7 @@ use Exception;
         $varDataProceso = array();
         $varDataTecnico = array();
         $varDataEncuestasTipos = array();
+        $$dataValoradores = array();
 
 
         $form = Yii::$app->request->post();
