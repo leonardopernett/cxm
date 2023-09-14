@@ -527,6 +527,9 @@ use Exception;
                 for ($i=0; $i < count($model->valorador); $i++) { 
                     array_push($arrayDataUsers, $model->valorador);
                 }
+
+                $listavariablesarray = implode(", ", $arrayDataUsers);
+                $dataValoradores = explode(",", str_replace(array("#", "'", ";", " "), '', $listavariablesarray));
             }
             
 
@@ -548,7 +551,7 @@ use Exception;
                                   'tbl_usuarios.usua_id = tbl_alertascx.valorador')
 
                             ->where(['between','tbl_alertascx.fecha',$varFechaInicio_BD.' 00:00:00',$varFechaFin_BD.' 23:59:59'])
-                            ->andfilterwhere(['in','tbl_alertascx.valorador',$arrayDataUsers])
+                            ->andfilterwhere(['in','tbl_alertascx.valorador',$dataValoradores])
                             ->andfilterwhere(['in','tbl_alertascx.pcrc',$arrayDataPcrc])
                             ->all(); 
 
@@ -566,7 +569,7 @@ use Exception;
                                   'tbl_alertas_tipoalerta.tipoalerta = tbl_alertascx.tipo_alerta')
 
                             ->where(['between','tbl_alertascx.fecha',$varFechaInicio_BD.' 00:00:00',$varFechaFin_BD.' 23:59:59'])
-                            ->andfilterwhere(['in','tbl_alertascx.valorador',$arrayDataUsers])
+                            ->andfilterwhere(['in','tbl_alertascx.valorador',$dataValoradores])
                             ->andfilterwhere(['in','tbl_alertascx.pcrc',$arrayDataPcrc])
                             ->groupby(['tbl_alertas_tipoalerta.id_tipoalerta'])
                             ->all(); 
@@ -588,7 +591,7 @@ use Exception;
                                   'tbl_alertas_tipoencuestas.id_tipoencuestas = tbl_alertas_encuestasalertas.id_tipoencuestas')
 
                             ->where(['between','tbl_alertascx.fecha',$varFechaInicio_BD.' 00:00:00',$varFechaFin_BD.' 23:59:59'])
-                            ->andfilterwhere(['in','tbl_alertascx.valorador',$arrayDataUsers])
+                            ->andfilterwhere(['in','tbl_alertascx.valorador',$dataValoradores])
                             ->andfilterwhere(['in','tbl_alertascx.pcrc',$arrayDataPcrc])
                             ->andwhere(['=','tbl_alertas_encuestasalertas.anulado',0])
                             ->groupby(['tbl_alertas_encuestasalertas.id_encuestasalertas'])
@@ -611,7 +614,7 @@ use Exception;
                                   'tbl_alertas_tipoencuestas.id_tipoencuestas = tbl_alertas_encuestasalertas.id_tipoencuestas')
 
                             ->where(['between','tbl_alertascx.fecha',$varFechaInicio_BD.' 00:00:00',$varFechaFin_BD.' 23:59:59'])
-                            ->andfilterwhere(['in','tbl_alertascx.valorador',$arrayDataUsers])
+                            ->andfilterwhere(['in','tbl_alertascx.valorador',$dataValoradores])
                             ->andfilterwhere(['in','tbl_alertascx.pcrc',$arrayDataPcrc])
                             ->andwhere(['=','tbl_alertas_encuestasalertas.anulado',0])
                             ->groupby(['tbl_alertas_tipoencuestas.tipoencuestas'])
@@ -635,7 +638,7 @@ use Exception;
                                   'tbl_alertas_encuestasalertas.id_alerta = tbl_alertascx.id')
 
                             ->where(['between','tbl_alertascx.fecha',$varFechaInicio_BD.' 00:00:00',$varFechaFin_BD.' 23:59:59'])
-                            ->andfilterwhere(['in','tbl_alertascx.valorador',$arrayDataUsers])
+                            ->andfilterwhere(['in','tbl_alertascx.valorador',$dataValoradores])
                             ->andfilterwhere(['in','tbl_alertascx.pcrc',$arrayDataPcrc])
                             ->groupby(['a.id'])
                             ->all();
@@ -661,7 +664,7 @@ use Exception;
                                   'tbl_usuarios.usua_id = tbl_alertascx.valorador')
 
                             ->where(['between','tbl_alertascx.fecha',$varFechaInicio_BD.' 00:00:00',$varFechaFin_BD.' 23:59:59'])
-                            ->andfilterwhere(['in','tbl_alertascx.valorador',$arrayDataUsers])
+                            ->andfilterwhere(['in','tbl_alertascx.valorador',$dataValoradores])
                             ->andfilterwhere(['in','tbl_alertascx.pcrc',$arrayDataPcrc])
                             ->groupby(['tbl_usuarios.usua_id'])
                             ->all();
