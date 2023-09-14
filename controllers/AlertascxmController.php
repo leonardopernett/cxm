@@ -1188,7 +1188,7 @@ use Exception;
                     resultados.</a>
                     </p>
                     <br>
-                    <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>Comentarios de la Alerta:
+                    <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'><strong>Comentarios de la Alerta:</strong>
                     </p>
                     <p style='color:#040B25;text-align: justify'>
                     ".$varComentarios_enviados."</a>
