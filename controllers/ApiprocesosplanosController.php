@@ -590,7 +590,7 @@ use app\models\ControlValoracionesComdata;
             // $objWriter->save($fileName); 
 
             
-            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007'); // Crear un objeto de escritura para guardar el archivo Excel
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPexcel, 'Excel2007'); // Crear un objeto de escritura para guardar el archivo Excel
             $objWriter->save($fileName); // Guardar el archivo Excel en la ubicación especificada
             
             // // Desconectar la hoja de cálculo y liberar recursos
