@@ -584,17 +584,21 @@ use app\models\ControlValoracionesComdata;
                 $column++;
             }
 
-            var_dump("export...", $export); 
+            var_dump("export...", $export);
 
-            $objWriter = new \PHPExcel_Writer_Excel2007($objPHPexcel);
-            $objWriter->save($fileName); 
+            // $objWriter = new \PHPExcel_Writer_Excel2007($objPHPexcel);
+            // $objWriter->save($fileName); 
+
             
-            // Desconectar la hoja de cálculo y liberar recursos
-            $objPHPexcel->disconnectWorksheets();
-            $objWriter->finish();
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007'); // Crear un objeto de escritura para guardar el archivo Excel
+            $objWriter->save($fileName); // Guardar el archivo Excel en la ubicación especificada
+            
+            // // Desconectar la hoja de cálculo y liberar recursos
+            // $objPHPexcel->disconnectWorksheets();
+            // $objWriter->finish();
 
             // Destruir el objeto PHPExcel para liberar memoria
-            unset($objPHPexcel);
+            //unset($objPHPexcel);
 
         }
         //fin foreach array_pcrc
