@@ -403,6 +403,7 @@ $varid = $_GET['varid'];
               },
               success : function(response){ 
                           var Rta =   JSON.parse(response);
+                          Rta.data.sort((x, y) => x.name.localeCompare(y.name));
                           document.getElementById("txtReportes").innerHTML = "";
                           var node = document.createElement("OPTION");
                           node.setAttribute("value", "");
@@ -417,7 +418,7 @@ $varid = $_GET['varid'];
                               document.getElementById("txtReportes").appendChild(node);
                           }
                           document.getElementById("txtReportes").options[0].disabled = true;
-			  var x=document.getElementById("txtReportes");
+			                    var x=document.getElementById("txtReportes");
                           x.disabled=false;
                       }
           }); 
