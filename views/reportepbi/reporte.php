@@ -403,7 +403,9 @@ $varid = $_GET['varid'];
               },
               success : function(response){ 
                           var Rta =   JSON.parse(response);
-                          Rta.data.sort((x, y) => x.name.localeCompare(y.name));
+                          if (varareatrabajoid != '9c72b5f8-8e33-424b-8bbc-9581ceadf598') {
+                            Rta.data.sort((x, y) => x.name.localeCompare(y.name));
+                          }                          
                           document.getElementById("txtReportes").innerHTML = "";
                           var node = document.createElement("OPTION");
                           node.setAttribute("value", "");
