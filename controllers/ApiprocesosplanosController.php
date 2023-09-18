@@ -84,12 +84,12 @@ use app\models\ControlValoracionesComdata;
         $varHora = date('H', strtotime('-1 hour'));
 
         //Obtener lista de PCRC para exportar
-        $array_pcrc = ControlValoracionesComdata::find()
+        $array_pcrc = (new \yii\db\Query())
                     ->select('arbol_id')
                     ->from('tbl_control_valoraciones_comdata')
                     ->where(['anulado' => 0])
-                    ->all();        
-        
+                    ->all();
+                            
 	    //controlar que no existen fechas null 
         $txtidformularios = Yii::$app->db->createCommand("Select id from tbl_ejecucionformularios WHERE hora_final IS null")->queryAll();
         if ($txtidformularios){
@@ -101,15 +101,14 @@ use app\models\ControlValoracionesComdata;
         }
         //fechas null
 
-        /* Inicio Variables */
-        //INICIO DE TRANSPOSICION DE DATOS
-        $textos = $this->getTextosPreguntas();   
-
         //inicio foreach array_pcrc
         foreach ($array_pcrc as $value) {
-
             
             $arbol_id = $value['arbol_id'];
+
+            /* Inicio Variables */
+            //INICIO DE TRANSPOSICION DE DATOS
+            $textos = $this->getTextosPreguntas(); 
 
             $titulos = array();
             // Control del Formulario
@@ -574,18 +573,7 @@ use app\models\ControlValoracionesComdata;
             }
 
             $objWriter = new \PHPExcel_Writer_Excel2007($objPHPexcel);
-            $objWriter->save($fileName); 
-
-            
-            // $objWriter = PHPExcel_IOFactory::createWriter($objPHPexcel, 'Excel2007'); // Crear un objeto de escritura para guardar el archivo Excel
-            // $objWriter->save($fileName); // Guardar el archivo Excel en la ubicación especificada
-            
-            // // Desconectar la hoja de cálculo y liberar recursos
-            // $objPHPexcel->disconnectWorksheets();
-            // $objWriter->finish();
-
-            // Destruir el objeto PHPExcel para liberar memoria
-            //unset($objPHPexcel);
+            $objWriter->save($fileName);
 
         }
         //fin foreach array_pcrc
