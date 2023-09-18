@@ -92,6 +92,9 @@ use app\models\ControlValoracionesComdata;
                     ->asArray() 
                     ->column();
 
+                    var_dump($array_pcrc);
+                   
+
         // Convertir el array en una cadena separada por comas
         //$arbolIdsString = implode(',', $array_pcrc);
         //$arbolIdsString =  "'" . implode("','", $array_pcrc) . "'";
@@ -102,20 +105,7 @@ use app\models\ControlValoracionesComdata;
         // $encoded = urlencode($string);
         // $nombreArchivo = $encoded;
         
-        /* Inicio Variables */
-        //INICIO DE TRANSPOSICION DE DATOS
-        $textos = $this->getTextosPreguntas();
-
-        $titulos = array();
-        // Control del Formulario
-        $fid = -1;
-        // Control de la seccion
-        $sid = -1;
-        // Control del bloque
-        $did = -1;
-        $cdpregunta = -1;
-        $cdtipificacion = -1;
-
+        
 	    //controlar que no existen fechas null 
         $txtidformularios = Yii::$app->db->createCommand("Select id from tbl_ejecucionformularios WHERE hora_final IS null")->queryAll();
         if ($txtidformularios){
@@ -127,19 +117,37 @@ use app\models\ControlValoracionesComdata;
         }
         //fechas null
 
+        /* Inicio Variables */
+        //INICIO DE TRANSPOSICION DE DATOS
+        $textos = $this->getTextosPreguntas();
+
+        var_dump($textos);   
+
         //inicio foreach array_pcrc
         foreach ($array_pcrc as $arbol_id) { 
 
-            var_dump($arbol_id);
+            var_dump($arbol_id);            
+
+            $titulos = array();
+            // Control del Formulario
+            $fid = -1;
+            // Control de la seccion
+            $sid = -1;
+            // Control del bloque
+            $did = -1;
+            $cdpregunta = -1;
+            $cdtipificacion = -1;
 
             // Variables de control
             $export = false;
 
             /* Archivos */
             $fileName = Yii::$app->basePath . DIRECTORY_SEPARATOR . "web" .
-                    DIRECTORY_SEPARATOR . "valoracioncxm_comdata" . DIRECTORY_SEPARATOR
+                    DIRECTORY_SEPARATOR . "valoracionescxm_comdata" . DIRECTORY_SEPARATOR
                     . Yii::t('app', 'Reporte_extractar') . '_' . date('Ymd') . "_" .
-                    $varHora . ".xlsx";
+                    $varHora . "_" . $arbol_id . ".xlsx";
+            
+            var_dump($fileName);
 
             /* Titulos */
             $titulos[0] = ['header' => 'Fecha y Hora', 'value' => '0'];
@@ -311,8 +319,10 @@ use app\models\ControlValoracionesComdata;
                 //inicio si hay registros -----------------------------------------------------            
                 if (count($data) > 0) { 
 
+                    var_dump("data...", $data);
+
                     //inicio foreach $data
-                    foreach ($data as $i => $row) {
+                    foreach ($data as $i => $row) {                        
 
                         if ($row['fid'] != $fid) {
                             // Si no es el primer registro se imprime la fila
@@ -586,12 +596,12 @@ use app\models\ControlValoracionesComdata;
 
             var_dump("export...", $export);
 
-            // $objWriter = new \PHPExcel_Writer_Excel2007($objPHPexcel);
-            // $objWriter->save($fileName); 
+            $objWriter = new \PHPExcel_Writer_Excel2007($objPHPexcel);
+            $objWriter->save($fileName); 
 
             
-            $objWriter = PHPExcel_IOFactory::createWriter($objPHPexcel, 'Excel2007'); // Crear un objeto de escritura para guardar el archivo Excel
-            $objWriter->save($fileName); // Guardar el archivo Excel en la ubicación especificada
+            // $objWriter = PHPExcel_IOFactory::createWriter($objPHPexcel, 'Excel2007'); // Crear un objeto de escritura para guardar el archivo Excel
+            // $objWriter->save($fileName); // Guardar el archivo Excel en la ubicación especificada
             
             // // Desconectar la hoja de cálculo y liberar recursos
             // $objPHPexcel->disconnectWorksheets();
