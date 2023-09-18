@@ -70,7 +70,8 @@ use app\models\BaseAleatorio;
             'adminusuarios','adminapiwiasae','viewtipoalertasqyr','deletealertasqyr',
             'viewareasqyr','varListAreasqyr','viewtipologiasqyr','viewrespuestaautomaticaqyr','deleterespuestaqyr',
             'viewalertacumplimientoqyr','importardocumento','viewcartarespuestaqyr','parametrizarpcrccomdata','deletepcrcs','parametrizarpbi','aleatorioencuestas','viewheroes',
-            'parametrizarpcrcatributoscriticos', 'cargarlistapcrc', 'deletepcrcatributoscriticos'],
+            'parametrizarpcrcatributoscriticos', 'cargarlistapcrc', 'deletepcrcatributoscriticos',
+            'parametrizarpcrcvaloracionescomdata', 'cargarlistapcrcvaloracionescomdata', 'deletepcrcvaloracionescomdata'],
             'rules' => [
               [
                 'allow' => true,
@@ -3690,6 +3691,107 @@ use app\models\BaseAleatorio;
         return $this->render('viewheroes',[
             'varListadoHeroesValoraciones' => $varListadoHeroesValoraciones,
         ]);
+    }
+
+    /* MODULO PARAMETRIZADOR 
+    PROCESO PARA GUARDAR O ELIMINAR LOS PCRC QUE SE USARÁN PARA EXPORTAR VALORACIONES MANUALES PARA COMDATA --------------------*/
+
+    //Función que agregaR un PCRC
+    public function actionParametrizarpcrcvaloracionescomdata() {
+
+        $model = new ControlParams();
+        $form = Yii::$app->request->post();
+        
+        if ($model->load($form)) {
+
+            $varidArbol = $model->arbol_id; // id PCRC
+
+            $existe_id_pcrc = (new \yii\db\Query())
+            ->select(['id'])
+            ->from(['tbl_control_valoraciones_comdata'])
+            ->where(['=','arbol_id',$varidArbol])
+            ->andwhere(['=','anulado', 0])
+            ->count();
+
+            // No existe el id del PCRC
+            if($existe_id_pcrc==0){
+
+                $insertar_datos = Yii::$app->db->createCommand()->insert('tbl_control_valoraciones_comdata',[
+                    'arbol_id' => $varidArbol,
+                    'fecha_creacion' => date("Y-m-d"),
+                    'usua_id' => Yii::$app->user->identity->id,
+                ])->execute();
+
+                if($insertar_datos>0){
+                    Yii::$app->session->setFlash('success_creacion', 'Creación exitosa.');        
+                } else {
+                    Yii::$app->session->setFlash('error_creacion', 'Error agregando los datos.');
+                } 
+            }
+
+            // Ya existe en nuestra tabla el id_pcrc 
+            if($existe_id_pcrc>0){
+                Yii::$app->session->setFlash('error_creacion', 'Ya existe el Programa/PCRC.');
+            }    
+
+            return $this->redirect('parametrizarpcrcvaloracionescomdata');
+            
+        }
+
+        return $this->render('parametrizarpcrcvaloracionescomdata',[
+                'model' => $model,
+        ]);
+
+    }    
+
+    //Funcion para obtener la lista de los PCRC agregados  
+    public function actionCargarlistapcrcvaloracionescomdata() {
+
+        $varListaPcrcs= Yii::$app->db->createCommand("
+        SELECT DISTINCT (pcrc.arbol_id) AS id_pcrc, arbol.name AS nom_pcrc
+        FROM tbl_control_valoraciones_comdata pcrc
+        INNER JOIN tbl_arbols arbol ON arbol.id = pcrc.arbol_id 
+        where anulado = 0")->queryAll();
+
+        $response = [
+            'status' => 'success',
+            'data' => $varListaPcrcs,
+        ];
+
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        return $response;
+        
+    }
+
+    //Función para eliminar logicamente un PCRC
+    public function actionDeletepcrcvaloracionescomdata() {
+        $paramsEliminar = Yii::$app->request->get('id_pcrc');   
+
+        $result = Yii::$app->db->createCommand('
+            UPDATE tbl_control_valoraciones_comdata 
+            SET anulado = :varAnulado
+            WHERE 
+            arbol_id = :VarId')
+        ->bindValue(':VarId', $paramsEliminar)
+        ->bindValue(':varAnulado', 1)
+        ->execute();
+
+        if ($result>0) {
+            $response = [
+                'status' => 'success',
+                'data' => 'Programa/PCRC eliminado correctamente.',
+                ];            
+        } else {
+            $response = [
+                'status' => 'error',
+                'data' => 'Error eliminando Programa/PCRC.',
+                ];                        
+        }
+
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        return $response;
     }
     
 
