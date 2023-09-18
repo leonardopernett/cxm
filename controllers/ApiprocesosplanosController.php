@@ -266,7 +266,7 @@ use app\models\ControlValoracionesComdata;
                 $sql .= " LEFT JOIN  tbl_base_Avon ba ON f.basesatisfaccion_id = ba.id LEFT JOIN tbl_base_satisfaccion bsa ON f.basesatisfaccion_id = bsa.id";
             }
 
-            $sql .= " WHERE f.arbol_id in (" . $arbol_id . ") AND f.created BETWEEN '2023-09-13 04:00:00' AND '2023-09-13 05:59:59' 
+            $sql .= " WHERE f.arbol_id in (" . $arbol_id . ") AND f.created BETWEEN '2023-09-18 03:00:00' AND '2023-09-18 06:59:59' 
                     AND xf.id = f.formulario_id AND f.arbol_id = xarbol.id AND xtransacions.id = f.transacion_id 
                     AND xarbol.arbol_id = xarbol_padre.id AND f.dimension_id = xdim.id AND f.evaluado_id = xevaluados.id 
                     AND f.usua_id_lider = xusuarios.usua_id AND f.usua_id = xusuarios2.usua_id AND f.equipo_id = xequipos.id 
