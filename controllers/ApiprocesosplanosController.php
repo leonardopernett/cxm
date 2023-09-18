@@ -78,7 +78,6 @@ use app\models\ControlValoracionesComdata;
 
     public function actionProcesosplanos() {
         set_time_limit(0);
-        //$modelArchivo = new UploadForm2();
 
         $varFechainicio_P = date('Y-m-d H:00:00', strtotime('-1 hour'));
         $varFechafin_P = date('Y-m-d H:59:59', strtotime('-1 hour'));
@@ -89,22 +88,7 @@ use app\models\ControlValoracionesComdata;
                     ->select('arbol_id')
                     ->from('tbl_control_valoraciones_comdata')
                     ->where(['anulado' => 0])
-                    ->asArray() 
-                    ->column();
-
-                    var_dump($array_pcrc);
-                   
-
-        // Convertir el array en una cadena separada por comas
-        //$arbolIdsString = implode(',', $array_pcrc);
-        //$arbolIdsString =  "'" . implode("','", $array_pcrc) . "'";
-        
-
-        //CONVERTIR CARACTERES ESPECIALES
-        // $string = "nombréConTíldès.xlsx";
-        // $encoded = urlencode($string);
-        // $nombreArchivo = $encoded;
-        
+                    ->all();        
         
 	    //controlar que no existen fechas null 
         $txtidformularios = Yii::$app->db->createCommand("Select id from tbl_ejecucionformularios WHERE hora_final IS null")->queryAll();
@@ -119,14 +103,13 @@ use app\models\ControlValoracionesComdata;
 
         /* Inicio Variables */
         //INICIO DE TRANSPOSICION DE DATOS
-        $textos = $this->getTextosPreguntas();
-
-        var_dump($textos);   
+        $textos = $this->getTextosPreguntas();   
 
         //inicio foreach array_pcrc
-        foreach ($array_pcrc as $arbol_id) { 
+        foreach ($array_pcrc as $value) {
 
-            var_dump($arbol_id);            
+            
+            $arbol_id = $value['arbol_id'];
 
             $titulos = array();
             // Control del Formulario
@@ -147,8 +130,6 @@ use app\models\ControlValoracionesComdata;
                     . Yii::t('app', 'Reporte_extractar') . '_' . date('Ymd') . "_" .
                     $varHora . "_" . $arbol_id . ".xlsx";
             
-            var_dump($fileName);
-
             /* Titulos */
             $titulos[0] = ['header' => 'Fecha y Hora', 'value' => '0'];
             $titulos[1] = ['header' => 'Hora Inicial Valoracion', 'value' => '1'];
@@ -315,11 +296,9 @@ use app\models\ControlValoracionesComdata;
                 $limite_ciclo_inicial += $delta_ciclo;
                 $sqlRango = $sql . " LIMIT " . $limite_ciclo_inicial . "," . $limite_ciclo_final . " ";
                 $data = Yii::$app->db->createCommand($sqlRango)->queryAll();   
-            
+                
                 //inicio si hay registros -----------------------------------------------------            
-                if (count($data) > 0) { 
-
-                    var_dump("data...", $data);
+                if (count($data) > 0) {
 
                     //inicio foreach $data
                     foreach ($data as $i => $row) {                        
@@ -593,8 +572,6 @@ use app\models\ControlValoracionesComdata;
                 $objPHPexcel->getActiveSheet()->setCellValue($column . '1', $arrayTitulos[$index]);
                 $column++;
             }
-
-            var_dump("export...", $export);
 
             $objWriter = new \PHPExcel_Writer_Excel2007($objPHPexcel);
             $objWriter->save($fileName); 
