@@ -334,7 +334,7 @@ use app\models\ControlProcesosEquipos;
     
     // FILTRAR REPORTES A LOS QUE EL USUARIO TIENE PERMISO
     $reports = $model->filter_user_permits('report',$reports,$sessiones, $var_id); 
-
+    
     die(json_encode( array("status"=>"1","data"=>$reports) ));
 
   }
