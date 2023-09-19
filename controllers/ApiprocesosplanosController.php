@@ -103,6 +103,8 @@ use app\models\ControlValoracionesComdata;
 
         //inicio foreach array_pcrc
         foreach ($array_pcrc as $value) {
+
+            $dataProvider = array();
             
             $arbol_id = $value['arbol_id'];
 
@@ -550,9 +552,10 @@ use app\models\ControlValoracionesComdata;
             //fin do while
 
             $filecontent = "";
-            //IMPRIMO EL ULTIMO REGISTRO
+            //IMPRIMO EL ULTIMO REGISTRO  
             if (isset($dataProvider)) {
                 foreach ($dataProvider as $value) {
+                    var_dump($value); 
                     $tmpCont = implode("|", $value);
                     $filecontent = str_replace(array("\r\n"), ' ', $tmpCont);
                     $objPHPexcel->getActiveSheet()->setCellValue('A' . $fila, $filecontent);
