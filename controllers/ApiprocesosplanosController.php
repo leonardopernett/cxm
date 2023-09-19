@@ -77,7 +77,7 @@ use app\models\ControlValoracionesComdata;
     }
 
     public function actionProcesosplanos() {
-        set_time_limit(0);
+        //set_time_limit(0);
 
         $varFechainicio_P = date('Y-m-d H:00:00', strtotime('-1 hour'));
         $varFechafin_P = date('Y-m-d H:59:59', strtotime('-1 hour'));
@@ -128,9 +128,9 @@ use app\models\ControlValoracionesComdata;
             /* Archivos */
             $fileName = Yii::$app->basePath . DIRECTORY_SEPARATOR . "web" .
                     DIRECTORY_SEPARATOR . "valoracionescxm_comdata" . DIRECTORY_SEPARATOR
-                    . Yii::t('app', 'Reporte_extractar') . '_' . date('Ymd') . "_" .
-                    $varHora . "_" . $arbol_id . ".xlsx";
-            
+                    . Yii::t('app', 'valoraciones') . '_' . date('Ymd') . "_h" .
+                    $varHora . "_" . $arbol_id . ".xlsx";  
+             
             /* Titulos */
             $titulos[0] = ['header' => 'Fecha y Hora', 'value' => '0'];
             $titulos[1] = ['header' => 'Hora Inicial Valoracion', 'value' => '1'];
@@ -555,7 +555,6 @@ use app\models\ControlValoracionesComdata;
             //IMPRIMO EL ULTIMO REGISTRO  
             if (isset($dataProvider)) {
                 foreach ($dataProvider as $value) {
-                    var_dump($value); 
                     $tmpCont = implode("|", $value);
                     $filecontent = str_replace(array("\r\n"), ' ', $tmpCont);
                     $objPHPexcel->getActiveSheet()->setCellValue('A' . $fila, $filecontent);
@@ -564,6 +563,12 @@ use app\models\ControlValoracionesComdata;
             } else {
                 $export = false;
             }
+
+            //Si no tiene datos saltar a la siguiente iteracion
+            if(!$export) {
+                continue;
+            }
+
             $arrayTitulos = [];
 
             $column = 'A';
