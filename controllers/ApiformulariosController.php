@@ -341,7 +341,7 @@ use GuzzleHttp;
       $arraydatap = array();
       foreach ($varListPreguntas as $value) {
 
-        array_push($arraydatap, array("id_Seccion"=>$value["id_Seccion"],"id_Bloque"=>$value["id_Bloque"],"Id_Formulario "=>$value['Id_Formulario'],"Id_Bloque"=>$value['Id_Bloque'],"Bloque"=>$value['Bloque'],"Id_Pregunta"=>$value['Id_Pregunta'],"Pregunta "=>$value['Pregunta'],"Id_Respuesta"=>$value['Id_Respuesta'],"Respuesta "=>$value['Respuesta'])); 
+        array_push($arraydatap, array("Id_Formulario "=>$value['Id_Formulario'],"Id_Bloque"=>$value['Id_Bloque'],"Bloque"=>$value['Bloque'],"Id_Pregunta"=>$value['Id_Pregunta'],"Pregunta "=>$value['Pregunta'],"Id_Respuesta"=>$value['Id_Respuesta'],"Respuesta "=>$value['Respuesta'])); 
 
       }
 
