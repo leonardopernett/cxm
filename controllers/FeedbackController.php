@@ -115,8 +115,9 @@ class FeedbackController extends \yii\web\Controller {
                         $varusua_id_lider = $model->usua_id_lider;
                         $varModel = explode(",", $model->evaluado_id);
                         $vardscomentario = $model->dscomentario;
-                        $varcod_pcrc = $model->cod_pcrc;
-                        $varexpress = 0;
+                        $varcod_pcrc = $model->arbol_id;
+                        $varexpress = 0;                       
+
                         if ($varcod_pcrc) {
                             $varexpress = 1; 
                         }
