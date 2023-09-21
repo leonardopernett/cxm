@@ -5966,7 +5966,7 @@ use app\models\SpeechParametrizar;
         $objet_json = json_decode($response,true);
 
 
-        foreach ($objet_json as $key => $value) {
+        foreach ($objet_json['data'] as $key => $value) {
 
           if ($varIdClienteLlamadaEspecial_BD == '171') {
             $varCambiaFechas = substr($value['fechallamada'],0,19);
