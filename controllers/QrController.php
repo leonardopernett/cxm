@@ -271,45 +271,54 @@ use app\models\Tipologiasqyr;
       
 
       $varHtml = 
-          "
-            <html lang='en'>
+      "
+      <html lang='en'>
 
-              <head>
-              <meta charset='UTF-8'>
-              <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-              <title>Document</title>
-              </head>
+        <head>
+        <meta charset='UTF-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+        <title>Document</title>
+        </head>
 
-              <body style='font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 12px;'>
-                  <br><br><br><br>
-                  <div style='width: 450px; position: relative;'>
-                      <img src='https://i.ibb.co/8xbhr7W/k.png' alt='' width='80' style='position: absolute; top:-35px;right: -20px; border: 2px solid #002855 ;'>
-                      <div style='  box-shadow: -1px 0px 5px 0px rgba(0,0,0,0.75); border-radius: 10px; padding: 5px 50px; display: flex;'>
+        <body style='font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 12px;'>
+          <br><br><br><br>
+          <div style='width: 450px; position: relative;'>
+            <img src='https://i.ibb.co/8xbhr7W/k.png' alt='' width='80' style='position: absolute; top:-35px;right: -20px; border: 2px solid #002855 ;'>
+            <div style='  box-shadow: -1px 0px 5px 0px rgba(0,0,0,0.75); border-radius: 10px; padding: 5px 50px; display: flex;'>
 
-                          <div style='width: 100%;'>
-                              
-                              <h4 style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>¡Hola Equipo CXM!</h4>
-                              <br><br>
-                              <p>Te notificamos que han dado respuesta a tu caso de PQRSF:</p>
-                              <br>
-                              <p>Número:".$caso."</p>
-                              <br>
-                              <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>".$varcuerpo2."</p>
-                              <br><br>
-                              <p>¡Que tengas un excelente día!</p>
-                              <br><br><br>
-                          
-                          </div>
+              <div style='width: 100%;'>
+                      
+                <h2 style='color: #002855; margin-bottom: 5px; font-size: 35px;'>
+                  ¡Hola Equipo! 
+                </h2>       
+                  
+                <div style='width: 50px; height: 5px; background-color: #FFC72C; margin-bottom: 15px;'></div>
 
-                          <div class='div'>
-                              <img src='' alt=''>
-                          </div>
+                <br><br>
+                <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>Te notificamos que han dado respuesta a tu caso de PQRSF:</p>
+                <br>
+                <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>Número:".$caso."</p>
+                <br>
+                <p style='color:#040B25;text-align: justify'>".$varcuerpo2."</p>
+                <br><br>
+                <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>¡Que tengas un excelente día!</p>
+                <br><br><br>
 
-                      </div>
-                  </div>
-              </body>
+                <br>
+                <div style='text-align: center; margin-bottom: 10px;'>
+                    <a style='border:1px solid #FFC72C; background-color: #FFC72C; color:white; padding: 3px 10px; border-radius: 40px; font-weight: bold; text-decoration: none;' href='https://qa.grupokonecta.local/qa_managementv2/web/index.php'>Ingresar a CXM/a>
+                </div>
+                  
+              </div>
 
-            </html> ";
+              <div class='div'>
+                  <img src='' alt=''>
+              </div>
+
+            </div>
+          </div>
+        </body>
+      </html>  ";
          
 
           Yii::$app->mailer->compose()
@@ -322,46 +331,58 @@ use app\models\Tipologiasqyr;
           // // correo para grupo CX   
           
 
-          $varHtml = 
-          "
-            <html lang='en'>
 
+
+            $varHtml = 
+            "
+            <html lang='en'>
+  
               <head>
               <meta charset='UTF-8'>
               <meta name='viewport' content='width=device-width, initial-scale=1.0'>
               <title>Document</title>
               </head>
-
+  
               <body style='font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 12px;'>
-                  <br><br><br><br>
-                  <div style='width: 450px; position: relative;'>
-                      <img src='https://i.ibb.co/8xbhr7W/k.png' alt='' width='80' style='position: absolute; top:-35px;right: -20px; border: 2px solid #002855 ;'>
-                      <div style='  box-shadow: -1px 0px 5px 0px rgba(0,0,0,0.75); border-radius: 10px; padding: 5px 50px; display: flex;'>
-
-                          <div style='width: 100%;'>
-                              
-                              <h4 style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>¡Hola Equipo CXM!</h4>
-                              <br><br>
-                              <p>Te notificamos que han dado respuesta a tu caso de PQRSF:</p>
-                              <br>
-                              <p>Número:".$caso."</p>
-                              <br>
-                              <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>".$varcuerpo2."</p>
-                              <br><br>
-                              <p>¡Que tengas un excelente día!</p>
-                              <br><br><br>
-                          
-                          </div>
-
-                          <div class='div'>
-                              <img src='' alt=''>
-                          </div>
-
+                <br><br><br><br>
+                <div style='width: 450px; position: relative;'>
+                  <img src='https://i.ibb.co/8xbhr7W/k.png' alt='' width='80' style='position: absolute; top:-35px;right: -20px; border: 2px solid #002855 ;'>
+                  <div style='  box-shadow: -1px 0px 5px 0px rgba(0,0,0,0.75); border-radius: 10px; padding: 5px 50px; display: flex;'>
+  
+                    <div style='width: 100%;'>
+                            
+                      <h2 style='color: #002855; margin-bottom: 5px; font-size: 35px;'>
+                        ¡Hola Equipo! 
+                      </h2>       
+                        
+                      <div style='width: 50px; height: 5px; background-color: #FFC72C; margin-bottom: 15px;'></div>
+  
+                      <br><br>
+                      <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>Te notificamos que han dado respuesta a tu caso de PQRSF:</p>
+                      <br>
+                      <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>Número:".$caso."</p>
+                      <br>
+                      <p style='color:#040B25;text-align: justify'>".$varcuerpo2."</p>
+                      <br><br>
+                      <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>¡Que tengas un excelente día!</p>
+                      <br><br><br>
+  
+                      <br>
+                      <div style='text-align: center; margin-bottom: 10px;'>
+                          <a style='border:1px solid #FFC72C; background-color: #FFC72C; color:white; padding: 3px 10px; border-radius: 40px; font-weight: bold; text-decoration: none;' href='https://qa.grupokonecta.local/qa_managementv2/web/index.php'>Ingresar a CXM/a>
                       </div>
+                        
+                    </div>
+  
+                    <div class='div'>
+                        <img src='' alt=''>
+                    </div>
+  
                   </div>
+                </div>
               </body>
-
-            </html> ";
+            </html>  ";
+  
 
           $varListacorreo = (new \yii\db\Query())
             ->select(['email'])
@@ -964,44 +985,54 @@ use app\models\Tipologiasqyr;
 
         $varHtml = 
         "
-            <html lang='en'>
+        <html lang='en'>
 
-              <head>
-              <meta charset='UTF-8'>
-              <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-              <title>Document</title>
-              </head>
+          <head>
+          <meta charset='UTF-8'>
+          <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+          <title>Document</title>
+          </head>
 
-              <body style='font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 12px;'>
-                  <br><br><br><br>
-                  <div style='width: 450px; position: relative;'>
-                      <img src='https://i.ibb.co/8xbhr7W/k.png' alt='' width='80' style='position: absolute; top:-35px;right: -20px; border: 2px solid #002855 ;'>
-                      <div style='  box-shadow: -1px 0px 5px 0px rgba(0,0,0,0.75); border-radius: 10px; padding: 5px 50px; display: flex;'>
+          <body style='font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 12px;'>
+            <br><br><br><br>
+            <div style='width: 450px; position: relative;'>
+              <img src='https://i.ibb.co/8xbhr7W/k.png' alt='' width='80' style='position: absolute; top:-35px;right: -20px; border: 2px solid #002855 ;'>
+              <div style='  box-shadow: -1px 0px 5px 0px rgba(0,0,0,0.75); border-radius: 10px; padding: 5px 50px; display: flex;'>
 
-                          <div style='width: 100%;'>
-                              
-                              <h4 style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>¡Hola Equipo CXM!</h4>
-                              <br><br>
-                              <p>Te notificamos que han dado respuesta a tu caso de PQRSF:</p>
-                              <br>
-                              <p>Número:".$datanumcaso."</p>
-                              <br>
-                              <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>".$varcuerpo2."</p>
-                              <br><br>
-                              <p>¡Que tengas un excelente día!</p>
-                              <br><br><br>
-                          
-                          </div>
+                <div style='width: 100%;'>
+                        
+                  <h2 style='color: #002855; margin-bottom: 5px; font-size: 35px;'>
+                    ¡Hola Equipo! 
+                  </h2>       
+                    
+                  <div style='width: 50px; height: 5px; background-color: #FFC72C; margin-bottom: 15px;'></div>
 
-                          <div class='div'>
-                              <img src='' alt=''>
-                          </div>
+                  <br><br>
+                  <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>Te notificamos que han dado respuesta a tu caso de PQRSF:</p>
+                  <br>
+                  <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>Número:".$datanumcaso."</p>
+                  <br>
+                  <p style='color:#040B25;text-align: justify'>".$varcuerpo2."</p>
+                  <br><br>
+                  <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>¡Que tengas un excelente día!</p>
+                  <br><br><br>
 
-                      </div>
+                  <br>
+                  <div style='text-align: center; margin-bottom: 10px;'>
+                      <a style='border:1px solid #FFC72C; background-color: #FFC72C; color:white; padding: 3px 10px; border-radius: 40px; font-weight: bold; text-decoration: none;' href='https://qa.grupokonecta.local/qa_managementv2/web/index.php'>Ingresar a CXM/a>
                   </div>
-              </body>
+                    
+                </div>
 
-            </html> ";
+                <div class='div'>
+                    <img src='' alt=''>
+                </div>
+
+              </div>
+            </div>
+          </body>
+        </html>  ";
+
 
         Yii::$app->mailer->compose()
         ->setTo($varcorreo)
@@ -1082,44 +1113,54 @@ use app\models\Tipologiasqyr;
 
           $varHtml = 
           "
-            <html lang='en'>
+          <html lang='en'>
 
-              <head>
-              <meta charset='UTF-8'>
-              <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-              <title>Document</title>
-              </head>
+            <head>
+            <meta charset='UTF-8'>
+            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+            <title>Document</title>
+            </head>
 
-              <body style='font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 12px;'>
-                  <br><br><br><br>
-                  <div style='width: 450px; position: relative;'>
-                      <img src='https://i.ibb.co/8xbhr7W/k.png' alt='' width='80' style='position: absolute; top:-35px;right: -20px; border: 2px solid #002855 ;'>
-                      <div style='  box-shadow: -1px 0px 5px 0px rgba(0,0,0,0.75); border-radius: 10px; padding: 5px 50px; display: flex;'>
+            <body style='font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 12px;'>
+              <br><br><br><br>
+              <div style='width: 450px; position: relative;'>
+                <img src='https://i.ibb.co/8xbhr7W/k.png' alt='' width='80' style='position: absolute; top:-35px;right: -20px; border: 2px solid #002855 ;'>
+                <div style='  box-shadow: -1px 0px 5px 0px rgba(0,0,0,0.75); border-radius: 10px; padding: 5px 50px; display: flex;'>
 
-                          <div style='width: 100%;'>
-                              
-                              <h4 style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>¡Hola Equipo CXM!</h4>
-                              <br><br>
-                              <p>Te notificamos que han dado respuesta a tu caso de PQRSF:</p>
-                              <br>
-                              <p>Número:".$datanumcaso."</p>
-                              <br>
-                              <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>".$varcuerpo2."</p>
-                              <br><br>
-                              <p>¡Que tengas un excelente día!</p>
-                              <br><br><br>
+                  <div style='width: 100%;'>
                           
-                          </div>
+                    <h2 style='color: #002855; margin-bottom: 5px; font-size: 35px;'>
+                      ¡Hola Equipo! 
+                    </h2>       
+                      
+                    <div style='width: 50px; height: 5px; background-color: #FFC72C; margin-bottom: 15px;'></div>
 
-                          <div class='div'>
-                              <img src='' alt=''>
-                          </div>
+                    <br><br>
+                    <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>Te notificamos que han dado respuesta a tu caso de PQRSF:</p>
+                    <br>
+                    <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>Número:".$datanumcaso."</p>
+                    <br>
+                    <p style='color:#040B25;text-align: justify'>".$varcuerpo2."</p>
+                    <br><br>
+                    <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>¡Que tengas un excelente día!</p>
+                    <br><br><br>
 
-                      </div>
+                    <br>
+                    <div style='text-align: center; margin-bottom: 10px;'>
+                        <a style='border:1px solid #FFC72C; background-color: #FFC72C; color:white; padding: 3px 10px; border-radius: 40px; font-weight: bold; text-decoration: none;' href='https://qa.grupokonecta.local/qa_managementv2/web/index.php'>Ingresar a CXM/a>
+                    </div>
+                      
                   </div>
-              </body>
 
-            </html> ";
+                  <div class='div'>
+                      <img src='' alt=''>
+                  </div>
+
+                </div>
+              </div>
+            </body>
+          </html>  ";
+
 
                   $varListacorreo = (new \yii\db\Query())
                     ->select(['email'])
@@ -1190,43 +1231,53 @@ use app\models\Tipologiasqyr;
             $varHtml = 
             "
             <html lang='en'>
-
+  
               <head>
               <meta charset='UTF-8'>
               <meta name='viewport' content='width=device-width, initial-scale=1.0'>
               <title>Document</title>
               </head>
-
+  
               <body style='font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 12px;'>
-                  <br><br><br><br>
-                  <div style='width: 450px; position: relative;'>
-                      <img src='https://i.ibb.co/8xbhr7W/k.png' alt='' width='80' style='position: absolute; top:-35px;right: -20px; border: 2px solid #002855 ;'>
-                      <div style='  box-shadow: -1px 0px 5px 0px rgba(0,0,0,0.75); border-radius: 10px; padding: 5px 50px; display: flex;'>
-
-                          <div style='width: 100%;'>
-                              
-                              <h4 style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>¡Hola Equipo CXM!</h4>
-                              <br><br>
-                              <p>Te notificamos que han dado respuesta a tu caso de PQRSF:</p>
-                              <br>
-                              <p>Número:".$datanumcaso."</p>
-                              <br>
-                              <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>".$varcuerpo2."</p>
-                              <br><br>
-                              <p>¡Que tengas un excelente día!</p>
-                              <br><br><br>
-                          
-                          </div>
-
-                          <div class='div'>
-                              <img src='' alt=''>
-                          </div>
-
+                <br><br><br><br>
+                <div style='width: 450px; position: relative;'>
+                  <img src='https://i.ibb.co/8xbhr7W/k.png' alt='' width='80' style='position: absolute; top:-35px;right: -20px; border: 2px solid #002855 ;'>
+                  <div style='  box-shadow: -1px 0px 5px 0px rgba(0,0,0,0.75); border-radius: 10px; padding: 5px 50px; display: flex;'>
+  
+                    <div style='width: 100%;'>
+                            
+                      <h2 style='color: #002855; margin-bottom: 5px; font-size: 35px;'>
+                        ¡Hola Equipo! 
+                      </h2>       
+                        
+                      <div style='width: 50px; height: 5px; background-color: #FFC72C; margin-bottom: 15px;'></div>
+  
+                      <br><br>
+                      <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>Te notificamos que han dado respuesta a tu caso de PQRSF:</p>
+                      <br>
+                      <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>Número:".$datanumcaso."</p>
+                      <br>
+                      <p style='color:#040B25;text-align: justify'>".$varcuerpo2."</p>
+                      <br><br>
+                      <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>¡Que tengas un excelente día!</p>
+                      <br><br><br>
+  
+                      <br>
+                      <div style='text-align: center; margin-bottom: 10px;'>
+                          <a style='border:1px solid #FFC72C; background-color: #FFC72C; color:white; padding: 3px 10px; border-radius: 40px; font-weight: bold; text-decoration: none;' href='https://qa.grupokonecta.local/qa_managementv2/web/index.php'>Ingresar a CXM/a>
                       </div>
+                        
+                    </div>
+  
+                    <div class='div'>
+                        <img src='' alt=''>
+                    </div>
+  
                   </div>
+                </div>
               </body>
-
-            </html> ";
+            </html>  ";
+  
     
             if ($tmpFile != "") {
               Yii::$app->mailer->compose()
@@ -1272,43 +1323,53 @@ use app\models\Tipologiasqyr;
                   $varHtml = 
                   "
                   <html lang='en'>
-      
+        
                     <head>
                     <meta charset='UTF-8'>
                     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
                     <title>Document</title>
                     </head>
-      
+        
                     <body style='font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 12px;'>
-                        <br><br><br><br>
-                        <div style='width: 450px; position: relative;'>
-                            <img src='https://i.ibb.co/8xbhr7W/k.png' alt='' width='80' style='position: absolute; top:-35px;right: -20px; border: 2px solid #002855 ;'>
-                            <div style='  box-shadow: -1px 0px 5px 0px rgba(0,0,0,0.75); border-radius: 10px; padding: 5px 50px; display: flex;'>
-      
-                                <div style='width: 100%;'>
-                                    
-                                    <h4 style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>¡Hola Equipo CXM!</h4>
-                                    <br><br>
-                                    <p>Te notificamos que han dado respuesta a tu caso de PQRSF:</p>
-                                    <br>
-                                    <p>Número:".$datanumcaso."</p>
-                                    <br>
-                                    <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>".$varcuerpo2."</p>
-                                    <br><br>
-                                    <p>¡Que tengas un excelente día!</p>
-                                    <br><br><br>
-                                
-                                </div>
-      
-                                <div class='div'>
-                                    <img src='' alt=''>
-                                </div>
-      
+                      <br><br><br><br>
+                      <div style='width: 450px; position: relative;'>
+                        <img src='https://i.ibb.co/8xbhr7W/k.png' alt='' width='80' style='position: absolute; top:-35px;right: -20px; border: 2px solid #002855 ;'>
+                        <div style='  box-shadow: -1px 0px 5px 0px rgba(0,0,0,0.75); border-radius: 10px; padding: 5px 50px; display: flex;'>
+        
+                          <div style='width: 100%;'>
+                                  
+                            <h2 style='color: #002855; margin-bottom: 5px; font-size: 35px;'>
+                              ¡Hola Equipo! 
+                            </h2>       
+                              
+                            <div style='width: 50px; height: 5px; background-color: #FFC72C; margin-bottom: 15px;'></div>
+        
+                            <br><br>
+                            <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>Te notificamos que han dado respuesta a tu caso de PQRSF:</p>
+                            <br>
+                            <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>Número:".$datanumcaso."</p>
+                            <br>
+                            <p style='color:#040B25;text-align: justify'>".$varcuerpo2."</p>
+                            <br><br>
+                            <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>¡Que tengas un excelente día!</p>
+                            <br><br><br>
+        
+                            <br>
+                            <div style='text-align: center; margin-bottom: 10px;'>
+                                <a style='border:1px solid #FFC72C; background-color: #FFC72C; color:white; padding: 3px 10px; border-radius: 40px; font-weight: bold; text-decoration: none;' href='https://qa.grupokonecta.local/qa_managementv2/web/index.php'>Ingresar a CXM/a>
                             </div>
+                              
+                          </div>
+        
+                          <div class='div'>
+                              <img src='' alt=''>
+                          </div>
+        
                         </div>
+                      </div>
                     </body>
-      
-                  </html> ";
+                  </html>  ";
+        
 
                     $varListacorreo = (new \yii\db\Query())
                     ->select(['email'])
@@ -1383,43 +1444,53 @@ use app\models\Tipologiasqyr;
             $varHtml = 
             "
             <html lang='en'>
-
+  
               <head>
               <meta charset='UTF-8'>
               <meta name='viewport' content='width=device-width, initial-scale=1.0'>
               <title>Document</title>
               </head>
-
+  
               <body style='font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 12px;'>
-                  <br><br><br><br>
-                  <div style='width: 450px; position: relative;'>
-                      <img src='https://i.ibb.co/8xbhr7W/k.png' alt='' width='80' style='position: absolute; top:-35px;right: -20px; border: 2px solid #002855 ;'>
-                      <div style='  box-shadow: -1px 0px 5px 0px rgba(0,0,0,0.75); border-radius: 10px; padding: 5px 50px; display: flex;'>
-
-                          <div style='width: 100%;'>
-                              
-                              <h4 style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>¡Hola Equipo CXM!</h4>
-                              <br><br>
-                              <p>Te notificamos que han dado respuesta a tu caso de PQRSF:</p>
-                              <br>
-                              <p>Número:".$datanumcaso."</p>
-                              <br>
-                              <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>".$varcuerpo2."</p>
-                              <br><br>
-                              <p>¡Que tengas un excelente día!</p>
-                              <br><br><br>
-                          
-                          </div>
-
-                          <div class='div'>
-                              <img src='' alt=''>
-                          </div>
-
+                <br><br><br><br>
+                <div style='width: 450px; position: relative;'>
+                  <img src='https://i.ibb.co/8xbhr7W/k.png' alt='' width='80' style='position: absolute; top:-35px;right: -20px; border: 2px solid #002855 ;'>
+                  <div style='  box-shadow: -1px 0px 5px 0px rgba(0,0,0,0.75); border-radius: 10px; padding: 5px 50px; display: flex;'>
+  
+                    <div style='width: 100%;'>
+                            
+                      <h2 style='color: #002855; margin-bottom: 5px; font-size: 35px;'>
+                        ¡Hola Equipo! 
+                      </h2>       
+                        
+                      <div style='width: 50px; height: 5px; background-color: #FFC72C; margin-bottom: 15px;'></div>
+  
+                      <br><br>
+                      <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>Te notificamos que han dado respuesta a tu caso de PQRSF:</p>
+                      <br>
+                      <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>Número:".$datanumcaso."</p>
+                      <br>
+                      <p style='color:#040B25;text-align: justify'>".$varcuerpo2."</p>
+                      <br><br>
+                      <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>¡Que tengas un excelente día!</p>
+                      <br><br><br>
+  
+                      <br>
+                      <div style='text-align: center; margin-bottom: 10px;'>
+                          <a style='border:1px solid #FFC72C; background-color: #FFC72C; color:white; padding: 3px 10px; border-radius: 40px; font-weight: bold; text-decoration: none;' href='https://qa.grupokonecta.local/qa_managementv2/web/index.php'>Ingresar a CXM/a>
                       </div>
+                        
+                    </div>
+  
+                    <div class='div'>
+                        <img src='' alt=''>
+                    </div>
+  
                   </div>
+                </div>
               </body>
-
-            </html> ";
+            </html>  ";
+  
       
                       if ($tmpFile != "") {
                         Yii::$app->mailer->compose()
@@ -1472,35 +1543,44 @@ use app\models\Tipologiasqyr;
             </head>
 
             <body style='font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 12px;'>
-                <br><br><br><br>
-                <div style='width: 450px; position: relative;'>
-                    <img src='https://i.ibb.co/8xbhr7W/k.png' alt='' width='80' style='position: absolute; top:-35px;right: -20px; border: 2px solid #002855 ;'>
-                    <div style='  box-shadow: -1px 0px 5px 0px rgba(0,0,0,0.75); border-radius: 10px; padding: 5px 50px; display: flex;'>
+              <br><br><br><br>
+              <div style='width: 450px; position: relative;'>
+                <img src='https://i.ibb.co/8xbhr7W/k.png' alt='' width='80' style='position: absolute; top:-35px;right: -20px; border: 2px solid #002855 ;'>
+                <div style='  box-shadow: -1px 0px 5px 0px rgba(0,0,0,0.75); border-radius: 10px; padding: 5px 50px; display: flex;'>
 
-                        <div style='width: 100%;'>
-                            
-                            <h4 style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>¡Hola Equipo CXM!</h4>
-                            <br><br>
-                            <p>Te notificamos que han dado respuesta a tu caso de PQRSF:</p>
-                            <br>
-                            <p>Número:".$datanumcaso."</p>
-                            <br>
-                            <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>".$varcuerpo2."</p>
-                            <br><br>
-                            <p>¡Que tengas un excelente día!</p>
-                            <br><br><br>
-                        
-                        </div>
+                  <div style='width: 100%;'>
+                          
+                    <h2 style='color: #002855; margin-bottom: 5px; font-size: 35px;'>
+                      ¡Hola Equipo! 
+                    </h2>       
+                      
+                    <div style='width: 50px; height: 5px; background-color: #FFC72C; margin-bottom: 15px;'></div>
 
-                        <div class='div'>
-                            <img src='' alt=''>
-                        </div>
+                    <br><br>
+                    <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>Te notificamos que han dado respuesta a tu caso de PQRSF:</p>
+                    <br>
+                    <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>Número:".$datanumcaso."</p>
+                    <br>
+                    <p style='color:#040B25;text-align: justify'>".$varcuerpo2."</p>
+                    <br><br>
+                    <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>¡Que tengas un excelente día!</p>
+                    <br><br><br>
 
+                    <br>
+                    <div style='text-align: center; margin-bottom: 10px;'>
+                        <a style='border:1px solid #FFC72C; background-color: #FFC72C; color:white; padding: 3px 10px; border-radius: 40px; font-weight: bold; text-decoration: none;' href='https://qa.grupokonecta.local/qa_managementv2/web/index.php'>Ingresar a CXM/a>
                     </div>
-                </div>
-            </body>
+                      
+                  </div>
 
-          </html> ";
+                  <div class='div'>
+                      <img src='' alt=''>
+                  </div>
+
+                </div>
+              </div>
+            </body>
+          </html>  ";
 
 
 
