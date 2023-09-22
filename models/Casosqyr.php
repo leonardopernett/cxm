@@ -42,8 +42,8 @@ class Casosqyr extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'id_solicitud','id_area','id_tipologia','id_estado_caso','anulado','usua_id'], 'integer'],
-            [['fecha_creacion'], 'safe'],
+            [['id_responsable','id', 'id_solicitud','id_area','id_tipologia','id_estado_caso','anulado','usua_id','usua_id_estado'], 'integer'],
+            [['fecha_creacion','fecha_respuesta','fecha_revisioncx','fecha_revision_gerente','fecha_asignacion'], 'safe'],
             [['comentario'], 'string', 'max' => 500],
             [['nombre','documento','correo','cliente','numero_caso','archivo','archivo2'], 'string', 'max' => 150]
         ];
@@ -69,7 +69,14 @@ class Casosqyr extends \yii\db\ActiveRecord
             'archivo2' => Yii::t('app', ''),
             'anulado' => Yii::t('app', ''),
             'usua_id' => Yii::t('app', ''),
-            'fechacrecion' => Yii::t('app', ''),
+            'fecha_respuesta' => Yii::t('app', ''),
+            'fecha_revisioncx' => Yii::t('app', ''),
+            'fecha_revision_gerente' => Yii::t('app', ''),
+            'usua_id_estado' => Yii::t('app', ''),
+            'revision_gerente' => Yii::t('app', ''),
+            'revision_cx' => Yii::t('app', ''),
+            'fecha_asignacion' => Yii::t('app', ''),
+            'id_responsable' => Yii::t('app', ''),
         ];
     }
 }

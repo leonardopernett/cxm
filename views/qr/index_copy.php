@@ -29,88 +29,8 @@ $sessiones = Yii::$app->user->identity->id;
           ->where(['=','tbl_usuarios.usua_id',$sessiones]);                      
   $command = $rol->createCommand();
   $roles = $command->queryScalar();
-
-  $varCedulaGerente =  (new \yii\db\Query())
-  ->select(['tbl_proceso_cliente_centrocosto.documento_gerente'])
-  ->from(['tbl_usuarios'])
-  ->join('INNER JOIN','tbl_proceso_cliente_centrocosto',
-        'tbl_proceso_cliente_centrocosto.documento_gerente = tbl_usuarios.usua_identificacion')
-  ->where(['=','tbl_usuarios.usua_id',94])
-  ->groupBy(['tbl_proceso_cliente_centrocosto.documento_gerente'])
-  ->scalar();
-
-  $varCedulaDirector =  (new \yii\db\Query())
-  ->select(['tbl_proceso_cliente_centrocosto.documento_director'])
-  ->from(['tbl_usuarios'])
-  ->join('INNER JOIN','tbl_proceso_cliente_centrocosto',
-        'tbl_proceso_cliente_centrocosto.documento_director = tbl_usuarios.usua_identificacion')
-  ->where(['=','tbl_usuarios.usua_id',854])
-  ->groupBy(['tbl_proceso_cliente_centrocosto.documento_director'])
-  ->scalar();
   
-  $varClienteDirector  =  (new \yii\db\Query())
-  ->select(['tbl_proceso_cliente_centrocosto.id_dp_clientes',
-            'tbl_proceso_cliente_centrocosto.cliente'])
-  ->from(['tbl_proceso_cliente_centrocosto'])
-  ->where(['=','tbl_proceso_cliente_centrocosto.documento_director',$varCedulaDirector])
-  ->andwhere(['=','tbl_proceso_cliente_centrocosto.estado',1])
-  ->groupBy(['tbl_proceso_cliente_centrocosto.id_dp_clientes'])
-  ->all();
-
-  $varClienteGerente  =  (new \yii\db\Query())
-  ->select(['tbl_proceso_cliente_centrocosto.id_dp_clientes',
-            'tbl_proceso_cliente_centrocosto.cliente'])
-  ->from(['tbl_proceso_cliente_centrocosto'])
-  ->where(['=','tbl_proceso_cliente_centrocosto.documento_gerente',$varCedulaGerente])
-  ->andwhere(['=','tbl_proceso_cliente_centrocosto.estado',1])
-  ->groupBy(['tbl_proceso_cliente_centrocosto.id_dp_clientes'])
-  ->all();
-
-  $varClienteAdmi  =  (new \yii\db\Query())
-  ->select(['tbl_proceso_cliente_centrocosto.id_dp_clientes',
-            'tbl_proceso_cliente_centrocosto.cliente'])
-  ->from(['tbl_proceso_cliente_centrocosto'])
-  ->groupBy(['tbl_proceso_cliente_centrocosto.id_dp_clientes'])
-  ->all();
-
-  $varArrayClientesGerente = array();
-  foreach ($varClienteGerente as $key => $value) {
-    array_push($varArrayClientesGerente, $value['id_dp_clientes']);
-  }
-
-  $varArrayClientesDirector = array();
-  foreach ($varClienteDirector as $key => $value) {
-    array_push($varArrayClientesDirector, $value['id_dp_clientes']);
-  }
-
-  $varArrayClientesAdmi = array();
-  foreach ($varClienteAdmi as $key => $value) {
-    array_push($varArrayClientesAdmi, $value['id_dp_clientes']);
-  }
-
-  $varArrayClientesGerentes = explode(",", str_replace(array("#", "'", ";", " "), '', implode(', ', $varArrayClientesGerente)));
-
-  $varArrayClientesDirectors = explode(",", str_replace(array("#", "'", ";", " "), '', implode(', ', $varArrayClientesDirector)));
-  
-  $varArrayClientesAdmis = explode(",", str_replace(array("#", "'", ";", " "), '', implode(', ', $varArrayClientesAdmi)));
-
-  $varListaClientes = array();
-
-    if ($roles == '293' || $roles == '299') {
-        $varListaClientes = $varArrayClientesGerentes;
-    }else{
-        if ($roles == '301') {
-            $varListaClientes = $varArrayClientesDirectors;
-        }else{
-            if ($roles == '270') {
-                $varListaClientes = $varArrayClientesAdmis;
-            }else{
-                $varListaClientes = 0;
-            }
-        }
-    }
-
-
+ 
   $varTotalCasos =  (new \yii\db\Query())
   ->select(['*'])
   ->from(['tbl_qr_casos'])
@@ -150,9 +70,6 @@ $sessiones = Yii::$app->user->identity->id;
         $varColorN = '#4F758B';
     }
   } 
-  $varAlerta = 0;
-
-
 ?>
 
 <style>
@@ -237,7 +154,7 @@ $sessiones = Yii::$app->user->identity->id;
     }
 
     label {
-        font-size: 16px;
+        font-size: 15px;
     }
     .cell-with-text {
         white-space: nowrap;      /* Evita saltos de línea */
@@ -246,43 +163,37 @@ $sessiones = Yii::$app->user->identity->id;
     }
 
     .semaforo-verde {
-    position: absolute;
-    width: 4rem;
+    width: 4.75rem;
     height: 14px;
-    border: 2px solid green;
+    border: 2px solid;
+    background-color: #16CD56;
     border-radius: 50px;
     display: block;
+    position: relative;
     background: green;
-
     }
 
 
     .semaforo-amarillo {
-    width: 4rem;
+    width: 4.75rem;
     height: 14px;
-    border:2px solid #ffaf00;
-    border-radius:50px;
-    display:block;
-    position: absolute;
-    background: linear-gradient(to right, #ffaf00 60%, transparent 60%)
+    border: 2px solid;
+    background-color: #EA8206;
+    border-radius: 50px;
+    display: block;
+    position: relative;
     }
+
+
 
     .semaforo-rojo {
-    width:4rem;
-    height:14px;
-    border:2px solid #E83718;
-    border-radius:50px;
-    display:block;
-    position:absolute;
-    background: linear-gradient(to right, #E83718 30%, transparent 30%)
-    }
-
-    
-    .dias{
-    font-size: 14px;
+    width: 4.75rem;
+    height: 14px;
+    border: 2px solid;
+    background-color: #E83718;
+    border-radius: 50px;
+    display: block;
     position: relative;
-    left: 45px;
-    font-weight: bold;
     }
 
 
@@ -366,7 +277,7 @@ $sessiones = Yii::$app->user->identity->id;
     .w3-round-small{border-radius:2px}.w3-round,.w3-round-medium{border-radius:4px}.w3-round-large{border-radius:8px}.w3-round-xlarge{border-radius:16px}.w3-round-xxlarge{border-radius:32px}
     .w3-row-padding,.w3-row-padding>.w3-half,.w3-row-padding>.w3-third,.w3-row-padding>.w3-twothird,.w3-row-padding>.w3-threequarter,.w3-row-padding>.w3-quarter,.w3-row-padding>.w3-col{padding:0 8px}
     .w3-container,.w3-panel{padding:0.01em 16px}.w3-panel{margin-top:16px;margin-bottom:16px}
-    .w3-code{width:auto;background-color:#fff;padding:8px 15px;border-left:4px solid #4CAF50;word-wrap:break-word}
+    .w3-code{width:auto;background-color:#fff;padding:8px 12px;border-left:4px solid #4CAF50;word-wrap:break-word}
     .w3-codespan{color:crimson;background-color:#f1f1f1;padding-left:4px;padding-right:4px;font-size:110%}
     .w3-card,.w3-card-2{box-shadow:0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12)}
     .w3-card-4,.w3-hover-shadow:hover{box-shadow:0 4px 10px 0 rgba(0,0,0,0.2),0 4px 20px 0 rgba(0,0,0,0.19)}
@@ -384,7 +295,7 @@ $sessiones = Yii::$app->user->identity->id;
     .w3-greyscale-max,.w3-grayscale-max,.w3-hover-greyscale:hover,.w3-hover-grayscale:hover{filter:grayscale(100%)}
     .w3-greyscale,.w3-grayscale{filter:grayscale(75%)}.w3-greyscale-min,.w3-grayscale-min{filter:grayscale(50%)}
     .w3-sepia{filter:sepia(75%)}.w3-sepia-max,.w3-hover-sepia:hover{filter:sepia(100%)}.w3-sepia-min{filter:sepia(50%)}
-    .w3-tiny{font-size:10px!important}.w3-small{font-size:15px!important}.w3-medium{font-size:16px!important}.w3-large{font-size:18px!important}
+    .w3-tiny{font-size:10px!important}.w3-small{font-size:12px!important}.w3-medium{font-size:15px!important}.w3-large{font-size:18px!important}
     .w3-xlarge{font-size:24px!important}.w3-xxlarge{font-size:36px!important}.w3-xxxlarge{font-size:48px!important}.w3-jumbo{font-size:64px!important}
     .w3-left-align{text-align:left!important}.w3-right-align{text-align:right!important}.w3-justify{text-align:justify!important}.w3-center{text-align:center!important}
     .w3-border-0{border:0!important}.w3-border{border:1px solid #ccc!important}
@@ -395,7 +306,7 @@ $sessiones = Yii::$app->user->identity->id;
     .w3-section,.w3-code{margin-top:16px!important;margin-bottom:16px!important}
     .w3-margin{margin:16px!important}.w3-margin-top{margin-top:16px!important}.w3-margin-bottom{margin-bottom:16px!important}
     .w3-margin-left{margin-left:16px!important}.w3-margin-right{margin-right:16px!important}
-    .w3-padding-small{padding:4px 8px!important}.w3-padding{padding:8px 16px!important}.w3-padding-large{padding:15px 24px!important}
+    .w3-padding-small{padding:4px 8px!important}.w3-padding{padding:8px 16px!important}.w3-padding-large{padding:12px 24px!important}
     .w3-padding-16{padding-top:16px!important;padding-bottom:16px!important}.w3-padding-24{padding-top:24px!important;padding-bottom:24px!important}
     .w3-padding-32{padding-top:32px!important;padding-bottom:32px!important}.w3-padding-48{padding-top:48px!important;padding-bottom:48px!important}
     .w3-padding-64{padding-top:64px!important;padding-bottom:64px!important}
@@ -524,7 +435,7 @@ $sessiones = Yii::$app->user->identity->id;
 <div id="capaIdPrincipal" class="capaPrincipal" style="display: inline;">
 
 
-    <?php $form = ActiveForm::begin(["method" => "post","enableClientValidation" => true,'options' => ['enctype' => 'multipart/form-data'],'fieldConfig' => ['inputOptions' => ['autocomplete' => 'off']]]) ?>
+<?php $form = ActiveForm::begin(["method" => "post","enableClientValidation" => true,'options' => ['enctype' => 'multipart/form-data'],'fieldConfig' => ['inputOptions' => ['autocomplete' => 'off']]]) ?>
 
     
 
@@ -543,12 +454,12 @@ $sessiones = Yii::$app->user->identity->id;
                         </a>
                         <a href="javascript:void(0)" onclick="openCity(event, 'Registro');">
                             <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding">
-                            <label style="font-size: 20px;"><em class="fas fa-tag" style="font-size: 22px; color: #CE0F69;"></em><strong>  <?= Yii::t('app', 'Crear Caso') ?></strong></label>
+                            <label style="font-size: 20px;"><em class="fas fa-users" style="font-size: 22px; color: #C148D0;"></em><strong>  <?= Yii::t('app', 'Registro') ?></strong></label>
                             </div>
                         </a>
                         <a href="javascript:void(0)" onclick="openCity(event, 'Ver');">
                             <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding">
-                            <label style="font-size: 20px;"><em class="fas fa-list-alt" style="font-size: 22px; color: #0072CE;"></em><strong>  <?= Yii::t('app', 'Ver Información') ?></strong></label>
+                            <label style="font-size: 20px;"><em class="fas fa-list-alt" style="font-size: 22px; color: #FFC72C;"></em><strong>  <?= Yii::t('app', 'Ver Información') ?></strong></label>
                             </div>
                         </a>
 
@@ -564,14 +475,8 @@ $sessiones = Yii::$app->user->identity->id;
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="card1 mb">
-                                                <label style="font-size: 16px;"><em class="fas fa-hashtag" style="font-size: 20px; color: #00968F;"></em><?= Yii::t('app', ' Cantidad de Casos') ?></label>
+                                                <label style="font-size: 15px;"><em class="fas fa-hashtag" style="font-size: 20px; color: #00968F;"></em><?= Yii::t('app', ' Cantidad de Casos') ?></label>
                                                 <label style="font-size: 25px;" class="text-center"><?= Yii::t('app', $varTotalCasos) ?></label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="card1 mb">
-                                                <label style="font-size: 16px;"><em class="fas fa-exclamation" style="font-size: 20px; color: #00968F;"></em><?= Yii::t('app', ' Información Importante') ?></label>
-                                                <label style="font-size: 16px;" ><?= Yii::t('app', 'Te comentamos que estos datos están actualizados del último año, si quieres vizualizar años anteriores te envitamos a ingresar al módulo de PBI.') ?></label>
                                             </div>
                                         </div>  
                                     </div>
@@ -579,26 +484,61 @@ $sessiones = Yii::$app->user->identity->id;
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="card1 mb">
-                                                <label style="font-size: 16px;"><em class="fas fa-chart-pie" style="font-size: 20px; color: #00968F;"></em><?= Yii::t('app', ' Cantidades Tipo de Estados') ?></label>
-                                                <div id="containerA" class="highcharts-container" style="height: 345px;"></div> 
+                                                <label style="font-size: 15px;"><em class="fas fa-chart-pie" style="font-size: 20px; color: #00968F;"></em><?= Yii::t('app', ' Cantidades de Tipos de Estado') ?></label>
+                                                <div id="containerA" class="highcharts-container" style="height: 250px;"></div> 
                                             </div>
-                                        </div> 
+                                        </div>
 
                                         <div class="col-md-6">
                                             <div class="card1 mb">
-                                                <label style="font-size: 16px;"><em class="fas fa-chart-pie" style="font-size: 20px; color: #00968F;"></em><?= Yii::t('app', ' Eficiencia de Respuesta') ?></label>
-                                                <div id="containerB" class="highcharts-container" style="height: 345px;"></div> 
+                                                <label style="font-size: 15px;"><em class="fas fa-chart-line" style="font-size: 20px; color: #00968F;"></em><?= Yii::t('app', ' Eficiencia') ?></label>
+                                                <div id="containerB" class="highcharts-container" style="height: 250px;"></div> 
                                             </div>
                                         </div>  
                                     </div>
-                                    <br>
+                                    <!-- <br>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="card1 mb">
+                                            <table style="width:100%">
+                                                <caption>...</caption>
+                                                <tr  >
+                                                    <th scope="col" class="text-center" style="width: 100px;">
+                                                        <label style="font-size: 15px;"></label>
+                                                    </th>
+                                                    <th scope="col" class="text-center" style="width: 100px;">
+                                                        <label style="font-size: 15px;"></label>
+                                                    </th>
+                                                    <th scope="col" class="text-center" style="width: 100px;">
+                                                        <label style="font-size: 15px;"></label>
+                                                    </th>
+                                                    <th scope="col" class="text-center" style="width: 100px;">
+                                                        <label style="font-size: 15px;"></label>
+                                                    </th>
+                                                    <th scope="col" class="text-center" style="width: 100px;">
+                                                        <label style="font-size: 15px;"></label>
+                                                    </th>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-center" style="width: 100px;"><div style="width: 120px; height: 120px;  display:block; margin:auto;"><canvas id="chartContainerA"></canvas></div></td>
+                                                    <td class="text-center" style="width: 100px;"><div style="width: 120px; height: 120px;  display:block; margin:auto;"><canvas id="chartContainerM"></canvas></div></td> 
+                                                    <td class="text-center" style="width: 100px;"><div style="width: 120px; height: 120px;  display:block; margin:auto;"><canvas id="chartContainerC"></canvas></div></td> 
+                                                    <td class="text-center" style="width: 100px;"><div style="width: 120px; height: 120px;  display:block; margin:auto;"><canvas id="chartContainerK"></canvas></div></td>  
+                                                    <td class="text-center" style="width: 100px;"><div style="width: 120px; height: 120px;  display:block; margin:auto;"><canvas id="chartContainerN"></canvas></div></td>  
+                                                </tr>
+                                            </table>
+                                                
+
+
+                                            </div>
+                                        </div>  
+                                    </div> -->
                                 </div>
                             </div>
                         </div>
                         <hr>
                     </div>
 
-                    <!-- Proceso de crear caso--> 
                     <div id="Registro" class="w3-container city" style="display:none;">
                         <br>
                         <div class="row">
@@ -609,23 +549,21 @@ $sessiones = Yii::$app->user->identity->id;
                                         <div class="col-md-12">
 
                                             <div class="col-md-6">
-                                                <label style="font-size: 16px;"><em class="fas fa-check" style="font-size: 20px; color: #CE0F69;"></em><?= Yii::t('app', ' Seleccionar Cliente') ?><span style="color:red;"> *</span></label>
-                                                <?=  $form->field($modelcaso, 'cliente', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\ProcesosClienteCentrocosto::find()->where(['=','anulado',0])->andwhere(['=','estado',1])->andwhere(['IN','id_dp_clientes',$varListaClientes])->groupby(['id_dp_clientes'])->orderBy(['cliente'=> SORT_ASC])->all(), 'id_dp_clientes', 'cliente'),
+                                                <label style="font-size: 15px;"><em class="fas fa-list" style="font-size: 20px; color: #C148D0;"></em><?= Yii::t('app', ' Seleccionar Cliente') ?></label>
+                                                <?=  $form->field($modelcaso, 'cliente', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\ProcesosClienteCentrocosto::find()->where(['=','estado',1])->andwhere(['=','anulado',0])->groupby(['cliente'])->orderBy(['cliente'=> SORT_ASC])->all(), 'id_dp_clientes', 'cliente'),
                                                     [
                                                         'prompt'=>'Seleccionar...',
-                                                        'id'=>'iddvarCliente',
-                                                        'required' => 'required' ,
-                                                ])->label('');
+                                                        'id'=>'idvarCliente',
+                                                ])->label(''); 
                                                 ?> 
                                             </div>
 
                                             <div class="col-md-6">
-                                                <label style="font-size: 16px;"><em class="fas fa-check" style="font-size: 20px; color: #CE0F69;"></em><?= Yii::t('app', ' Seleccionar Tipo Solicitud') ?><span style="color:red;"> *</span></label>
+                                                <label style="font-size: 15px;"><em class="fas fa-list" style="font-size: 20px; color: #C148D0;"></em><?= Yii::t('app', ' Seleccionar Tipo Solicitud') ?></label>
                                                 <?=  $form->field($modelcaso, 'id_estado_caso', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\Tipopqrs::find()->orderBy(['id'=> SORT_DESC])->all(), 'id', 'tipo_de_dato'),
                                                 [
-                                                    'id' => 'iddvarSolicitud',
+                                                    'id' => 'idvarSolicitud',
                                                     'prompt'=>'Seleccionar...',
-                                                    'required' => 'required' ,
                                                 ])->label(''); 
                                                 ?>   
                                             </div>
@@ -633,20 +571,18 @@ $sessiones = Yii::$app->user->identity->id;
                                         
                                             
                                             <div class="col-md-6">
-                                                <label style="font-size: 16px;"><em class="fas fa-check" style="font-size: 20px; color: #CE0F69;"></em><?= Yii::t('app', ' Ingresar Comentarios') ?><span style="color:red;"> *</span></label>
-                                                <?= $form->field($modelcaso, 'comentario',['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textArea(['maxlength' => 10000000000, 'id'=>'idvarComentarios', 'placeholder'=>'Ingresar Comentarios', 'required' => 'required' ,'style' => 'resize: vertical;','rows' => '8'])?>
+                                                <label style="font-size: 15px;"><em class="fas fa-list" style="font-size: 20px; color: #C148D0;"></em><?= Yii::t('app', ' Ingresar Comentarios') ?></label>
+                                                <?= $form->field($modelcaso, 'comentario', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textArea(['maxlength' => 10000000000, 'id'=>'idvarComentarios', 'placeholder'=>'Ingresar Comentarios', 'style' => 'resize: vertical;'])?>
                                             </div>
                                     
 
                                             <div class="col-md-6">
-                                                <label style="font-size: 16px;"><em class="fas fa-check" style="font-size: 20px; color: #CE0F69;"></em><?= Yii::t('app', ' Anexar Documentos') ?></label>
+                                                <label style="font-size: 15px;"><em class="fas fa-list" style="font-size: 20px; color: #C148D0;"></em><?= Yii::t('app', ' Anexar Documentos') ?></label>
                                                 <br>
-                                                <?= $form->field($modelo, 'file', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->fileInput(["class"=>"input-file" ,'id'=>'idvarFile', 'style'=>'font-size: 18px;','extensions' => ' pdf','docx', 'maxSize' => 1024*1024*1024])->label('') ?>
-                                                <label style="font-size: 15px;"> <?= Yii::t('app', ' ___________________ ') ?></label><br>
-                                                <label style="font-size: 16px;"> <?= Yii::t('app', ' Tener en cuenta... ') ?></label><br>
-                                                <p style="font-size: 15px;"> <?= Yii::t('app', ' * Los archivos a subir deben tener la extensión correcta .docx, .pdf ') ?></p>
-                                                <p style="font-size: 15px;"> <?= Yii::t('app', ' * Recomendable que los archivos no tengan espacios o signos de puntuación de más.') ?></p>
+                                                <?= $form->field($modelo, 'file', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->fileInput(["class"=>"input-file" ,'id'=>'idvarFile', 'style'=>'font-size: 18px;'])->label('') ?>
                                             </div>
+
+                                           
                                         </div>
                                     </div>
                                 </div>
@@ -660,7 +596,7 @@ $sessiones = Yii::$app->user->identity->id;
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="card1 mb">
-                                            <label style="font-size: 16px;"><em class="fas fa-save" style="font-size: 16px; color: #CE0F69;"></em><?= Yii::t('app', ' Guardar Datos') ?></label>
+                                            <label style="font-size: 15px;"><em class="fas fa-save" style="font-size: 15px; color: #C148D0;"></em><?= Yii::t('app', ' Guardar Datos') ?></label>
                                             
                                             <?= Html::submitButton("Guardar", ["class" => "btn btn-primary", "onclick" => "verificardata();"]) ?>
                                         </div>
@@ -668,37 +604,41 @@ $sessiones = Yii::$app->user->identity->id;
                                 
                             
                                 
-                                    
+                                    <div class="col-md-6">
+                                        <div class="card1 mb">
+                                                <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 20px; color: #C148D0;"></em><?= Yii::t('app', ' Descargar Casos PQRS') ?></label>
+                                                <a id="dlink" style="display:none;"></a>
+                                                <button  class="btn btn-info" style="background-color: #4298B4" id="btn">Aceptar</button>
+                                        </div>
+                                    </div>
                                 </div>
                                 <hr>
                             </div>
                         </div>
                     </div>                                              
                                        
-                    <!-- Proceso de ver tabla -->
+
                     <div id="Ver" class="w3-container city" style="display:none;">
                         <br>
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="card1 mb">
                                     <table id="myTable" class="table table-hover table-bordered" style="margin-top:20px" >
-                                    <caption><label><em class="fas fa-list" style="font-size: 25px; color: #0072CE;"></em> <?= Yii::t('app', 'Reporte Casos PQRSF') ?></label></caption>
+                                    <caption><label><em class="fas fa-list" style="font-size: 25px; color: #FFC72C;"></em> <?= Yii::t('app', 'Reporte Casos PQRS') ?></label></caption>
                                         <thead>
                                             <tr>
-                                                <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 16px;"><?= Yii::t('app', 'Id Caso ') ?></label></th>
-                                                <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 16px;"><?= Yii::t('app', 'Tipo de Solicitud') ?></label></th>                            
-                                                <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 16px;"><?= Yii::t('app', 'Cliente ') ?></label></th>
-                                                <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 16px;"><?= Yii::t('app', 'Radicado Por:') ?></label></th>
-                                                <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 16px;"><?= Yii::t('app', 'Fecha de Radicación ') ?></label></th>
-                                                <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 16px;"><?= Yii::t('app', 'Detalle PQRS ') ?></label></th>
-                                                <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 16px; width:125px;"><?= Yii::t('app', 'Estado Actual') ?></label></th>
-                                                <th scope="col" class="text-center" style="background-color: #b0cdd6; width:125px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Días Transcurridos  ') ?></label></th>
-                                                <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 16px;"><?= Yii::t('app', 'Cumplimiento') ?></label></th>
-                                                <?php if ($roles == 270) { ?>
-                                                    <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 16px;"><?= Yii::t('app', 'Ver Historico') ?></label></th>
-                                                <?php } ?>
-                                                <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 16px;"><?= Yii::t('app', 'Acción Gestionar ') ?></label></th>
-                                                <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 16px;"><?= Yii::t('app', 'Acción Eliminar ') ?></label></th>
+                                                <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Id Caso ') ?></label></th>
+                                                <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Tipo de Solicitud') ?></label></th>                            
+                                                <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Cliente ') ?></label></th>
+                                                <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Radicado Por:') ?></label></th>
+                                                <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Fecha de Radicación ') ?></label></th>
+                                                <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Detalle PQRS ') ?></label></th>
+                                                <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Estado Actual') ?></label></th>
+                                                <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Días Transcurridos') ?></label></th>
+                                                <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Cumplimiento') ?></label></th>
+                                                <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Ver Detalle') ?></label></th>
+                                                <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Acción Gestionar ') ?></label></th>
+                                                <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Acción Eliminar ') ?></label></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -712,9 +652,6 @@ $sessiones = Yii::$app->user->identity->id;
                                                     $varNombreCliente = $value['clientearea'];                                
                                                     $varUsuario = $value['nombre'];
                                                     $varDocUsuario = $value['documento'];
-                                                    $varFechaRespuesta = $value['fecha_respuesta'];
-
-                                                    $fechaFormateada = date("Y-m-d", strtotime($varFechaRespuesta));
 
                                                     $varParams = [':varParams' => $varDocUsuario];
                                                     $varEmail = Yii::$app->dbjarvis->createCommand('
@@ -766,7 +703,7 @@ $sessiones = Yii::$app->user->identity->id;
                                                         $diarojo2 = $valuee['diarojo2'];                        
                                                     }
 
-                                                    $fecha1 = new Datetime($varFechaCreacion); //fecha creacion
+                                                    $fecha1= new Datetime($varFechaCreacion); //fecha creacion
                                                     $fecha2= new datetime('now'); //fecha actual
                                                     $dias = $fecha1->diff($fecha2); //diferencia entre la fecha de creacion y fecha actual 
                                                     
@@ -784,72 +721,76 @@ $sessiones = Yii::$app->user->identity->id;
 
                                             ?>
                                                 <tr>
-                                                    <td><label style="font-size: 15px;"><?php echo  $varNumCaso; ?></label></td>
-                                                    <td><label style="font-size: 15px;"><?php echo  $varTipoDato; ?></label></td>                                
-                                                    <td><label style="font-size: 15px;"><?php echo  $varNombreCliente; ?></label></td>
-                                                    <td><label style="font-size: 15px;"><?php echo  $varUsuario; ?></label></td>                               
-                                                    <td><label style="font-size: 15px;"><?php echo  $varFechaCreacion; ?></label></td>
-                                                    <td class="resumen-celda"><label style="font-size: 15px;"></label>
-                                                    <div class="resumen"><label style="font-size: 15px;"><?php echo strlen($varComentarios) > 50 ? substr($varComentarios, 0, 50)."..." : $varComentarios; ?></label></div>
-                                                    <div class="completo hidden"><label style="font-size: 15px;"><?php echo $varComentarios; ?></label></div></td>
-                                                    <?php if ($varnombreestado == 'Cerrado') { ?>
-                                                        <td><label style="font-size: 15px;"><?php echo $varnombreestado . ', ' . $fechaFormateada; ?></label></td>
-                                                        <?php
-                                                        }else{ ?>                                    
-                                                            <td><label style="font-size: 15px;"><?php echo  $varnombreestado; ?></label></td>
-                                                        <?php } ?>
-
+                                                    <td><label style="font-size: 12px;"><?php echo  $varNumCaso; ?></label></td>
+                                                    <td><label style="font-size: 12px;"><?php echo  $varTipoDato; ?></label></td>                                
+                                                    <td><label style="font-size: 12px;"><?php echo  $varNombreCliente; ?></label></td>
+                                                    <td><label style="font-size: 12px;"><?php echo  $varUsuario; ?></label></td>                               
+                                                    <td><label style="font-size: 12px;"><?php echo  $varFechaCreacion; ?></label></td>
+                                                    <td class="resumen-celda"><label style="font-size: 12px;"></label>
+                                                    <div class="resumen"><label style="font-size: 12px;"><?php echo strlen($varComentarios) > 50 ? substr($varComentarios, 0, 50)."..." : $varComentarios; ?></label></div>
+                                                    <div class="completo hidden"><label style="font-size: 12px;"><?php echo $varComentarios; ?></label></div></td>
+                                                    <td><label style="font-size: 12px;"><?php echo  $varnombreestado; ?></label></td>
                                                 
 
-                                                    <?php if($diastrans === 0){?>
-                                                        <td style="width: 100px;">
-                                                            <div>
-                                                            <span class="semaforo-verde"></span>
-                                                            <label class="dias"><?= Yii::t('app', 'Tienes '.$diasfaltan.' Días') ?></label>
-                                                            </div>
-                                                        </td>
+                                                        <?php if($diastrans === 0){?>
+                                                            <td><span class="semaforo-verde"></span><label style="font-size: 12px;"><?= Yii::t('app', 'Tienes '.$diasfaltan.' Días') ?></label></td>
 
-                                                    <?php } ?>
-                                                    <?php if(($diastrans >= $diaverde1) && ($diastrans <= $diaverde2)){?>
-                                                        <td style="width: 100px;" ><span class="semaforo-verde"></span><label class="dias"><?= Yii::t('app','Tienes '.$diasfaltan.' Días') ?></label></td>
+                                                        <?php } ?>
+                                                        <?php if(($diastrans >= $diaverde1) && ($diastrans <= $diaverde2)){?>
+                                                            <td ><span class="semaforo-verde"></span><label style="font-size: 12px;"><?= Yii::t('app','Tienes '.$diasfaltan.' Días') ?></label></td>
 
-                                                    <?php } ?>
-                                                    <?php if(($diastrans >= $diaamarillo1) && ($diastrans <= $diaamarillo2)){?>
-                                                        <td style="width: 100px;" ><span class="semaforo-amarillo" ></span><label class="dias"><?= Yii::t('app','Tienes '.$diasfaltan.' Días') ?></label></td>
+                                                        <?php } ?>
+                                                        <?php if(($diastrans >= $diaamarillo1) && ($diastrans <= $diaamarillo2)){?>
+                                                            <td><span class="semaforo-amarillo" ></span><label style="font-size: 12px;"><?= Yii::t('app','Tienes '.$diasfaltan.' Días') ?></label></td>
 
-                                                    <?php } ?>
-                                                    <?php if(($diastrans >= $diarojo1)){?>
-                                                        <td style="width: 100px;" ><span class="semaforo-rojo" ></span><label class="dias"><?= Yii::t('app', 'Días Vencidos  '.$diasfaltan) ?> </label></td>
+                                                        <?php } ?>
+                                                        <?php if(($diastrans >= $diarojo1)){?>
+                                                            <td ><span class="semaforo-rojo" ></span><label style="font-size: 12px;"><?= Yii::t('app', 'Días Vencidos '.$diasfaltan) ?> </label></td>
 
-                                                    <?php } ?>
+                                                        <?php } ?>
 
-                                                    <?php if(($diastrans > $meta) && ($varEstadoproceso != 2)){?>
-                                                        <td><label style="font-size: 15px;"><?= Yii::t('app', 'No haz Respondido') ?></label></td>
+                                                        <?php if(($diastrans > $meta) && ($varEstadoproceso == 9 ) || ($diastrans > $meta)&& ($varEstadoproceso == 4 )|| ($diastrans > $meta)&& ($varEstadoproceso == 5 )|| ($diastrans > $meta)&& ($varEstadoproceso == 8 )){?>
+                                                            <td><label style="font-size: 12px;"><?= Yii::t('app', 'No haz Respondido') ?></label></td>
 
-                                                    <?php } ?>  
-                                                    <?php if(($diastrans > $meta) && ($varEstadoproceso == 2)){?>
-                                                        <td><label style="font-size: 15px;"><?= Yii::t('app', 'Cumplió fuera de la Fecha') ?></label></td>
+                                                        <?php } ?>  
+                                                        <?php if(($diastrans > $meta) && ($varEstadoproceso == 2)){?>
+                                                            <td><label style="font-size: 12px;"><?= Yii::t('app', 'Cumplió fuera de la Fecha') ?></label></td>
 
-                                                    <?php } ?>
-                                                    <?php if(($diastrans <= $meta)&& ($varEstadoproceso != 2)){?>
-                                                        <td><label style="font-size: 15px;"><?= Yii::t('app', 'Tienes tiempo para Cumplir') ?></label></td>
+                                                        <?php } ?>
+                                                        <?php if(($diastrans <= $meta)&& ($varEstadoproceso == 9)  || ($diastrans <= $meta)&& ($varEstadoproceso == 8 ) || ($diastrans <= $meta)&& ($varEstadoproceso == 4 )|| ($diastrans <= $meta)&& ($varEstadoproceso == 5 )){?>
+                                                            <td><label style="font-size: 12px;"><?= Yii::t('app', 'Tienes tiempo para Cumplir') ?></label></td>
 
-                                                    <?php } ?>
-                                                    <?php if(($diastrans <= $meta)&& ($varEstadoproceso == 2)){?>
-                                                        <td><label style="font-size: 15px;"><?= Yii::t('app', 'Cumplió') ?></label></td>
+                                                        <?php } ?>
+                                                        <?php if(($diastrans <= $meta)&& ($varEstadoproceso == 2)){?>
+                                                            <td><label style="font-size: 12px;"><?= Yii::t('app', 'Cumplió') ?></label></td>
 
-                                                    <?php } ?>
+                                                        <?php } ?>
+                                                        
                                                     
-                                                    <?php if ($roles == 270) { ?>
                                                     <td class="text-center">
                                                         <?= Html::a('<em class="fas fa-search" style="font-size: 12px; color: #3e95b8;"></em>',  ['verqyr','idcaso'=> $value['idcaso']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Buscar']) ?>
                                                     </td>
-                                                    <?php } ?>
                                                     <td class="text-center">
                                                     <?php
-                                                        if ($varEstadoproceso != 2 ) {
+                                                    //nuevo abierto
+                                                        if ($varEstadoproceso == 9) {
                                                     ?>                                    
-                                                        <?= Html::a('<em class="fas fa-pencil-alt" style="font-size: 15px; color: #43ba45;"></em>',  ['asignarqyr','idcaso'=> $value['idcaso']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Gestionar']) ?>
+                                                            <?= Html::a('<em class="fas fa-pencil-alt" style="font-size: 12px; color: #43ba45;"></em>',  ['viewqyr','idcaso'=> $value['idcaso']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Gestionar']) ?>
+                                                    <?php
+                                                    //En proceso
+                                                        } elseif ($varEstadoproceso == 4) {
+                                                    ?>                                                                  
+                                                            <?= Html::a('<em class="fas fa-pencil-alt" style="font-size: 12px; color: #43ba45;"></em>',  ['gestionqyr','idcaso'=> $value['idcaso']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Gestionar']) ?>
+                                                    <?php
+                                                    //Revision CX
+                                                        } elseif ($varEstadoproceso == 8) {
+                                                    ?>
+                                                            <?= Html::a('<em class="fas fa-pencil-alt" style="font-size: 12px; color: #43ba45;"></em>',  ['revisionqyr','idcaso'=> $value['idcaso']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Gestionar']) ?>
+                                                    <?php
+                                                    //Revisión Comercial
+                                                        } elseif (($varEstadoproceso == 5) && ($roles == 293 || $roles == 299 || $roles == 270) ) {
+                                                    ?>
+                                                    <?= Html::a('<em class="fas fa-pencil-alt" style="font-size: 12px; color: #43ba45;"></em>',  ['revisiongerenteqyr','idcaso'=> $value['idcaso']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Gestionar']) ?>
                                                     <?php
                                                         }else{ ?>                                    
                                                             <label><em class="fas fa-times" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', '') ?></label>
@@ -869,16 +810,9 @@ $sessiones = Yii::$app->user->identity->id;
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="card1 mb">
-                                                <label style="font-size: 20px;"><em class="fas fa-download" style="font-size: 20px; color: #0072CE;"></em><?= Yii::t('app', ' Descargar Información:') ?></label>
+                                                <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Descargar Información:') ?></label>
                                                     <a id="dlink" style="display:none;"></a>
                                                     <button class="btn btn-info" style="background-color: #4298B4" id="btn2">Aceptar</button>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="card1 mb">
-                                                <label style="font-size: 16px;"><em class="fas fa-download" style="font-size: 20px; color: #0072CE;"></em><?= Yii::t('app', ' Descargar Casos PQRS') ?></label>
-                                                <a id="dlink" style="display:none;"></a>
-                                                <button  class="btn btn-info" style="background-color: #4298B4" id="btn">Aceptar</button>
                                             </div>
                                         </div>
                                     </div>
@@ -886,26 +820,26 @@ $sessiones = Yii::$app->user->identity->id;
                                     <table id="tablaDescarga" hidden="hidden" class="table table-striped table-bordered tblResDetFreed">
                                     <thead>
                                         <tr>
-                                            <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 16px;"><?= Yii::t('app', 'Director') ?></label></th>
-                                            <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 16px;"><?= Yii::t('app', 'Caso') ?></label></th>
-                                            <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 16px;"><?= Yii::t('app', 'Sociedad') ?></label></th>
-                                            <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 16px;"><?= Yii::t('app', 'Ciudad') ?></label></th>
-                                            <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 16px;"><?= Yii::t('app', 'Cliente') ?></label></th>
-                                            <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 16px;"><?= Yii::t('app', 'Tipo') ?></label></th>
-                                            <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 16px;"><?= Yii::t('app', 'Tipología') ?></label></th>
-                                            <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 16px;"><?= Yii::t('app', 'Descripción') ?></label></th>
-                                            <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 16px;"><?= Yii::t('app', 'Radicada por') ?></label></th>
-                                            <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 16px;"><?= Yii::t('app', 'Fecha de Radicación') ?></label></th>
-                                            <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 16px;"><?= Yii::t('app', 'Asignado a') ?></label></th>
-                                            <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 16px;"><?= Yii::t('app', 'Fecha de Asignación') ?></label></th>
-                                            <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 16px;"><?= Yii::t('app', 'Fecha Envío Respuesta') ?></label></th>
-                                            <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 16px;"><?= Yii::t('app', 'Fecha Revisión CX') ?></label></th>
-                                            <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 16px;"><?= Yii::t('app', 'Revisión CX') ?></label></th>
-                                            <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 16px;"><?= Yii::t('app', 'Fecha Revisión Gerente') ?></label></th>
-                                            <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 16px;"><?= Yii::t('app', 'Revisión Gerente') ?></label></th>
-                                            <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 16px;"><?= Yii::t('app', 'Estado Actual') ?></label></th>
-                                            <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 16px;"><?= Yii::t('app', 'Días Vencidos') ?></label></th>
-                                            <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 16px;"><?= Yii::t('app', 'Días Restantes') ?></label></th>
+                                            <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Director') ?></label></th>
+                                            <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Caso') ?></label></th>
+                                            <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Sociedad') ?></label></th>
+                                            <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Ciudad') ?></label></th>
+                                            <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Cliente') ?></label></th>
+                                            <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Tipo') ?></label></th>
+                                            <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Tipología') ?></label></th>
+                                            <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Descripción') ?></label></th>
+                                            <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Radicada por') ?></label></th>
+                                            <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Fecha de Radicación') ?></label></th>
+                                            <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Asignado a') ?></label></th>
+                                            <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Fecha de Asignación') ?></label></th>
+                                            <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Fecha Envío Respuesta') ?></label></th>
+                                            <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Fecha Revisión CX') ?></label></th>
+                                            <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Revisión CX') ?></label></th>
+                                            <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Fecha Revisión Gerente') ?></label></th>
+                                            <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Revisión Gerente') ?></label></th>
+                                            <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Estado Actual') ?></label></th>
+                                            <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Días Vencidos') ?></label></th>
+                                            <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Días Restantes') ?></label></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -913,7 +847,7 @@ $sessiones = Yii::$app->user->identity->id;
                                     
                                         <?php
                                                 
-                                                 
+                                                 //var_dump($dataProviderInfo);
 
                                                     foreach ($dataProviderInfo as $key => $value) {
 
@@ -1100,26 +1034,26 @@ $sessiones = Yii::$app->user->identity->id;
                                         
                                                 ?>
                                         <tr>
-                                            <td><label style="font-size: 15px;"><?php echo  $varDirectoresListado; ?></label></td>
-                                            <td><label style="font-size: 15px;"><?php echo  $txtcaso_id; ?></label></td>                                
-                                            <td><label style="font-size: 15px;"><?php echo  $varsociedad; ?></label></td>
-                                            <td><label style="font-size: 15px;"><?php echo  $varCiudad; ?></label></td>                               
-                                            <td><label style="font-size: 15px;"></label></td>
-                                            <td><label style="font-size: 15px;"><?php echo  $txttipo_solicitud; ?></label></td>                                
-                                            <td><label style="font-size: 15px;"><?php echo  $txttipologia; ?></label></td>
-                                            <td><label style="font-size: 15px;"><?php echo  $varIdComentario; ?></label></td>                               
-                                            <td><label style="font-size: 15px;"><?php echo  $txtradicada; ?></label></td>
-                                            <td><label style="font-size: 15px;"><?php echo  $txtfecha_radicacion; ?></label></td>
-                                            <td><label style="font-size: 15px;"><?php echo  $txtasignada; ?></label></td>                                
-                                            <td><label style="font-size: 15px;"><?php echo  $txtfecha_asignacion; ?></label></td>
-                                            <td><label style="font-size: 15px;"><?php echo  $txtrespuesta; ?></label></td>                               
-                                            <td><label style="font-size: 15px;"><?php echo  $txtfecha_revision_cx; ?></label></td>
-                                            <td><label style="font-size: 15px;"><?php echo  $txtrevisioncxx; ?></label></td>
-                                            <td><label style="font-size: 15px;"><?php echo  $txtfecha_revision_gerente; ?></label></td>                                
-                                            <td><label style="font-size: 15px;"><?php echo  $txtrevision_gerentee; ?></label></td>
-                                            <td><label style="font-size: 15px;"><?php echo  $txtestado_actual; ?></label></td>                               
-                                            <td><label style="font-size: 15px;"><?php echo  $diastrans; ?></label></td>
-                                            <td><label style="font-size: 15px;"><?php echo  $diasfaltan; ?></label></td>                                
+                                            <td><label style="font-size: 12px;"><?php echo  $varDirectoresListado; ?></label></td>
+                                            <td><label style="font-size: 12px;"><?php echo  $txtcaso_id; ?></label></td>                                
+                                            <td><label style="font-size: 12px;"><?php echo  $varsociedad; ?></label></td>
+                                            <td><label style="font-size: 12px;"><?php echo  $varCiudad; ?></label></td>                               
+                                            <td><label style="font-size: 12px;"><?php echo  $varCliente; ?></label></td>
+                                            <td><label style="font-size: 12px;"><?php echo  $txttipo_solicitud; ?></label></td>                                
+                                            <td><label style="font-size: 12px;"><?php echo  $txttipologia; ?></label></td>
+                                            <td><label style="font-size: 12px;"><?php echo  $varIdComentario; ?></label></td>                               
+                                            <td><label style="font-size: 12px;"><?php echo  $txtradicada; ?></label></td>
+                                            <td><label style="font-size: 12px;"><?php echo  $txtfecha_radicacion; ?></label></td>
+                                            <td><label style="font-size: 12px;"><?php echo  $txtasignada; ?></label></td>                                
+                                            <td><label style="font-size: 12px;"><?php echo  $txtfecha_asignacion; ?></label></td>
+                                            <td><label style="font-size: 12px;"><?php echo  $txtrespuesta; ?></label></td>                               
+                                            <td><label style="font-size: 12px;"><?php echo  $txtfecha_revision_cx; ?></label></td>
+                                            <td><label style="font-size: 12px;"><?php echo  $txtrevisioncxx; ?></label></td>
+                                            <td><label style="font-size: 12px;"><?php echo  $txtfecha_revision_gerente; ?></label></td>                                
+                                            <td><label style="font-size: 12px;"><?php echo  $txtrevision_gerentee; ?></label></td>
+                                            <td><label style="font-size: 12px;"><?php echo  $txtestado_actual; ?></label></td>                               
+                                            <td><label style="font-size: 12px;"><?php echo  $diastrans; ?></label></td>
+                                            <td><label style="font-size: 12px;"><?php echo  $diasfaltan; ?></label></td>                                
                                         </tr>
                                         <?php
                                             }
@@ -1130,6 +1064,7 @@ $sessiones = Yii::$app->user->identity->id;
                         </div>
                     </div>
 
+
                 </div>
             </div>
         </div>
@@ -1139,7 +1074,37 @@ $sessiones = Yii::$app->user->identity->id;
 </div>
 <hr>
 <script type="text/javascript">
-    
+    /*$(document).ready( function () {
+        $('#myTable').DataTable({
+            responsive: true,
+            fixedColumns: true,
+            dom: 'Bfrtip',
+            buttons: [
+                { 
+                  extend: 'excel',
+                  dom: 'Bfrtip',
+                  text:'Exportar a excel',
+                  className: 'btn btn-primary',
+                  title:'Quejas-reclamos'
+                } 
+             ],
+            select: true,
+            "language": {
+                "lengthMenu": "Cantidad de Datos a Mostrar _MENU_ ",
+                "zeroRecords": "No se encontraron datos ",
+                "info": "Mostrando p&aacute;gina _PAGE_ a _PAGES_ de _MAX_ registros",
+                "infoEmpty": "No hay datos aun",
+                "infoFiltered": "(Filtrado un _MAX_ total)",
+                "search": "Buscar:",
+                "paginate": {
+                    "first":      "Primero",
+                    "last":       "Ultimo",
+                    "next":       "Siguiente",
+                    "previous":   "Anterior"
+                }
+            } 
+        });
+    });*/
 
     $(document).ready( function () {
     $('#myTable').DataTable({
@@ -1200,9 +1165,6 @@ $sessiones = Yii::$app->user->identity->id;
 // Data retrieved from https://olympics.com/en/olympic-games/beijing-2022/medals
 // Data retrieved from https://netmarketshare.com/
 // Build the chart
-
-
-
 Highcharts.chart('containerA', {
     chart: {
         plotBackgroundColor: null,
@@ -1230,7 +1192,7 @@ Highcharts.chart('containerA', {
         }
     },
     series: [{
-        name: 'Data:',
+        name: 'Brands',
         colorByPoint: true,
         data: [<?php           
                     foreach ($varCantidadestados as $key => $value) {
@@ -1270,55 +1232,66 @@ Highcharts.chart('containerA', {
     }]
 });
 
+
+
+
+
+
     Highcharts.chart('containerB', {
-    chart: {
-        plotBackgroundColor: null,
-        plotBorderWidth: null,
-        plotShadow: false,
-        type: 'pie'
-    },
-    title: {
-        text: '',
-        align: ''
-    },
-    accessibility: {
-        point: {
-            valueSuffix: '%'
-        }
-    },
-    plotOptions: {
-        pie: {
-            allowPointSelect: true,
-            cursor: 'pointer',
-            dataLabels: {
-                enabled: false
-            },
-            showInLegend: true
-        }
-    },
-    series: [{
-        name: 'Data:',
-        colorByPoint: true,
-        data: [<?php 
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: 0,
+            plotShadow: false
+        },
+        title: {
+            text: '<label style="font-size: 20px;"><?php echo ''; ?></label>',
+            align: 'center',
+            verticalAlign: 'middle',
+            y: 60
+        },
+        accessibility: {
+            point: {
+                valueSuffix: '%'
+            }
+        },
+        plotOptions: {
+            pie: {
+                dataLabels: {
+                    enabled: true,
+                    distance: -50,
+                    style: {
+                        fontWeight: 'bold',
+                        color: 'white'
+                    }
+                },
+                startAngle: -90,
+                endAngle: 90,
+                center: ['50%', '110%'],
+                size: '220%',
+                width: '200%'
+            }
+        },
+        series: [{
+            type: 'column',
+            name: '',
+            innerSize: '50%',
+            data: [
+                <?php 
                 $varvalor = '';          
                     foreach ($varCantidadtranscurre as $key => $value) {
                         $varColor = null;
 
                         if ($value['num'] == 1) {
-                            $varColor = '#002855';
-                            $varvalor = 'Cumplió';
+                            $varColor = '#FFC72C';
+                            $varvalor = '<= 5 días';
                         }
                         if ($value['num'] == 2) {
-                            $varColor = '#0072CE';
-                            $varvalor = 'Tienes Tiempo para Cumplir';
+                            $varColor = '#00968F';
+                            $varvalor = '>5 y <8 días';
                         }
                         if ($value['num'] == 3) {
-                            $varColor = '#FFC72C';
-                            $varvalor = 'Cumplió Fuera de la Fecha';
-                        }
-                        if ($value['num'] == 4) {
-                            $varColor = '#00968F';
-                            $varvalor = 'No Haz Respondido';
+                            $varColor = '#CE0F69';
+                            $varvalor = '> 8 días';
                         }
                         
                 ?>
@@ -1333,12 +1306,124 @@ Highcharts.chart('containerA', {
                 <?php 
                     }
                 ?>
-]
-    }]
-});
+                        
+            ]
+        }]
+    });
 
 
+    var chartContainerA = document.getElementById("chartContainerA");
+  var chartContainerM = document.getElementById("chartContainerM");
+  var chartContainerC = document.getElementById("chartContainerC");
+  var chartContainerK = document.getElementById("chartContainerK");
 
+  Chart.defaults.global.defaultFontFamily = "Lato";
+  Chart.defaults.global.defaultFontSize = 12;
+
+  var oilDataA = {
+    datasets: [
+      {
+        data: ["<?php echo $varAbierto; ?>","<?php echo $varTotalCasos; ?>"],
+        backgroundColor: [
+          "<?php echo $varColorA; ?>",
+          "#D7CFC7"
+        ]
+      }
+    ]
+  };
+
+  var pieChart = new Chart(chartContainerA, {
+    type: 'doughnut',
+    data: oilDataA
+  });
+
+  var oilDataM = {
+    datasets: [
+      {
+        data: ["<?php echo $varCerrado; ?>","<?php echo $varTotalCasos; ?>"],
+        backgroundColor: [
+          "<?php echo $varColorM; ?>",
+          "#D7CFC7"
+        ]
+      }
+    ]
+  };
+
+  var pieChart = new Chart(chartContainerM, {
+    type: 'doughnut',
+    data: oilDataM
+  });
+
+  var oilDataC = {
+    datasets: [
+      {
+        data: ["<?php echo $varProceso; ?>","<?php echo $varTotalCasos; ?>"],
+        backgroundColor: [
+          "<?php echo $varColorC; ?>",
+          "#D7CFC7"
+        ]
+      }
+    ]
+  };
+
+  var pieChart = new Chart(chartContainerC, {
+    type: 'doughnut',
+    data: oilDataC
+  });
+
+  var oilDataK = {
+        datasets: [
+            {
+                data: ["<?php echo $varRevisionCX; ?>","<?php echo $varTotalCasos; ?>"],
+                backgroundColor: [
+                    "<?php echo $varColorK; ?>",
+                    "#D7CFC7"
+                ]
+            }]
+    };
+
+    var pieChart = new Chart(chartContainerK, {
+      type: 'doughnut',
+      data: oilDataK
+    });
+
+
+    var oilDataN = {
+        datasets: [
+            {
+                data: ["<?php echo $varRevisionGer; ?>","<?php echo $varTotalCasos; ?>"],
+                backgroundColor: [
+                    "<?php echo $varColorN; ?>",
+                    "#D7CFC7"
+                ]
+            }]
+    };
+
+    var pieChart = new Chart(chartContainerN, {
+      type: 'doughnut',
+      data: oilDataN
+    });
+
+    $(document).ready(function() {
+        $('.cell-with-text').on('click', function() {
+            var $cell = $(this);
+            var fullText = $cell.data('fulltext'); // Suponiendo que el texto completo está almacenado en un atributo data
+
+            // Reemplazar el contenido de la celda con el texto completo
+            $cell.text(fullText);
+        });
+    });
+
+
+    var chartContainerA = document.getElementById("chartContainerA");
+    var chartContainerM = document.getElementById("chartContainerM");
+    var chartContainerC = document.getElementById("chartContainerC");
+    var chartContainerK = document.getElementById("chartContainerK");
+
+    Chart.defaults.global.defaultFontFamily = "Lato";
+    Chart.defaults.global.defaultFontSize = 12;
+
+    
 
 </script>
 
@@ -1415,7 +1500,6 @@ function openCity(evt, cityName) {
   };
 
   function verificardata(){
-
         var varidvarCliente = document.getElementById("idvarCliente").value;
         var varidvarSolicitud = document.getElementById("idvarSolicitud").value;
         var varidvarComentarios = document.getElementById("idvarComentarios").value;
@@ -1435,31 +1519,10 @@ function openCity(evt, cityName) {
             swal.fire("!!! Advertencia !!!","Debe de seleccionar comentarios","warning");
             return;
         }
-
-
-        
-
-
     }
 
-    document.getElementById('idvarFile').addEventListener('change', function () {
-        var fileInput = this;
-        var allowedExtensions = ['pdf ','docx'];
-        var maxSize = <?= 1024*1024*1024 ?>; // Tamaño máximo en bytes
-        var fileSize = fileInput.files[0].size;
-        var fileExtension = fileInput.value.split('.').pop().toLowerCase();
 
-        if (allowedExtensions.indexOf(fileExtension) === -1) {
-            swal.fire("Aviso!!!",'No se permiten extensiones de archivo diferentes de ' + allowedExtensions.join(', '));
-            fileInput.value = ''; // Limpiar el campo de entrada
-        } else if (fileSize > maxSize) {
-            swal.fire("Aviso!!!",'El tamaño del archivo debe ser menor o igual a '  + (maxSize / (1024 * 1024)) + ' MB');
-            fileInput.value = ''; // Limpiar el campo de entrada
-        }
-    });
-   
-    <?php  if(base64_decode(Yii::$app->request->get("varAlerta")) === "1"){ ?>       
-      swal.fire("Éxito","Datos Guardados Correctamente","success"); 
-    <?php } ?> 
+
+    
 
 </script>
