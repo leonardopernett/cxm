@@ -854,6 +854,14 @@ use app\models\Tipologiasqyr;
         ->from(['tbl_usuarios'])
         ->where(['=','tbl_usuarios.usua_identificacion',$vardocumentojefe])
         ->Scalar();
+
+        $txtQuery7 =  new Query;
+        $txtQuery7  ->select(['tbl_qr_casos.correo'])
+                    ->from('tbl_qr_casos')       
+                    ->Where('tbl_qr_casos.id = :id_caso')
+                    ->addParams([':id_caso'=>$id_caso]); 
+        $command = $txtQuery7->createCommand();
+        $datacorreosolicitud = $command->queryScalar();
               
     $command = $txtQuery5->createCommand();
     $datanumcaso = $command->queryScalar();
