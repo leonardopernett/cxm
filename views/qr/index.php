@@ -870,11 +870,11 @@ $sessiones = Yii::$app->user->identity->id;
                                                     </td>                                                 
                                                     <td class="text-center">
 
-                                                    <?php if ($varEstadoproceso == 4 && $roles != 301 && $roles != 270) {?>
+                                                    <?php if ($varEstadoproceso == 4 && $roles != 301 && $roles == 270) {?>
 
                                                     <?= Html::a('<em class="fas fa-pencil-alt" style="font-size: 15px; color: #43ba45;"></em>',  ['asignarqyr','idcaso'=> $value['idcaso']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Gestionar']) ?>
 
-                                                    <?php } elseif ($varEstadoproceso == 5 && $roles == '301') {?>
+                                                    <?php } elseif ($varEstadoproceso == 5 && $roles == '301' && $roles == 270) {?>
 
                                                     <?= Html::a('<em class="fas fa-pencil-alt" style="font-size: 15px; color: #43ba45;"></em>',  ['asignarqyr','idcaso'=> $value['idcaso']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Gestionar']) ?>
 
