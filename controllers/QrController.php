@@ -344,9 +344,9 @@ use app\models\Tipologiasqyr;
                               <br><br>
                               <p>Te notificamos que han dado respuesta a tu caso de PQRSF:</p>
                               <br>
-                              <p>Número:.$datanumcaso.</p>
+                              <p>Número:".$caso."</p>
                               <br>
-                              <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>.$varcuerpo2.</p>
+                              <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>".$varcuerpo2."</p>
                               <br><br>
                               <p>¡Que tengas un excelente día!</p>
                               <br><br><br>
