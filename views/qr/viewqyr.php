@@ -25,12 +25,22 @@ use yii\bootstrap\Modal;
     $txtcomentario = null; 
     $txtarea = null;
     $txttipologia = null;
+    $txtfecha_revisioncx = null;
+    $txtfecha_revision_gerente = null;
+    $txtfecha_respuesta = null;
+    $txtfecha_asignacion = null;
+    $txtrevision_gerente = null;
+    $txtrevisioncx = null;
     $txtarchivo = null;
-    
+    $id = null;
 
     foreach ($dataprovider as $key => $value) {
-        $txtarchivo = $value['archivo'];
-        $ruta = "../../".$txtarchivo;
+        $txtrevision_gerente = $value['revision_gerente'];
+        $txtrevisioncx = $value['revision_cx'];
+        $txtfecha_respuesta = $value['fecha_respuesta'];
+        $txtfecha_asignacion = $value['fecha_asignacion'];
+        $txtfecha_revisioncx = $value['fecha_revisioncx'];
+        $txtfecha_revision_gerente = $value['fecha_revision_gerente'];
         $txtfecha_creacion = $value['fecha_creacion'];
         $txnumero_caso = $value['numero_caso'];
         $txtnombre = $value['nombre'];
@@ -38,7 +48,31 @@ use yii\bootstrap\Modal;
         $txtcorreo = $value['correo'];
         $txtcomentario = $value['comentario']; 
         $txtarea = $value['area'];
-        $txttipologia = $value['tipologia'];   
+        $txttipologia = $value['tipologia']; 
+        $txtarchivo = $value['archivo'];
+        $rutas = $txtarchivo;  
+        $id = $value['id'];
+    }
+
+    foreach ($dataprovider as $key => $value) {
+        $txtfecha_creacion = $value['fecha_creacion'];
+        $txnumero_caso = $value['numero_caso'];
+        $txtnombre = $value['nombre'];
+        $txtdocumento = $value['documento'];
+        $txtcorreo = $value['correo'];
+        $txtcomentario = $value['comentario']; 
+        $txtarea = $value['area'];
+        $txttipologia = $value['tipologia'];
+        $txtusua_nombre = $value['usua_nombre'];
+        $txttipo_respuesta= $value['tipo_respuesta'];
+        $txttipo_de_dato = $value['tipo_de_dato'];
+        $txtestado = $value['estado'];
+        $txtcomentario2 = $value['comentario2'];
+        $txtarchivo2 = $value['archivo2'];
+        $ruta = $txtarchivo2;
+        $txtarchivo = $value['archivo'];
+        $rutas = $txtarchivo;
+           
     }
     $varNA = "Sin datos";
     $listadata = (new \yii\db\Query())
@@ -162,183 +196,301 @@ use yii\bootstrap\Modal;
     </div>   
     <br>
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card1 mb">
-                <label><em class="far fa-address-card" style="font-size: 30px; color: #2CA5FF;"></em> Información Caso: </label>
-                <br>
-                <table id="tblDataInfo" class="table table-striped table-bordered tblResDetFreed">
-                    <tbody>
-                    <tr>
-                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Fecha Radicación:') ?></label></th>
-                        <td><label style="font-size: 15px;" width: 300px;><?php echo  $txtfecha_creacion; ?></label></td>
-                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Número de Caso:') ?></label></th>
-                        <td><label style="font-size: 15px; width: 300px;"><?php echo  $txnumero_caso; ?></label></td>
-                    </tr>
-                    <tr>
-                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Radicado por:') ?></label></th>
-                        <td><label style="font-size: 15px; width: 300px;"><?php echo  $txtnombre; ?></label></td>
-                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Documento:') ?></label></th>
-                        <td><label style="font-size: 15px; width: 300px;" ><?php echo  $txtdocumento; ?></label></td>
-                    </tr>
-                    <tr>
-                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Correo:') ?></label></th>
-                        <td><label style="font-size: 15px; width: 300px;"><?php echo  $txtcorreo; ?></label></td>
-                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Comentarios:') ?></label></th>
-                        <td><label style="font-size: 15px; width: 300px;"><?php echo  $txtcomentario; ?></label></td>
-                    </tr>
-                    <tr>
-                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Archivo Adjunto:') ?></label></th>
-                        <td colspan="4"><a href="<?php echo $ruta?>" ><strong style="font-size: 15px;" > Descargar Documento Caso </strong>&nbsp;&nbsp;&nbsp; <em class="fas fa-download" style="font-size: 25px; color: #2CA5FF;"></em></a></td>
-                    </tr>
-                        
-                    </tbody>
-                </table>
-            </div>
-        </div>
-                
-    </div>
-</div>
-<hr>
-<!-- Capa carga de información -->
-    
-<div class="capaDos">
-<?php $form = ActiveForm::begin([
-            'layout' => 'horizontal',
-            "method" => "post",
-            "enableClientValidation" => true,
-            'options' => ['enctype' => 'multipart/form-data'],
-            'fieldConfig' => [
-                'inputOptions' => ['autocomplete' => 'off']
-            ]
-        ]) 
-    ?>
-        <div class="row">    
-            <div class="col-md-6">
-                <div class="card1 mb" style="background: #6b97b1; ">
-                    <label style="font-size: 20px; color: #FFFFFF;"><?php echo "Tipificaciones "; ?> </label>
-                </div>
-            </div>
-        </div>             
-        <br>
-        <div class="row">
-            <div class="col-md-12">        
+    <div role="tabpanel" class="tab-pane active" id="home">
+            <br>
+            <div class="row">
+              <div class="col-md-12">
                 <div class="card1 mb">
-                    <label><em class="far fa-clipboard" style="font-size: 30px; color: #2CA5FF;"></em> Tipificación</label>                
-                    <br> 
-                    <div class="row" >
 
-                        <div class="col-md-6">
-                            <label for="txtcliente" style="font-size: 16px;">Área de Asignación</label>
-                            <?=  $form->field($model2, 'id_area', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\Areasqyr::find()->distinct()->where("anulado = 0")->orderBy(['nombre'=> SORT_ASC])->all(), 'id', 'nombre'),
-                                                            [
-                                                                'prompt'=>'Seleccionar...',
-                                                                'onchange' => '
-                                                                    $.post(
-                                                                        "' . Url::toRoute('listartipologia') . '", 
-                                                                        {id: $(this).val()}, 
-                                                                        function(res){
-                                                                            $("#requester").html(res);
-                                                                        }
-                                                                    );
-                                                                ',
-                                                            ]
-                                                ); 
-                            ?>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="txtgerente" style="font-size: 16px;">Tipología</label>
-                            <?= $form->field($model8,'id', ['labelOptions' => [], 'template' => $template])->dropDownList(
-                                                            [],
-                                                            [
-                                                                'prompt' => 'Seleccionar...',                                         
-                                                                'id' => 'requester'
-                                                            ]
-                                                        );
-                            ?>
-                        </div>
-                    </div>
-                    <div class="row" >
-                        <div class="col-md-6">                  
-                            <label for="txtResponsable" style="font-size: 16px;">Responsable </label>                      
-                            <?=  $form->field($model3, 'id', ['labelOptions' => [], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\Usuarios::find()->where(['not like', 'usua_nombre', '%no usar%', false])->orderBy(['usua_nombre'=> SORT_ASC])->all(), 'usua_id', 'usua_nombre'),
-                                                [
-                                                    'prompt'=>'Seleccionar...',
-                                                ]
-                                        )->label(''); 
-                            ?>
-                        </div>
-                        <div class="col-md-6">
-                            <label style="font-size: 16px;"> Tipo de respuesta </label>
-                            <select id="txttiporespuesta" class ='form-control' onchange="respuesta();">
-                                <option value="" disabled selected>Seleccione...</option>
-                                <option value="Interna">Interna</option>
-                                <option value="Externa">Externa</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row" >
-                       
-                        <div class="col-md-6">                  
-                            <label for="txtResponsable" style="font-size: 16px;">Tipo de PQRS </label>                      
-                            <?=  $form->field($model4, 'id', ['labelOptions' => [], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\Tipopqrs::find()->orderBy(['tipo_de_dato'=> SORT_ASC])->all(), 'id', 'tipo_de_dato'),
-                                                [
-                                                    'prompt'=>'Seleccionar...',
-                                                ]
-                                        )->label(''); 
-                            ?>
-                        </div>
-                        <div class="col-md-6">                  
-                            <label for="txtResponsable" style="font-size: 16px;">Estado </label>                      
-                            <?=  $form->field($model5, 'id_estado', ['labelOptions' => [], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\Estadosqyr::find()->orderBy(['nombre'=> SORT_ASC])->all(), 'id_estado', 'nombre'),
-                                                [
-                                                    'prompt'=>'Seleccionar...',
-                                                ]
-                                        )->label(''); 
-                            ?>
-                        </div>
-                    </div>
-                    <div class="row" >
-                        <div class="col-md-6" style="display:none"> 
-                                <?= $form->field($model6, 'ccdirector', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 300, 'id'=>'idrespuesta'])?>
-                                                    
+                  <div class="col-md-12">
+                    <div class="card1 mb">
+                      <label style="font-size: 20px;"><em class="far fa-address-card" style="font-size: 25px; color: #00968F;"></em> Información del Caso: </label>
+                      <div class="col-md-12 right">
+                        <div onclick="opennovedadinf();" class="btn btn-primary"  style="background-color: #4298b400; border-color: #4298b500 !important; color:#000000; display: inline" method='post' id="idtbnp11" ><?= Yii::t('app', '[ Abrir + ]') ?>                                
                         </div> 
-                    </div> 
-                    
-                    <br>
-                    
-                </div>
-            </div>    
-        </div>
-</div>
-<hr>
-<div class="capaTres">    
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card1 mb">
-              <label><em class="fas fa-cogs" style="font-size: 30px; color: #1e8da7;"></em> Acciones:</label>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="card1 mb">
-                                    <?= Html::a('Regresar',  ['index'], ['class' => 'btn btn-success',
-                                            'style' => 'background-color: #707372',
-                                            'data-toggle' => 'tooltip',
-                                            'title' => 'Regresar']) 
-                                    ?>
-                                </div>
-                            </div> 
-                            <div class="col-md-6">
-                                <div class="card1 mb">
-                                    <?= Html::submitButton("Guardar", ["class" => "btn btn-primary", ]) ?>
-                                </div>
-                            </div>                                                      
-                        </div>
+                        <div onclick="closenovedadinf();" class="btn btn-primary"  style="background-color: #4298b400; border-color: #4298b500 !important; color:#000000; display: none" method='post' id="idtbnp22" ><?= Yii::t('app', '[ Cerrar - ]') ?>                                
+                        </div> 
+                      </div>
+                      <div class="capaExt" id="capa00tt" style="display: none;">
+
+                        <table id="tblDataInfo" class="table table-striped table-bordered tblResDetFreed">
+                          <caption></caption>
+                          <tbody>
+                            <tr>
+                                <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Fecha Creación:') ?></label></th>
+                                <td><label style="font-size: 15px; width: 300px;"><?php echo  $txtfecha_creacion; ?></label></td>
+                                <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Número de Caso:') ?></label></th>
+                                <td><label style="font-size: 15px; width: 300px;"><?php echo  $txnumero_caso; ?></label></td>
+                            </tr>
+                            <tr>
+                                <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Nombre Solicitante:') ?></label></th>
+                                <td><label style="font-size: 15px; width: 300px;"><?php echo  $txtnombre; ?></label></td>
+                                <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Documento:') ?></label></th>
+                                <td><label style="font-size: 15px; width: 300px;" ><?php echo  $txtdocumento; ?></label></td>
+                            </tr>
+                            <tr>
+                                <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Correo:') ?></label></th>
+                                <td><label style="font-size: 15px; width: 300px;"><?php echo  $txtcorreo; ?></label></td>
+                                <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Comentarios:') ?></label></th>
+                                <td><label style="font-size: 15px; width: 300px;"><?php echo  $txtcomentario; ?></label></td>
+                            </tr>
+                            <?php if (isset($rutas)) { ?>
+                            <tr>
+                              <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Archivo Adjunto:') ?></label></th>
+                              <td colspan="4"><a href="<?php echo "../../".$rutas?>" style="font-size: 18px;"><strong style="font-size: 15px;"> Descargar Documento Caso </strong>&nbsp;&nbsp;&nbsp; <em class="fas fa-download" style="font-size: 25px; color: #2CA5FF;"></em></a></td> 
+                            </tr>
+                            <?php } ?>
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
+                    <hr>
+
+                    <div class="card1 mb">
+                      <label style="font-size: 20px;"><em class="fas fa-plus-square" style="font-size: 25px; color: #00968F;"></em> Datos Adicionales: </label>
+                      <div class="col-md-12 right">
+                        <div onclick="opennovedaddatos();" class="btn btn-primary"  style="background-color: #4298b400; border-color: #4298b500 !important; color:#000000; display: inline" method='post' id="idtbnt12" ><?= Yii::t('app', '[ Abrir + ]') ?>                                
+                        </div> 
+                        <div onclick="closenovedaddatos();" class="btn btn-primary"  style="background-color: #4298b400; border-color: #4298b500 !important; color:#000000; display: none" method='post' id="idtbnt22" ><?= Yii::t('app', '[ Cerrar - ]') ?>                                
+                        </div> 
+                      </div>
+                      <div class="capaExt" id="capa00t" style="display: none;">
+
+                        <?php
+                          $varClasificacion = null;
+                          foreach ($dataProviderInfo as $key => $value) {   
+                            $varIdClientes = $value['cliente']; 
+                            
+                            $varClasificacion = (new \yii\db\Query())
+                                                ->select(['tbl_proceso_cliente_centrocosto.ciudad'])
+                                                ->from(['tbl_proceso_cliente_centrocosto'])
+                                                ->where(['=','tbl_proceso_cliente_centrocosto.id_dp_clientes',$varIdClientes])
+                                                ->andwhere(['=','tbl_proceso_cliente_centrocosto.anulado',0])
+                                                ->andwhere(['=','tbl_proceso_cliente_centrocosto.estado',1])
+                                                ->groupby(['tbl_proceso_cliente_centrocosto.id_dp_clientes'])
+                                                ->Scalar();
+
+                            $varCliente = (new \yii\db\Query())
+                                                ->select(['tbl_proceso_cliente_centrocosto.cliente'])
+                                                ->from(['tbl_proceso_cliente_centrocosto'])
+                                                ->where(['=','tbl_proceso_cliente_centrocosto.id_dp_clientes',$varIdClientes])
+                                                ->andwhere(['=','tbl_proceso_cliente_centrocosto.anulado',0])
+                                                ->andwhere(['=','tbl_proceso_cliente_centrocosto.estado',1])
+                                                ->groupby(['tbl_proceso_cliente_centrocosto.id_dp_clientes'])
+                                                ->Scalar();
+
+                            $VarDirectoresList = (new \yii\db\Query())
+                                                ->select(['tbl_proceso_cliente_centrocosto.director_programa'])
+                                                ->from(['tbl_proceso_cliente_centrocosto'])
+                                                ->where(['=','tbl_proceso_cliente_centrocosto.id_dp_clientes',$varIdClientes])
+                                                ->andwhere(['=','tbl_proceso_cliente_centrocosto.anulado',0])
+                                                ->andwhere(['=','tbl_proceso_cliente_centrocosto.estado',1])
+                                                ->groupby(['tbl_proceso_cliente_centrocosto.director_programa'])
+                                                ->All();
+
+                            $varArrayDirectores = array();
+                            foreach ($VarDirectoresList as $key => $value) {
+                                array_push($varArrayDirectores, $value['director_programa']);
+                            }
+                            $varDirectoresListado = implode(" - ", $varArrayDirectores);
+
+                            $varGerentesList = (new \yii\db\Query())
+                                                ->select(['tbl_proceso_cliente_centrocosto.gerente_cuenta'])
+                                                ->from(['tbl_proceso_cliente_centrocosto'])
+                                                ->where(['=','tbl_proceso_cliente_centrocosto.id_dp_clientes',$varIdClientes])
+                                                ->andwhere(['=','tbl_proceso_cliente_centrocosto.anulado',0])
+                                                ->andwhere(['=','tbl_proceso_cliente_centrocosto.estado',1])
+                                                ->groupby(['tbl_proceso_cliente_centrocosto.gerente_cuenta'])
+                                                ->All();
+
+                            $varArrayGerentes = array();
+                            foreach ($varGerentesList as $key => $value) {
+                                array_push($varArrayGerentes, $value['gerente_cuenta']);
+                            }
+                            $varGerentesListado = implode(" - ", $varArrayGerentes);
+
+
+                            $varPcrcList = (new \yii\db\Query())
+                                                ->select(['CONCAT(tbl_proceso_cliente_centrocosto.cod_pcrc," - ",tbl_proceso_cliente_centrocosto.pcrc) AS varListPcrc'])
+                                                ->from(['tbl_proceso_cliente_centrocosto'])
+                                                ->where(['=','tbl_proceso_cliente_centrocosto.id_dp_clientes',$varIdClientes])
+                                                ->andwhere(['=','tbl_proceso_cliente_centrocosto.anulado',0])
+                                                ->andwhere(['=','tbl_proceso_cliente_centrocosto.estado',1])
+                                                ->groupby(['tbl_proceso_cliente_centrocosto.pcrc'])
+                                                ->limit('5')
+                                                ->All();
+
+                            $varArrayPcrc = array();
+                            foreach ($varPcrcList as $key => $value) {
+                                array_push($varArrayPcrc, $value['varListPcrc']);
+                            }
+                            $varVerificaPcrc = implode("; ", $varArrayPcrc);
+
+                            $varsociedad = (new \yii\db\Query())
+                                            ->select([
+                                            'tbl_hojavida_sociedad.sociedad'
+                                            ])
+                                            ->from(['tbl_hojavida_sociedad'])
+                                            ->join('LEFT OUTER JOIN', 'tbl_hojavida_datapersonal',
+                                                  'tbl_hojavida_sociedad.id_sociedad = tbl_hojavida_datapersonal.id_sociedad')
+                                            ->join('LEFT OUTER JOIN', 'tbl_hojavida_datapcrc',
+                                                  ' tbl_hojavida_datapersonal.hv_idpersonal = tbl_hojavida_datapcrc.hv_idpersonal')
+                                            ->where(['=','tbl_hojavida_datapcrc.id_dp_cliente',$varIdClientes])
+                                            ->groupby(['tbl_hojavida_sociedad.id_sociedad'])
+                                            ->Scalar();  
+
+                            $listacumplimiento = (new \yii\db\Query())
+                                            ->select(['*'])
+                                            ->from(['tbl_qr_cumplimiento'])
+                                            ->where(['=','anulado',0])
+                                            ->All();
+                            $meta = null;
+                            $diaverde1 = null;
+                            $diaverde2 = null;
+                            $diaamarillo1 = null;
+                            $diaamarillo2 = null;
+                            $diarojo1 = null;
+                            $diarojo2 = null; 
+
+                            foreach ($listacumplimiento as $key => $value) {
+                                $meta = $value['indicador'];
+                                $diaverde1 = $value['diaverde1'];
+                                $diaverde2 = $value['diaverde2'];
+                                $diaamarillo1 = $value['diaamarillo1'];
+                                $diaamarillo2 = $value['diaamarillo2'];
+                                $diarojo1 = $value['diarojo1'];
+                                $diarojo2 = $value['diarojo2'];                        
+                            }
+                        
+                            $fecha1= new Datetime($txtfecha_creacion);
+                            $fecha2= new datetime('now');
+                            $dias = $fecha1->diff($fecha2);
+                            
+                            $diastrans = $dias->days;
+                            $diasfaltan = $meta - $diastrans;
+                            if ($diastrans < 1) {
+                                $diastrans = 0;
+                            }
+                            
+                            $cumplimiento = 100 -(($diastrans / $meta) * 100);
+              
+                        ?>
+                        <table id="tblDataInfo" class="table table-striped table-bordered tblResDetFreed">
+                          <caption></caption>
+                          <tbody>
+                          <tr>
+                            <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Cliente:') ?></label></th>
+                            <td><label style="font-size: 15px; width: 300px;"><?php echo  $varCliente; ?></label></td>
+                            <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Programa Pcrc:') ?></label></th>
+                            <td><label style="font-size: 15px; width: 300px;"><?php echo  $varVerificaPcrc; ?></label></td>                   
+                          </tr>
+                          <tr>                    
+                              <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Director:') ?></label></th>
+                              <td><label style="font-size: 15px; width: 300px;"><?php echo  $varDirectoresListado; ?> </label></td>
+                              <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Gerente:') ?></label></th>
+                              <td><label style="font-size: 15px; width: 300px;"><?php echo  $varGerentesListado; ?></label></td>
+                          </tr>
+                          <tr>
+                              <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Sociedad:') ?></label></th>
+                              <td><label style="font-size: 15px; width: 300px;"><?php echo  $varsociedad; ?></label></td>
+                              <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Ciudad:') ?></label></th>
+                              <td><label style="font-size: 15px; width: 300px;"><?php echo  $varClasificacion; ?></label></td>
+                          </tr> 
+                          <tr>
+                              <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Días de Vencidos:') ?></label></th>
+                              <td><label style="font-size: 15px; width: 300px;"><?php echo  $diastrans."  días"; ?></label></td>
+                              <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Cumplimiento %:') ?></label></th>
+                              <td><label style="font-size: 15px; width: 300px;"><?php echo  $cumplimiento; ?></label></td>
+                          </tr> 
+                            <?php
+                            }
+                            ?>
+                          </tbody>
+                        </table>
+                      </div> 
+                    </div>
+
+
+                    <hr>
+                    <div class="card1 mb">
+                      <label style="font-size: 20px;"><em class="far fa-map" style="font-size: 25px; color: #00968F;"></em> Historial del Caso: </label>
+                      <div class="col-md-12 right">
+                        <div onclick="opennovedadp();" class="btn btn-primary"  style="background-color: #4298b400; border-color: #4298b500 !important; color:#000000; display: inline" method='post' id="idtbnp13" ><?= Yii::t('app', '[ Abrir + ]') ?>                                
+                        </div> 
+                        <div onclick="closenovedadp();" class="btn btn-primary"  style="background-color: #4298b400; border-color: #4298b500 !important; color:#000000; display: none" method='post' id="idtbnp23" ><?= Yii::t('app', '[ Cerrar - ]') ?>                                
+                        </div> 
+                      </div>
+
+                      <div class="capaExt" id="capa00p" style="display: none;">
+
+                        <table id="tblDataInfo" class="table table-striped table-bordered tblResDetFreed">
+                          <caption></caption>
+                          <tbody>
+                            <tr>
+                              <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Radicado por:') ?></label></th>
+                              <td><label style="font-size: 15px; width: 300px;" ><?php echo  $txtnombre; ?></label></td>
+                              <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Fecha de Radicación:') ?></label></th>
+                              <td><label style="font-size: 15px; width: 300px;"><?php echo  $txtfecha_creacion; ?></label></td>                   
+                            </tr>
+                            <tr>
+                                <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Asignado a:') ?></label></th>
+                                <td><label style="font-size: 15px; width: 300px;"><?php echo  $txtusua_nombre; ?></label></td>
+                                <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Fecha de Asignación:') ?></label></th>
+                                <td><label style="font-size: 15px; width: 300px;"><?php echo  $txtfecha_asignacion; ?></label></td>
+                            </tr>
+                            <tr>
+                                <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Respuesta del Caso:') ?></label></th>
+                                <?php if (isset($ruta)) { ?>
+                                <td><a href="<?php echo "../../".$ruta?>" download style="font-size: 18px;"><strong style="font-size: 15px;"> Descargar Documento Respuesta </strong>&nbsp;&nbsp;&nbsp; <em class="fas fa-download" style="font-size: 25px; color: #2CA5FF;"></em></a></td>
+                                <?php }else{?>
+                                <td><label style="font-size: 15px; width: 300px;" ><?= Yii::t('app', 'No se ha respondido aún.') ?></label></td>
+                                <?php } ?>
+                                <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Fecha de Respuesta:') ?></label></th>
+                                <td><label style="font-size: 15px; width: 300px;" ><?php echo  $txtfecha_respuesta; ?></label></td>
+                            </tr>
+                            <tr>
+                                <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Revisión CX:') ?></label></th>
+                                <td><label style="font-size: 15px; width: 300px;"><?php echo  $txtrevisioncxx; ?></label></td>
+                                <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Fecha de Revisión CX:') ?></label></th>
+                                <td><label style="font-size: 15px; width: 300px;"><?php echo $txtfecha_revisioncx; ?></label></td>
+                            </tr>
+                            <tr>
+                                <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Revisión Comercial:') ?></label></th>
+                                <td><label style="font-size: 15px; width: 300px;"><?php echo  $txtrevision_gerentee; ?></label></td>
+                                <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Fecha de Revisión Comercial:') ?></label></th>
+                                <td><label style="font-size: 15px; width: 300px;"><?php echo $txtfecha_revision_gerente; ?></label></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
                 </div>
+              </div>
             </div>
-        </div>
-    </div><br>    
+            <hr>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card1 mb">
+                  <label style="font-size: 18px;"><em class="fas fa-cogs" style="font-size: 18px; color: #00968F;"></em> Acciones:</label>                  
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="card1 mb">
+                      <?= Html::a('Regresar',  ['index'], ['class' => 'btn btn-success',
+                                'style' => 'background-color: #707372',
+                                'data-toggle' => 'tooltip',
+                                'title' => 'Regresar']) 
+                      ?>                      </div>
+                    </div>   
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 </div>
+
+
+
 <?php ActiveForm::end(); ?>
 <script type="text/javascript">
 function respuesta(){

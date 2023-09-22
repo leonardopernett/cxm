@@ -119,7 +119,14 @@ $sessiones = Yii::$app->user->identity->id;
 
 
   $varTotalEstados = (new \yii\db\Query())
-  ->select(['COUNT(id_estado) as Cantidad','id_estado'])
+  ->select(['COUNT(id_estado) as Cantidad','id_estado' ])
+  ->from(['tbl_qr_casos'])
+  ->where(['=','tbl_qr_casos.estatus',0])
+  ->groupBy(['id_estado'])
+  ->all();
+
+  $varEstados = (new \yii\db\Query())
+  ->select(['id_estado' ])
   ->from(['tbl_qr_casos'])
   ->where(['=','tbl_qr_casos.estatus',0])
   ->groupBy(['id_estado'])
@@ -689,16 +696,26 @@ $sessiones = Yii::$app->user->identity->id;
                                                 <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 16px;"><?= Yii::t('app', 'Tipo de Solicitud') ?></label></th>                            
                                                 <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 16px;"><?= Yii::t('app', 'Cliente ') ?></label></th>
                                                 <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 16px;"><?= Yii::t('app', 'Radicado Por:') ?></label></th>
-                                                <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 16px;"><?= Yii::t('app', 'Fecha de Radicación ') ?></label></th>
+                                                <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 16px; width:80px;"><?= Yii::t('app', 'Fecha de Radicación ') ?></label></th>
+                                                <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 16px; width:80px;"><?= Yii::t('app', 'Fecha de Cierre ') ?></label></th>
                                                 <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 16px;"><?= Yii::t('app', 'Detalle PQRS ') ?></label></th>
                                                 <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 16px; width:125px;"><?= Yii::t('app', 'Estado Actual') ?></label></th>
-                                                <th scope="col" class="text-center" style="background-color: #b0cdd6; width:125px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Días Transcurridos  ') ?></label></th>
+                                                <th scope="col" class="text-center" style="background-color: #b0cdd6; width:125px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Días Transcurridos') ?></label></th>
                                                 <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 16px;"><?= Yii::t('app', 'Cumplimiento') ?></label></th>
+                                                
+                                                <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 16px;"><?= Yii::t('app', 'Ver Historico') ?></label></th>
                                                 <?php if ($roles == 270) { ?>
-                                                    <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 16px;"><?= Yii::t('app', 'Ver Historico') ?></label></th>
-                                                <?php } ?>
                                                 <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 16px;"><?= Yii::t('app', 'Acción Gestionar ') ?></label></th>
+                                                <?php } ?>
+
+                                                <?php if ($varEstados != 9 && $roles != 270) {?>
+                                                    <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 16px;"><?= Yii::t('app', 'Acción Gestionar ') ?></label></th>
+                                                    
+                                                <?php  } ?>
+
+                                                <?php if ($roles == 270) { ?>
                                                 <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 16px;"><?= Yii::t('app', 'Acción Eliminar ') ?></label></th>
+                                                <?php } ?>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -753,6 +770,7 @@ $sessiones = Yii::$app->user->identity->id;
                                                     $diaamarillo2 = null;
                                                     $diarojo1 = null;
                                                     $diarojo2 = null; 
+                                                    $fechaFormateadaRadicacion = date("Y-m-d", strtotime($varFechaCreacion));
 
 
 
@@ -788,12 +806,18 @@ $sessiones = Yii::$app->user->identity->id;
                                                     <td><label style="font-size: 15px;"><?php echo  $varTipoDato; ?></label></td>                                
                                                     <td><label style="font-size: 15px;"><?php echo  $varNombreCliente; ?></label></td>
                                                     <td><label style="font-size: 15px;"><?php echo  $varUsuario; ?></label></td>                               
-                                                    <td><label style="font-size: 15px;"><?php echo  $varFechaCreacion; ?></label></td>
+                                                    <td><label style="font-size: 15px;"><?php echo  $fechaFormateadaRadicacion; ?></label></td>
+                                                    <?php if ($varnombreestado == 'Cerrado') { ?>
+                                                        <td><label style="font-size: 15px;"><?php echo $fechaFormateada; ?></label></td>
+                                                    <?php
+                                                    }else{ ?>                                    
+                                                            <td><label style="font-size: 15px;"><?= Yii::t('app', '-') ?></label></td>
+                                                    <?php } ?>
                                                     <td class="resumen-celda"><label style="font-size: 15px;"></label>
                                                     <div class="resumen"><label style="font-size: 15px;"><?php echo strlen($varComentarios) > 50 ? substr($varComentarios, 0, 50)."..." : $varComentarios; ?></label></div>
                                                     <div class="completo hidden"><label style="font-size: 15px;"><?php echo $varComentarios; ?></label></div></td>
                                                     <?php if ($varnombreestado == 'Cerrado') { ?>
-                                                        <td><label style="font-size: 15px;"><?php echo $varnombreestado . ', ' . $fechaFormateada; ?></label></td>
+                                                        <td><label style="font-size: 15px;"><?php echo $varnombreestado; ?></label></td>
                                                         <?php
                                                         }else{ ?>                                    
                                                             <td><label style="font-size: 15px;"><?php echo  $varnombreestado; ?></label></td>
@@ -840,25 +864,42 @@ $sessiones = Yii::$app->user->identity->id;
 
                                                     <?php } ?>
                                                     
-                                                    <?php if ($roles == 270) { ?>
+                                                    
                                                     <td class="text-center">
                                                         <?= Html::a('<em class="fas fa-search" style="font-size: 12px; color: #3e95b8;"></em>',  ['verqyr','idcaso'=> $value['idcaso']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Buscar']) ?>
-                                                    </td>
-                                                    <?php } ?>
+                                                    </td>                                                 
                                                     <td class="text-center">
-                                                    <?php
-                                                        if ($varEstadoproceso != 2 ) {
-                                                    ?>                                    
-                                                        <?= Html::a('<em class="fas fa-pencil-alt" style="font-size: 15px; color: #43ba45;"></em>',  ['asignarqyr','idcaso'=> $value['idcaso']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Gestionar']) ?>
-                                                    <?php
-                                                        }else{ ?>                                    
-                                                            <label><em class="fas fa-times" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', '') ?></label>
+
+                                                    <?php if ($varEstadoproceso == 4 && $roles != 301 && $roles != 270) {?>
+
+                                                    <?= Html::a('<em class="fas fa-pencil-alt" style="font-size: 15px; color: #43ba45;"></em>',  ['asignarqyr','idcaso'=> $value['idcaso']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Gestionar']) ?>
+
+                                                    <?php } elseif ($varEstadoproceso == 5 && $roles == '301') {?>
+
+                                                    <?= Html::a('<em class="fas fa-pencil-alt" style="font-size: 15px; color: #43ba45;"></em>',  ['asignarqyr','idcaso'=> $value['idcaso']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Gestionar']) ?>
+
+                                                    <?php } elseif ($varEstadoproceso == 9 && $roles == 270) {?>
+
+                                                    <?= Html::a('<em class="fas fa-pencil-alt" style="font-size: 15px; color: #43ba45;"></em>',  ['asignarqyr','idcaso'=> $value['idcaso']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Gestionar']) ?>
+
+                                                    <?php } elseif ($varEstadoproceso == 8 && $roles == 270) {?>
+
+                                                    <?= Html::a('<em class="fas fa-pencil-alt" style="font-size: 15px; color: #43ba45;"></em>',  ['asignarqyr','idcaso'=> $value['idcaso']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Gestionar']) ?>
+
+                                                    <?php } else { ?>
+
+                                                    <!-- Agrega aquí el icono de equis -->
+                                                    <label><em class="fas fa-times" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', '') ?></label>
+
                                                     <?php } ?>
-                                                    
+
+                                                       
                                                     </td>
+                                                    <?php if ($roles == 270) { ?>
                                                     <td class="text-center">
                                                         <?= Html::a('<em class="fas fa-trash-alt" style="font-size: 12px; color: #d95416;"></em>',  ['deleteqr','idcaso'=> $value['idcaso']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar']) ?>
                                                     </td>
+                                                    <?php } ?>
                                                 </tr>
                                             <?php 
                                                 }
