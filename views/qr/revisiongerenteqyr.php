@@ -25,8 +25,16 @@ use yii\bootstrap\Modal;
     $txtcomentario = null; 
     $txtarea = null;
     $txttipologia = null;
+    $txtfecha_revisioncx = null;
+    $txtfecha_respuesta = null;
+    $txtfecha_asignacion = null;
+    $txtrevisioncx = null;
     
     foreach ($dataprovider as $key => $value) {
+        $txtfecha_asignacion = $value['fecha_asignacion'];
+        $txtfecha_respuesta = $value['fecha_respuesta'];
+        $txtrevisioncx = $value['revision_cx'];
+        $txtfecha_revisioncx = $value['fecha_revisioncx'];
         $txtfecha_creacion = $value['fecha_creacion'];
         $txnumero_caso = $value['numero_caso'];
         $txtnombre = $value['nombre'];
@@ -87,6 +95,13 @@ use yii\bootstrap\Modal;
     ->All();
 
     $varListatotalGerentes = ArrayHelper::map($dataG, 'hv_idgerente', 'gerente_cuenta');
+
+    
+    $txtrevisioncxx = (new \yii\db\Query())
+      ->select(['usua_nombre'])
+      ->from(['tbl_usuarios'])
+      ->where(['=','usua_id',$txtrevisioncx])
+      ->scalar();
 
 
 ?>
@@ -172,210 +187,80 @@ use yii\bootstrap\Modal;
                 <label><em class="far fa-address-card" style="font-size: 28px; color: #2CA5FF;"></em> Información Caso: </label>
                 <br>
                 <table id="tblDataInfo" class="table table-striped table-bordered tblResDetFreed">
-                <caption><?= Yii::t('app', '.') ?></caption>
+                
                     <tbody>
                     <tr>
-                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 13px;"><?= Yii::t('app', 'Fecha Creación:') ?></label></th>
-                        <td><label style="font-size: 12px;" width: 300px;><?php echo  $txtfecha_creacion; ?></label></td>
-                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 13px;"><?= Yii::t('app', 'Número de Caso:') ?></label></th>
-                        <td><label style="font-size: 12px; width: 300px;"><?php echo  $txnumero_caso; ?></label></td>
+                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Fecha Radicación:') ?></label></th>
+                        <td><label style="font-size: 15px;" width: 300px;><?php echo  $txtfecha_creacion; ?></label></td>
+                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Número de Caso:') ?></label></th>
+                        <td><label style="font-size: 15px; width: 300px;"><?php echo  $txnumero_caso; ?></label></td>
                     </tr>
                     <tr>
-                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 13px;"><?= Yii::t('app', 'Nombre Solicitante:') ?></label></th>
-                        <td><label style="font-size: 12px; width: 300px;"><?php echo  $txtnombre; ?></label></td>
-                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 13px;"><?= Yii::t('app', 'Documento:') ?></label></th>
-                        <td><label style="font-size: 12px; width: 300px;" ><?php echo  $txtdocumento; ?></label></td>
+                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Radicado por:') ?></label></th>
+                        <td><label style="font-size: 15px; width: 300px;"><?php echo  $txtnombre; ?></label></td>
+                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Documento:') ?></label></th>
+                        <td><label style="font-size: 15px; width: 300px;" ><?php echo  $txtdocumento; ?></label></td>
                     </tr>
                     <tr>
-                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 13px;"><?= Yii::t('app', 'Correo:') ?></label></th>
-                        <td><label style="font-size: 12px; width: 300px;"><?php echo  $txtcorreo; ?></label></td>
-                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 13px;"><?= Yii::t('app', 'Comentarios:') ?></label></th>
-                        <td><label style="font-size: 12px; width: 300px;"><?php echo  $txtcomentario; ?></label></td>
+                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Correo:') ?></label></th>
+                        <td><label style="font-size: 15px; width: 300px;"><?php echo  $txtcorreo; ?></label></td>
+                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Comentarios:') ?></label></th>
+                        <td><label style="font-size: 15px; width: 300px;"><?php echo  $txtcomentario; ?></label></td>
                     </tr>
                         
                     </tbody>
-                </table>
-                <br>
-                <label><em class="fas fa-plus-square" style="font-size: 28px; color: #2CA5FF;"></em> Datos adicionales: </label>
-                <br>
-                <?php
-                $varClasificacion = null;
-                    foreach ($dataProviderInfo as $key => $value) {   
-                        $varIdAccion = $value['hv_idpersonal'];
-                        $varIdClientes = $value['IdCliente'];
-                        $varsociedad = $value['sociedad'];
+                </table>  
+            </div>
+        </div>
+    </div>
 
-                        $paramsaccion = [':idhvacciones' => $varIdAccion];
-
-                        $paramsclasifica = [':idclasifica' => $value['clasificacion']];
-
-                        $varClasificacion = Yii::$app->db->createCommand('
-                            SELECT dc.ciudadclasificacion FROM tbl_hojavida_dataclasificacion dc
-                            INNER JOIN tbl_hojavida_datapersonal dp ON 
-                            dc.hv_idclasificacion = dp.clasificacion
-                            WHERE 
-                            dp.hv_idpersonal = :idclasifica ')->bindValues($paramsclasifica)->queryScalar();
-
-                        
-
-                $paramscliente = [':idhvaccion' => $varIdAccion, ':idclientes' => $varIdClientes ];
-                $varCliente = Yii::$app->db->createCommand('
-                SELECT pc.cliente  FROM tbl_proceso_cliente_centrocosto pc
-                    INNER JOIN tbl_hojavida_datapcrc hd ON 
-                    pc.id_dp_clientes = hd.id_dp_cliente
-                    INNER JOIN tbl_hojavida_datapersonal dp ON 
-                    hd.hv_idpersonal = dp.hv_idpersonal
-                    WHERE 
-                    dp.hv_idpersonal = :idhvaccion AND hd.id_dp_cliente = :idclientes
-                    GROUP BY pc.id_dp_clientes')->bindValues($paramscliente)->queryScalar();
-
-                
-                $varListaDirectores = Yii::$app->db->createCommand('
-                SELECT  cc.director_programa  AS Programa
-                    FROM tbl_hojavida_datadirector dc 
-                    INNER JOIN tbl_proceso_cliente_centrocosto cc ON 
-                        dc.ccdirector = cc.documento_director
-                    WHERE dc.hv_idpersonal = :idhvacciones GROUP BY cc.director_programa')->bindValues($paramsaccion)->queryAll();
-          
-                $varArrayDirectores = array();
-                foreach ($varListaDirectores as $key => $value) {
-                array_push($varArrayDirectores, $value['Programa']);
-                }
-                $varDirectoresListado = implode("; ", $varArrayDirectores);
-
-
-                $varListaGerente = Yii::$app->db->createCommand('
-                SELECT  cc.gerente_cuenta  AS Programagerente
-                    FROM tbl_hojavida_datagerente dc 
-                    INNER JOIN tbl_proceso_cliente_centrocosto cc ON 
-                        cc.documento_gerente = dc.ccgerente
-                    WHERE dc.hv_idpersonal = :idhvacciones GROUP BY cc.gerente_cuenta')->bindValues($paramsaccion)->queryAll();
-
-
-                
-                $varArrayGerentes = array();
-                foreach ($varListaGerente as $key => $value) {
-                array_push($varArrayGerentes, $value['Programagerente']);
-                }
-                $varGerentesListado = implode("; ", $varArrayGerentes);
-
-                $varVerificaPcrc = Yii::$app->db->createCommand('
-                SELECT GROUP_CONCAT(cc.cod_pcrc," - ",cc.pcrc SEPARATOR "; ") AS Programa
-                    FROM tbl_hojavida_datapcrc dc 
-                    INNER JOIN tbl_proceso_cliente_centrocosto cc ON 
-                        dc.cod_pcrc = cc.cod_pcrc
-                    WHERE dc.hv_idpersonal = :idhvacciones
-                    limit 1')->bindValues($paramsaccion)->queryScalar();
-
-                $listacumplimiento = (new \yii\db\Query())
-                                    ->select(['*'])
-                                    ->from(['tbl_qr_cumplimiento'])
-                                    ->where(['=','anulado',0])
-                                    ->All();
-                    $meta = null;
-                    $diaverde1 = null;
-                    $diaverde2 = null;
-                    $diaamarillo1 = null;
-                    $diaamarillo2 = null;
-                    $diarojo1 = null;
-                    $diarojo2 = null; 
-
-                    foreach ($listacumplimiento as $key => $value) {
-                        $meta = $value['indicador'];
-                        $diaverde1 = $value['diaverde1'];
-                        $diaverde2 = $value['diaverde2'];
-                        $diaamarillo1 = $value['diaamarillo1'];
-                        $diaamarillo2 = $value['diaamarillo2'];
-                        $diarojo1 = $value['diarojo1'];
-                        $diarojo2 = $value['diarojo2'];                        
-                    }
-                   
-                    $fecha1= new Datetime($txtfecha_creacion);
-                    $fecha2= new datetime('now');
-                    $dias = $fecha1->diff($fecha2);
-                    
-                    $diastrans = $dias->days;
-                    $diasfaltan = $meta - $diastrans;
-                    if ($diastrans < 1) {
-                        $diastrans = 0;
-                    }
-                    
-                    $cumplimiento = 100 -(($diastrans / $meta) * 100);
-           
-                ?>
-                <table id="tblDataInfo" class="table table-striped table-bordered tblResDetFreed">
-                <caption><?= Yii::t('app', '.') ?></caption>
-                    <tbody>
-                    <tr>
-                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 13px;"><?= Yii::t('app', 'Servicio:') ?></label></th>
-                        <td><label style="font-size: 12px; width: 300px;" ><?php echo  $varCliente; ?></label></td>
-                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 13px;"><?= Yii::t('app', 'Programa Pcrc:') ?></label></th>
-                        <td><label style="font-size: 12px; width: 300px;"><?php echo  $varVerificaPcrc; ?></label></td>                   
-                    </tr>
-                    <tr>                    
-                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 13px;"><?= Yii::t('app', 'Director:') ?></label></th>
-                        <td><label style="font-size: 12px; width: 300px;" ><?php echo  $varDirectoresListado; ?> </label></td>
-                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 13px;"><?= Yii::t('app', 'Gerente:') ?></label></th>
-                        <td><label style="font-size: 12px; width: 300px;"><?php echo  $varGerentesListado; ?> </label></td>
-                    </tr>
-                    <tr>
-                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 13px;"><?= Yii::t('app', 'Sociedad:') ?></label></th>
-                        <td><label style="font-size: 12px; width: 300px;" ><?php echo  $varsociedad; ?></label></td>
-                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 13px;"><?= Yii::t('app', 'Ciudad:') ?></label></th>
-                        <td><label style="font-size: 12px; width: 300px;"><?php echo  $varClasificacion; ?></label></td>
-                    </tr> 
-                    <tr>
-                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 13px;"><?= Yii::t('app', 'Días de Gestión:') ?></label></th>
-                        <?php if($diastrans == 0){?>
-                            <td ><label style="font-size: 12px; width: 250px;"><?php echo  $diastrans; ?><em class="fas fa-smile" style="font-size: 28px; color: #35f02b; float: right;"></em></label>&nbsp;Faltan <?php echo  $diasfaltan; ?> días</td>
-                        <?php } ?>
-                        <?php if(($diastrans >= $diaverde1) && ($diastrans <= $diaverde2)){?>
-                            <td ><label style="font-size: 12px; width: 250px;"><?php echo  $diastrans; ?><em class="fas fa-smile" style="font-size: 28px; color: #35f02b; float: right;"></em></label>&nbsp;Faltan <?php echo  $diasfaltan; ?> días</td>
-                        <?php } ?>
-                        <?php if(($diastrans >= $diaamarillo1) && ($diastrans <= $diaamarillo2)){?>
-                            <td ><label style="font-size: 12px; width: 250px;"><?php echo  $diastrans; ?><em class="fas fa-meh" style="font-size: 28px; color: #fae716; float: right;"></em></label>&nbsp;Faltan <?php echo  $diasfaltan; ?> días</td>
-                        <?php } ?>
-                        <?php if(($diastrans >= $diarojo1)){?>
-                            <td ><label style="font-size: 12px; width: 250px;"><?php echo  $diastrans; ?><em class="fas fa-frown" style="font-size: 28px; color: #f7331e; float: right;"></em></label>&nbsp;Faltan <?php echo  $diasfaltan; ?> días</td>
-                        <?php } ?>
-                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cumplimiento %:') ?></label></th>
-                        <td><label style="font-size: 12px; width: 300px;"><?php echo  $cumplimiento; ?></label></td>
-                    </tr>    
-                    <?php
-                        }
-                        ?>
-                    </tbody>
-                </table>                
-                <br>
-                <label><em class="fa fa-address-card" style="font-size: 28px; color: #26bf30;"></em> Tipificaciones: </label>
-                <br>
+    <hr><br>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card1 mb" style="background: #6b97b1; ">
+                <label style="font-size: 20px; color: #FFFFFF;"><?php echo "Historico del Caso "; ?> </label>
+            </div>
+        </div>
+    </div>   
+    <br>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card1 mb">
+                <label><em class="fa fa-map" style="font-size: 28px; color: #2CA5FF;"></em> Historico : </label>
                 <table id="tblTipificación" class="table table-striped table-bordered tblResDetFreed">
-                <caption><?= Yii::t('app', '.') ?></caption>
+                <caption></caption>
                     <tbody>
                     <tr>
-                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 13px;"><?= Yii::t('app', 'Área de Asignación:') ?></label></th>
-                        <td><label style="font-size: 12px; width: 300px;" ><?php echo  $txtarea; ?></label></td>
-                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 13px;"><?= Yii::t('app', 'Tipología:') ?></label></th>
-                        <td><label style="font-size: 12px; width: 300px;"><?php echo  $txttipologia; ?></label></td>                   
+                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Radicado por:') ?></label></th>
+                        <td><label style="font-size: 15px; width: 300px;" ><?php echo  $txtnombre; ?></label></td>
+                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Fecha de Radicación:') ?></label></th>
+                        <td><label style="font-size: 15px; width: 300px;"><?php echo  $txtfecha_creacion; ?></label></td>                   
                     </tr>
                     <tr>                    
-                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 13px;"><?= Yii::t('app', 'Responsable:') ?></label></th>
-                        <td><label style="font-size: 12px; width: 300px;" ><?php echo  $txtusua_nombre; ?> </label></td>
-                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 13px;"><?= Yii::t('app', 'Tipo de Respuesta:') ?></label></th>
-                        <td><label style="font-size: 12px; width: 300px;"><?php echo  $txttipo_respuesta; ?> </label></td>
+                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Asignado a:') ?></label></th>
+                        <td><label style="font-size: 15px; width: 300px;" ><?php echo  $txtusua_nombre; ?></label></td>
+                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Fecha Asignación:') ?></label></th>
+                        <td><label style="font-size: 15px; width: 300px;"><?php echo  $txtfecha_asignacion; ?></label></td>
                     </tr>
                     <tr>
-                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 13px;"><?= Yii::t('app', 'Tipo PQRS:') ?></label></th>
-                        <td><label style="font-size: 12px; width: 300px;" ><?php echo  $txttipo_de_dato; ?></label></td>
-                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 13px;"><?= Yii::t('app', 'Estado:') ?></label></th>
-                        <td><label style="font-size: 12px; width: 300px;"><?php echo  $txtestado; ?></label></td>
+                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Respuesta del Caso:') ?></label></th>
+                        <td><a href="<?php echo $ruta?>" download style="font-size: 18px;"><strong style="font-size: 15px;"> Descargar documento </strong>&nbsp;&nbsp;&nbsp; <em class="fas fa-download" style="font-size: 25px; color: #2CA5FF;"></em></a></td>
+
+                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Fecha de Respuesta:') ?></label></th>
+                        <td><label style="font-size: 15px; width: 300px;"><?php echo  $txtfecha_respuesta; ?></label></td>
                     </tr> 
                     <tr>
-                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 13px;"><?= Yii::t('app', 'Comentario Asignación:') ?></label></th>
-                        <td><label style="font-size: 12px; width: 300px;" ><?php echo  $txtcomentario2; ?></label></td>
-                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 13px;"><?= Yii::t('app', 'Carta Respuesta:') ?></label></th>
-                        <td><a href="<?php echo $ruta?>" download style="font-size: 18px;"><strong> Descargar documento </strong>&nbsp;&nbsp;&nbsp; <em class="fas fa-download" style="font-size: 25px; color: #26cd33;"></em></a></td>
-                    </tr>                     
+                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Revisión CX:') ?></label></th>
+                        <td><label style="font-size: 15px; width: 300px;" ><?php echo $txtrevisioncxx; ?></label></td>
+                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Fecha de Respuesta Revisión CX :') ?></label></th>
+                        <td><label style="font-size: 15px; width: 300px;"><?php echo  $txtfecha_revisioncx; ?></label></td>
+                    </tr> 
+                    <tr>
+                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Revisión Gerente:') ?></label></th>
+                        <td><label style="font-size: 15px; width: 300px;" >Pendiente respuesta</label></td>
+                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Fecha de Respuesta Revisión Gerente:') ?></label></th>
+                        <td><label style="font-size: 15px; width: 300px;">Pendiente respuesta</label></td>
+                    </tr>                                        
                     </tbody>
                 </table>                
                 <br>
@@ -408,13 +293,13 @@ use yii\bootstrap\Modal;
         <div class="row">
             <div class="col-md-12">        
                 <div class="card1 mb">
-                    <label><em class="far fa-clipboard" style="font-size: 20px; color: #e8701a;"></em> Revisión del Caso</label>                
+                    <label><em class="far fa-clipboard" style="font-size: 20px; color: #2CA5FF;"></em> Revisión del Caso</label>                
                     <br> 
                     <div class="row" >
                         <div class="col-md-6">
-                            <label style="font-size: 14px;"> Tipo de respuesta </label>
+                            <label style="font-size: 16px;"> Tipo de respuesta </label>
                             <select id="txttiporespuesta" class ='form-control' onchange="respuesta();">
-                                <option value="" disabled selected>seleccione...</option>
+                                <option value="" disabled selected>Seleccione...</option>
                                 <option value="Aprobada">Aprobada</option>
                                 <option value="Rechazada">Rechazada</option>
                             </select>
@@ -435,10 +320,8 @@ use yii\bootstrap\Modal;
             <div class="card1 mb">
               <label><em class="fas fa-cogs" style="font-size: 20px; color: #1e8da7;"></em> Acciones:</label>
                 <div class="row">                    
-                    <div class="col-md-6">
-                        <label style="font-size: 15px;"></label>
-                        <div class="row">
-                            <div class="col-md-4">
+                    <div class="col-md-12">
+                            <div class="col-md-6">
                                 <div class="card1 mb">
                                     <?= Html::a('Regresar',  ['index'], ['class' => 'btn btn-success',
                                             'style' => 'background-color: #707372',
@@ -447,7 +330,7 @@ use yii\bootstrap\Modal;
                                     ?>
                                 </div>
                             </div> 
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <div class="card1 mb">
                                     <?= Html::submitButton("Guardar", ["class" => "btn btn-primary", ]) ?>
                                 </div>
