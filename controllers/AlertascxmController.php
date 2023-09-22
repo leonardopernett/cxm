@@ -1318,7 +1318,8 @@ use Exception;
                 $varCorreoJarvis_Notas = Yii::$app->dbjarvis->createCommand('
                 SELECT dp_usuarios_red.email FROM dp_usuarios_red
                     WHERE 
-                        dp_usuarios_red.documento =  :varDocumentoName')->bindValues($varDocumentos_Notas)->queryScalar();
+                        dp_usuarios_red.documento =  :varDocumentoName
+                            AND dp_usuarios_red.email != ""')->bindValues($varDocumentos_Notas)->queryScalar();
 
                 $varDataResultado_Notas = (new \yii\db\Query())
                                 ->select([
