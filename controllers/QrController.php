@@ -268,7 +268,7 @@ use app\models\Tipologiasqyr;
                       ->Scalar();
 
       //se envia correo al solicitante
-      $varasunto .= $varcuerpo1;
+      
 
       $varHtml = 
           "
@@ -320,7 +320,7 @@ use app\models\Tipologiasqyr;
               ->send();
 
           // // correo para grupo CX   
-          $varasunto .= $varcuerpo1;
+          
 
           $varHtml = 
           "
@@ -362,6 +362,12 @@ use app\models\Tipologiasqyr;
               </body>
 
             </html> ";
+
+          $varListacorreo = (new \yii\db\Query())
+            ->select(['email'])
+            ->from(['tbl_qr_correos'])
+            ->All(); 
+        
         
         foreach ($varListacorreo as $key => $value) {
           if ($ruta){
@@ -955,7 +961,6 @@ use app\models\Tipologiasqyr;
             dp_usuarios_red.documento = :varDocumento ')->bindValues($varParams)->queryScalar();
 
         //envio de correo a responsable   
-        $varasunto .= $varcuerpo1;
 
         $varHtml = 
         "
@@ -1073,7 +1078,7 @@ use app\models\Tipologiasqyr;
           //envio de correo  equipo cx 
           $tmpFile = $ruta;
                       
-          $varasunto .= $varcuerpo1;
+         
 
           $varHtml = 
           "
@@ -1181,7 +1186,6 @@ use app\models\Tipologiasqyr;
 
            
             $tmpFile = $dataanexo;
-            $varasunto .= $varcuerpo1;
             //envio de correo al gerente con anexo            
             $varHtml = 
             "
@@ -1264,7 +1268,6 @@ use app\models\Tipologiasqyr;
                   ->where(['=','id_estado',7])
                   ->Scalar();
                 
-                  $varasunto .= $varcuerpo1;
                   //envio de correo al gerente con anexo            
                   $varHtml = 
                   "
