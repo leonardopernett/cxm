@@ -118,7 +118,6 @@ use app\models\Tipologiasqyr;
             ->join('LEFT JOIN', 'tbl_usuarios_evalua', 'tbl_qr_casos.cliente = tbl_usuarios_evalua.idusuarioevalua')
             ->where(['in','tbl_qr_casos.id_responsable',$sessiones])   
             ->andwhere(['=','tbl_qr_casos.estatus',0])
-            //->andwhere(['IN','tbl_qr_casos.',$roles])
             ->orderBy(['idcaso' => SORT_DESC])
             ->All();
     }
@@ -269,57 +268,120 @@ use app\models\Tipologiasqyr;
                       ->Scalar();
 
       //se envia correo al solicitante
-          $message = "<html><body>";
-          $message .= "<h3>CX-Management</h3>";   
-          $message .= $varcuerpo1;
-          $message .= $caso;
-          $message .= "<br><br>";
-          $message .= $varcuerpo2;             
-          $message .= "<br><br>Que tengas un buen día";
-          $message .= "<br><br><h3>Equipo Experiencia de Clientes - Konecta</h3>";
-          $message .= "</body></html>";
+      $varasunto .= $varcuerpo1;
 
-          // Yii::$app->mailer->compose()
-          //     ->setTo($modelcaso->correo)
-          //     ->setFrom(Yii::$app->params['email_satu_from'])
-          //     ->setSubject($varasunto)
-          //     ->setHtmlBody($message)
-          //     ->send();
+      $varHtml = 
+          "
+            <html lang='en'>
+
+              <head>
+              <meta charset='UTF-8'>
+              <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+              <title>Document</title>
+              </head>
+
+              <body style='font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 12px;'>
+                  <br><br><br><br>
+                  <div style='width: 450px; position: relative;'>
+                      <img src='https://i.ibb.co/8xbhr7W/k.png' alt='' width='80' style='position: absolute; top:-35px;right: -20px; border: 2px solid #002855 ;'>
+                      <div style='  box-shadow: -1px 0px 5px 0px rgba(0,0,0,0.75); border-radius: 10px; padding: 5px 50px; display: flex;'>
+
+                          <div style='width: 100%;'>
+                              
+                              <h4 style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>¡Hola Equipo CXM!</h4>
+                              <br><br>
+                              <p>Te notificamos que han dado respuesta a tu caso de PQRSF:</p>
+                              <br>
+                              <p>Número":.$caso."</p>
+                              <br>
+                              <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>".$varcuerpo2."</p>
+                              <br><br>
+                              <p>¡Que tengas un excelente día!</p>
+                              <br><br><br>
+                          
+                          </div>
+
+                          <div class='div'>
+                              <img src='' alt=''>
+                          </div>
+
+                      </div>
+                  </div>
+              </body>
+
+            </html> ";
+         
+
+          Yii::$app->mailer->compose()
+              ->setTo($modelcaso->correo)
+              ->setFrom(Yii::$app->params['email_satu_from'])
+              ->setSubject($varasunto)
+              ->setHtmlBody($varHtml)
+              ->send();
 
           // // correo para grupo CX   
-          // $message = "<html><body>";
-          // $message .= "<h3>CX-Management</h3>";
-          // $message .= "<br>Buen día Equipo ";
-          // $message .= "<br><br> Tenemos una nueva solicitud la cual fue recibida el día de hoy, con N° de caso: ";
-          // $message .= $caso;
-          // $message .= "<br><br> En espera de iniciar el proceso de asignación por parte del Equipo CX.";             
-          // $message .= "<br><br>Se adjunta el detalle de la PQRS";
-          // $message .= "<br><br>Feliz Día";
-          // $message .= "</body></html>"; 
-          // $varListacorreo = (new \yii\db\Query())
-          //   ->select(['email'])
-          //   ->from(['tbl_qr_correos'])
-          //   ->All(); 
+          $varasunto .= $varcuerpo1;
+
+          $varHtml = 
+          "
+            <html lang='en'>
+
+              <head>
+              <meta charset='UTF-8'>
+              <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+              <title>Document</title>
+              </head>
+
+              <body style='font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 12px;'>
+                  <br><br><br><br>
+                  <div style='width: 450px; position: relative;'>
+                      <img src='https://i.ibb.co/8xbhr7W/k.png' alt='' width='80' style='position: absolute; top:-35px;right: -20px; border: 2px solid #002855 ;'>
+                      <div style='  box-shadow: -1px 0px 5px 0px rgba(0,0,0,0.75); border-radius: 10px; padding: 5px 50px; display: flex;'>
+
+                          <div style='width: 100%;'>
+                              
+                              <h4 style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>¡Hola Equipo CXM!</h4>
+                              <br><br>
+                              <p>Te notificamos que han dado respuesta a tu caso de PQRSF:</p>
+                              <br>
+                              <p>Número:.$datanumcaso.</p>
+                              <br>
+                              <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>.$varcuerpo2.</p>
+                              <br><br>
+                              <p>¡Que tengas un excelente día!</p>
+                              <br><br><br>
+                          
+                          </div>
+
+                          <div class='div'>
+                              <img src='' alt=''>
+                          </div>
+
+                      </div>
+                  </div>
+              </body>
+
+            </html> ";
         
-        // foreach ($varListacorreo as $key => $value) {
-        //   if ($ruta){
-        //     Yii::$app->mailer->compose()
-        //     ->setTo($value['email'])
-        //     ->setFrom(Yii::$app->params['email_satu_from'])
-        //     ->setSubject("Respuesta nuevo caso QyR - CX-Management")   
-        //     // revisar anexo    
-        //     ->attach($ruta)
-        //     ->setHtmlBody($message)
-        //     ->send();
-        //   }else{
-        //     Yii::$app->mailer->compose()
-        //     ->setTo($value['email'])
-        //     ->setFrom(Yii::$app->params['email_satu_from'])
-        //     ->setSubject("Respuesta nuevo caso QyR - CX-Management")                     
-        //     ->setHtmlBody($message)
-        //     ->send();
-        //   }
-        // }
+        foreach ($varListacorreo as $key => $value) {
+          if ($ruta){
+            Yii::$app->mailer->compose()
+            ->setTo($value['email'])
+            ->setFrom(Yii::$app->params['email_satu_from'])
+            ->setSubject("Respuesta nuevo caso QyR - CX-Management")   
+            // revisar anexo    
+            ->attach($ruta)
+            ->setHtmlBody($varHtml)
+            ->send();
+          }else{
+            Yii::$app->mailer->compose()
+            ->setTo($value['email'])
+            ->setFrom(Yii::$app->params['email_satu_from'])
+            ->setSubject("Respuesta nuevo caso QyR - CX-Management")                     
+            ->setHtmlBody($varHtml)
+            ->send();
+          }
+        }
 
       $varAlerta = 1;    
           
@@ -508,7 +570,7 @@ use app\models\Tipologiasqyr;
     
 
     $txtQuery2 =  new Query;
-    $txtQuery2  ->select(['tbl_qr_casos.archivo','tbl_qr_casos.revision_gerente','tbl_qr_casos.revision_cx','tbl_qr_casos.fecha_revision_gerente','tbl_qr_casos.fecha_revisioncx',
+    $txtQuery2  ->select(['tbl_qr_casos.id','tbl_qr_casos.archivo','tbl_qr_casos.revision_gerente','tbl_qr_casos.revision_cx','tbl_qr_casos.fecha_revision_gerente','tbl_qr_casos.fecha_revisioncx',
                         'tbl_qr_casos.fecha_asignacion','tbl_qr_casos.fecha_respuesta','tbl_qr_casos.fecha_creacion',
                         'tbl_qr_casos.numero_caso','tbl_qr_clientes.clientes','tbl_qr_casos.nombre','tbl_qr_casos.documento',
                         'tbl_qr_casos.correo', 'tbl_qr_areas.nombre area','tbl_qr_tipologias.tipologia', 'tbl_qr_casos.comentario',
@@ -896,40 +958,45 @@ use app\models\Tipologiasqyr;
         $varasunto .= $varcuerpo1;
 
         $varHtml = 
-        "<html lang='en'>
-          <head>
-          <meta charset='UTF-8'>
-          <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-          <title>Document</title>
-          </head>
-        
-          <body style= 'font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 12px; '>
-            <br><br><br><br>
-            <div style= 'background-image: url('https://i.ibb.co/ck914Ts/konecta-13-1.jpg'); '>
-              <h4 style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>¡Hola Equipo CXM!</h4>
-              <br><br>
-              <p>Te notificamos que han dado respuesta a tu caso de PQRSF:</p>
-              <br>
-              <p>Número:".$datanumcaso."</p>
-              <br>
-              <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>".$varcuerpo2."</p>
-              <br><br>
-              <p>¡Que tengas un excelente día!</p>
-              <br><br><br>
-  
-              <div style='text-align: center; margin-bottom: 10px;'>
-                  <a style='border:1px solid #FFC72C; background-color: #FFC72C; color:white; padding: 3px 10px; border-radius: 40px; font-weight: bold; text-decoration: none;' href='https://qa.grupokonecta.local/qa_managementv2/web/index.php/qr/index'>Ingresar a CXM</a>
-              </div>
-              <br><br><br><br>
-              <h3 style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>CX-Management</h3>
-              <br>
-              <p style= 'height: 6px; background-color: #FFC72C; width:100px; '></p>
-              <h1 style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>Konecta</h1>
-              <br>
-            </div>     
-          </body>
+        "
+            <html lang='en'>
 
-        </html> ";
+              <head>
+              <meta charset='UTF-8'>
+              <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+              <title>Document</title>
+              </head>
+
+              <body style='font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 12px;'>
+                  <br><br><br><br>
+                  <div style='width: 450px; position: relative;'>
+                      <img src='https://i.ibb.co/8xbhr7W/k.png' alt='' width='80' style='position: absolute; top:-35px;right: -20px; border: 2px solid #002855 ;'>
+                      <div style='  box-shadow: -1px 0px 5px 0px rgba(0,0,0,0.75); border-radius: 10px; padding: 5px 50px; display: flex;'>
+
+                          <div style='width: 100%;'>
+                              
+                              <h4 style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>¡Hola Equipo CXM!</h4>
+                              <br><br>
+                              <p>Te notificamos que han dado respuesta a tu caso de PQRSF:</p>
+                              <br>
+                              <p>Número:".$datanumcaso."</p>
+                              <br>
+                              <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>".$varcuerpo2."</p>
+                              <br><br>
+                              <p>¡Que tengas un excelente día!</p>
+                              <br><br><br>
+                          
+                          </div>
+
+                          <div class='div'>
+                              <img src='' alt=''>
+                          </div>
+
+                      </div>
+                  </div>
+              </body>
+
+            </html> ";
 
         Yii::$app->mailer->compose()
         ->setTo($varcorreo)
@@ -1009,40 +1076,45 @@ use app\models\Tipologiasqyr;
           $varasunto .= $varcuerpo1;
 
           $varHtml = 
-          "<html lang='en'>
-            <head>
-            <meta charset='UTF-8'>
-            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-            <title>Document</title>
-            </head>
-          
-            <body style= 'font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 12px; '>
-              <br><br><br><br>
-              <div style= 'background-image: url('https://i.ibb.co/ck914Ts/konecta-13-1.jpg'); '>
-                <h4 style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>¡Hola Equipo CXM!</h4>
-                <br><br>
-                <p>Te notificamos que han dado respuesta a tu caso de PQRSF:</p>
-                <br>
-                <p>Número:".$datanumcaso."</p>
-                <br>
-                <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>".$varcuerpo2."</p>
-                <br><br>
-                <p>¡Que tengas un excelente día!</p>
-                <br><br><br>
-    
-                <div style='text-align: center; margin-bottom: 10px;'>
-                    <a style='border:1px solid #FFC72C; background-color: #FFC72C; color:white; padding: 3px 10px; border-radius: 40px; font-weight: bold; text-decoration: none;' href=https://qa.grupokonecta.local/qa_managementv2/web/index.php/qr/index'>Ingresar a CXM</a>
-                </div>
-                <br><br><br><br>
-                <h3 style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>CX-Management</h3>
-                <br>
-                <p style= 'height: 6px; background-color: #FFC72C; width:100px; '></p>
-                <h1 style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>Konecta</h1>
-                <br>
-              </div>     
-            </body>
-  
-          </html> ";
+          "
+            <html lang='en'>
+
+              <head>
+              <meta charset='UTF-8'>
+              <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+              <title>Document</title>
+              </head>
+
+              <body style='font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 12px;'>
+                  <br><br><br><br>
+                  <div style='width: 450px; position: relative;'>
+                      <img src='https://i.ibb.co/8xbhr7W/k.png' alt='' width='80' style='position: absolute; top:-35px;right: -20px; border: 2px solid #002855 ;'>
+                      <div style='  box-shadow: -1px 0px 5px 0px rgba(0,0,0,0.75); border-radius: 10px; padding: 5px 50px; display: flex;'>
+
+                          <div style='width: 100%;'>
+                              
+                              <h4 style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>¡Hola Equipo CXM!</h4>
+                              <br><br>
+                              <p>Te notificamos que han dado respuesta a tu caso de PQRSF:</p>
+                              <br>
+                              <p>Número:".$datanumcaso."</p>
+                              <br>
+                              <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>".$varcuerpo2."</p>
+                              <br><br>
+                              <p>¡Que tengas un excelente día!</p>
+                              <br><br><br>
+                          
+                          </div>
+
+                          <div class='div'>
+                              <img src='' alt=''>
+                          </div>
+
+                      </div>
+                  </div>
+              </body>
+
+            </html> ";
 
                   $varListacorreo = (new \yii\db\Query())
                     ->select(['email'])
@@ -1114,38 +1186,42 @@ use app\models\Tipologiasqyr;
             $varHtml = 
             "
             <html lang='en'>
+
               <head>
               <meta charset='UTF-8'>
               <meta name='viewport' content='width=device-width, initial-scale=1.0'>
               <title>Document</title>
               </head>
-            
-              <body style= 'font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 12px; '>
-                <br><br><br><br>
-                <div style= 'background-image: url('https://i.ibb.co/ck914Ts/konecta-13-1.jpg'); '>
-                  <h4 style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>¡Hola Equipo CXM!</h4>
-                  <br><br>
-                  <p>Te notificamos que han dado respuesta a tu caso de PQRSF:</p>
-                  <br>
-                  <p>Número:".$datanumcaso."</p>
-                  <br>
-                  <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>".$varcuerpo2."</p>
-                  <br><br>
-                  <p>¡Que tengas un excelente día!</p>
-                  <br><br><br>
-      
-                  <div style='text-align: center; margin-bottom: 10px;'>
-                      <a style='border:1px solid #FFC72C; background-color: #FFC72C; color:white; padding: 3px 10px; border-radius: 40px; font-weight: bold; text-decoration: none;' href='https://qa.grupokonecta.local/qa_managementv2/web/index.php/qr/index'>Ingresar a CXM</a>
-                  </div>
+
+              <body style='font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 12px;'>
                   <br><br><br><br>
-                  <h3 style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>CX-Management</h3>
-                  <br>
-                  <p style= 'height: 6px; background-color: #FFC72C; width:100px; '></p>
-                  <h1 style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>Konecta</h1>
-                  <br>
-                </div>     
+                  <div style='width: 450px; position: relative;'>
+                      <img src='https://i.ibb.co/8xbhr7W/k.png' alt='' width='80' style='position: absolute; top:-35px;right: -20px; border: 2px solid #002855 ;'>
+                      <div style='  box-shadow: -1px 0px 5px 0px rgba(0,0,0,0.75); border-radius: 10px; padding: 5px 50px; display: flex;'>
+
+                          <div style='width: 100%;'>
+                              
+                              <h4 style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>¡Hola Equipo CXM!</h4>
+                              <br><br>
+                              <p>Te notificamos que han dado respuesta a tu caso de PQRSF:</p>
+                              <br>
+                              <p>Número:".$datanumcaso."</p>
+                              <br>
+                              <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>".$varcuerpo2."</p>
+                              <br><br>
+                              <p>¡Que tengas un excelente día!</p>
+                              <br><br><br>
+                          
+                          </div>
+
+                          <div class='div'>
+                              <img src='' alt=''>
+                          </div>
+
+                      </div>
+                  </div>
               </body>
-  
+
             </html> ";
     
             if ($tmpFile != "") {
@@ -1190,43 +1266,46 @@ use app\models\Tipologiasqyr;
                 
                   $varasunto .= $varcuerpo1;
                   //envio de correo al gerente con anexo            
-                  $varHtml =
-
-                    "
-                    <html lang='en'>
-                      <head>
-                      <meta charset='UTF-8'>
-                      <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-                      <title>Document</title>
-                      </head>
-                    
-                      <body style= 'font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 12px; '>
+                  $varHtml = 
+                  "
+                  <html lang='en'>
+      
+                    <head>
+                    <meta charset='UTF-8'>
+                    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+                    <title>Document</title>
+                    </head>
+      
+                    <body style='font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 12px;'>
                         <br><br><br><br>
-                        <div style= 'background-image: url('https://i.ibb.co/ck914Ts/konecta-13-1.jpg'); '>
-                          <h4 style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>¡Hola Equipo CXM!</h4>
-                          <br><br>
-                          <p>Te notificamos que han dado respuesta a tu caso de PQRSF:</p>
-                          <br>
-                          <p>Número:".$datanumcaso."</p>
-                          <br>
-                          <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>".$varcuerpo2."</p>
-                          <br><br>
-                          <p>¡Que tengas un excelente día!</p>
-                          <br><br><br>
-              
-                          <div style='text-align: center; margin-bottom: 10px;'>
-                              <a style='border:1px solid #FFC72C; background-color: #FFC72C; color:white; padding: 3px 10px; border-radius: 40px; font-weight: bold; text-decoration: none;' href='https://qa.grupokonecta.local/qa_managementv2/web/index.php/qr/index'>Ingresar a CXM</a>
-                          </div>
-                          <br><br><br><br>
-                          <h3 style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>CX-Management</h3>
-                          <br>
-                          <p style= 'height: 6px; background-color: #FFC72C; width:100px; '></p>
-                          <h1 style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>Konecta</h1>
-                          <br>
-                        </div>     
-                      </body>
-          
-                    </html> ";
+                        <div style='width: 450px; position: relative;'>
+                            <img src='https://i.ibb.co/8xbhr7W/k.png' alt='' width='80' style='position: absolute; top:-35px;right: -20px; border: 2px solid #002855 ;'>
+                            <div style='  box-shadow: -1px 0px 5px 0px rgba(0,0,0,0.75); border-radius: 10px; padding: 5px 50px; display: flex;'>
+      
+                                <div style='width: 100%;'>
+                                    
+                                    <h4 style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>¡Hola Equipo CXM!</h4>
+                                    <br><br>
+                                    <p>Te notificamos que han dado respuesta a tu caso de PQRSF:</p>
+                                    <br>
+                                    <p>Número:".$datanumcaso."</p>
+                                    <br>
+                                    <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>".$varcuerpo2."</p>
+                                    <br><br>
+                                    <p>¡Que tengas un excelente día!</p>
+                                    <br><br><br>
+                                
+                                </div>
+      
+                                <div class='div'>
+                                    <img src='' alt=''>
+                                </div>
+      
+                            </div>
+                        </div>
+                    </body>
+      
+                  </html> ";
 
                     $varListacorreo = (new \yii\db\Query())
                     ->select(['email'])
@@ -1299,41 +1378,45 @@ use app\models\Tipologiasqyr;
             $tmpFile = $dataanexo;
 
             $varHtml = 
-              "
-              <html lang='en'>
-                <head>
-                <meta charset='UTF-8'>
-                <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-                <title>Document</title>
-                </head>
-              
-                <body style= 'font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 12px; '>
+            "
+            <html lang='en'>
+
+              <head>
+              <meta charset='UTF-8'>
+              <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+              <title>Document</title>
+              </head>
+
+              <body style='font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 12px;'>
                   <br><br><br><br>
-                  <div style= 'background-image: url('https://i.ibb.co/ck914Ts/konecta-13-1.jpg'); '>
-                    <h4 style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>¡Hola Equipo CXM!</h4>
-                    <br><br>
-                    <p>Te notificamos que han dado respuesta a tu caso de PQRSF:</p>
-                    <br>
-                    <p>Número:".$datanumcaso."</p>
-                    <br>
-                    <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>".$varcuerpo2."</p>
-                    <br><br>
-                    <p>¡Que tengas un excelente día!</p>
-                    <br><br><br>
-        
-                    <div style='text-align: center; margin-bottom: 10px;'>
-                        <a style='border:1px solid #FFC72C; background-color: #FFC72C; color:white; padding: 3px 10px; border-radius: 40px; font-weight: bold; text-decoration: none;' href='https://qa.grupokonecta.local/qa_managementv2/web/index.php/qr/index'>Ingresar a CXM</a>
-                    </div>
-                    <br><br><br><br>
-                    <h3 style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>CX-Management</h3>
-                    <br>
-                    <p style= 'height: 6px; background-color: #FFC72C; width:100px; '></p>
-                    <h1 style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>Konecta</h1>
-                    <br>
-                  </div>     
-                </body>
-    
-              </html> ";
+                  <div style='width: 450px; position: relative;'>
+                      <img src='https://i.ibb.co/8xbhr7W/k.png' alt='' width='80' style='position: absolute; top:-35px;right: -20px; border: 2px solid #002855 ;'>
+                      <div style='  box-shadow: -1px 0px 5px 0px rgba(0,0,0,0.75); border-radius: 10px; padding: 5px 50px; display: flex;'>
+
+                          <div style='width: 100%;'>
+                              
+                              <h4 style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>¡Hola Equipo CXM!</h4>
+                              <br><br>
+                              <p>Te notificamos que han dado respuesta a tu caso de PQRSF:</p>
+                              <br>
+                              <p>Número:".$datanumcaso."</p>
+                              <br>
+                              <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>".$varcuerpo2."</p>
+                              <br><br>
+                              <p>¡Que tengas un excelente día!</p>
+                              <br><br><br>
+                          
+                          </div>
+
+                          <div class='div'>
+                              <img src='' alt=''>
+                          </div>
+
+                      </div>
+                  </div>
+              </body>
+
+            </html> ";
       
                       if ($tmpFile != "") {
                         Yii::$app->mailer->compose()
@@ -1376,41 +1459,45 @@ use app\models\Tipologiasqyr;
           $tmpFile = $dataanexo;
                     
           $varHtml = 
-            "
-            <html lang='en'>
-              <head>
-              <meta charset='UTF-8'>
-              <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-              <title>Document</title>
-              </head>
-            
-              <body style= 'font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 12px; '>
-                <br><br><br><br>
-                <div style= 'background-image: url('https://i.ibb.co/ck914Ts/konecta-13-1.jpg'); '>
-                  <h4 style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>¡Hola Equipo CXM!</h4>
-                  <br><br>
-                  <p>Te notificamos que han dado respuesta a tu caso de PQRSF:</p>
-                  <br>
-                  <p>Número:".$datanumcaso."</p>
-                  <br>
-                  <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>".$varcuerpo2."</p>
-                  <br><br>
-                  <p>¡Que tengas un excelente día!</p>
-                  <br><br><br>
-      
-                  <div style='text-align: center; margin-bottom: 10px;'>
-                      <a style='border:1px solid #FFC72C; background-color: #FFC72C; color:white; padding: 3px 10px; border-radius: 40px; font-weight: bold; text-decoration: none;' href='https://qa.grupokonecta.local/qa_managementv2/web/index.php/qr/index'>Ingresar a CXM</a>
-                  </div>
-                  <br><br><br><br>
-                  <h3 style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>CX-Management</h3>
-                  <br>
-                  <p style= 'height: 6px; background-color: #FFC72C; width:100px; '></p>
-                  <h1 style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>Konecta</h1>
-                  <br>
-                </div>     
-              </body>
+          "
+          <html lang='en'>
 
-            </html> ";
+            <head>
+            <meta charset='UTF-8'>
+            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+            <title>Document</title>
+            </head>
+
+            <body style='font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 12px;'>
+                <br><br><br><br>
+                <div style='width: 450px; position: relative;'>
+                    <img src='https://i.ibb.co/8xbhr7W/k.png' alt='' width='80' style='position: absolute; top:-35px;right: -20px; border: 2px solid #002855 ;'>
+                    <div style='  box-shadow: -1px 0px 5px 0px rgba(0,0,0,0.75); border-radius: 10px; padding: 5px 50px; display: flex;'>
+
+                        <div style='width: 100%;'>
+                            
+                            <h4 style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>¡Hola Equipo CXM!</h4>
+                            <br><br>
+                            <p>Te notificamos que han dado respuesta a tu caso de PQRSF:</p>
+                            <br>
+                            <p>Número:".$datanumcaso."</p>
+                            <br>
+                            <p style='text-align: justify;margin: 0; color: #040B25; font-weight: 500;'>".$varcuerpo2."</p>
+                            <br><br>
+                            <p>¡Que tengas un excelente día!</p>
+                            <br><br><br>
+                        
+                        </div>
+
+                        <div class='div'>
+                            <img src='' alt=''>
+                        </div>
+
+                    </div>
+                </div>
+            </body>
+
+          </html> ";
 
 
 
