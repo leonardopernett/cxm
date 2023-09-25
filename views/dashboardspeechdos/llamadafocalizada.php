@@ -722,6 +722,7 @@ $this->title = 'Análisis Focalizados - Escuchar +';
                                                             ->where(['=','tbl_comdata_llamadaurl.anulado',0])
                                                             ->andwhere(['=','tbl_comdata_llamadaurl.cod_pcrc',$paramsvarcodigopcrc])
                                                             ->andwhere(['=','tbl_comdata_llamadaurl.id_dp_clientes',$varIdClientes])
+                                                            ->andwhere(['=','tbl_comdata_llamadaurl.idredbox',$txtidredbox])
                                                             ->andwhere(['=','tbl_comdata_llamadaurl.fechareal',$txtfechasreal])
                                                             ->andwhere(['=','tbl_comdata_llamadaurl.bolsita',$txtServicio])
                                                             ->all();
