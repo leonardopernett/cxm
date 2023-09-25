@@ -133,48 +133,7 @@ use app\models\Tipologiasqyr;
     ->join('INNER JOIN','tbl_qr_casos c','e.id = c.id_solicitud')
     ->groupBy(['e.id'])
     ->All();
-
-    $varCantidadestados = (new \yii\db\Query())
-                ->select([
-                  'tbl_qr_estados.id_estado',
-                  'tbl_qr_estados.nombre',
-                  'COUNT(tbl_qr_estados.id_estado) Cantidad'
-                ])
-                ->from(['tbl_qr_casos'])
-                ->join('LEFT OUTER JOIN', 'tbl_qr_estados',
-                  'tbl_qr_casos.id_estado = tbl_qr_estados.id_estado')
-                ->where(['=','tbl_qr_casos.estatus',0])
-                ->groupBy(['tbl_qr_estados.id_estado'])
-                ->all();
-
-    $varCantidadtranscurre = (new \yii\db\Query())
-                ->select([
-                  'if(DATEDIFF( NOW(), fecha_creacion) <= 10 && tbl_qr_casos.id_estado = 2,1,
-
-                  if(DATEDIFF( NOW(), fecha_creacion) <= 10 && tbl_qr_casos.id_estado <> 2,2,
-                  
-                  if(DATEDIFF( NOW(), fecha_creacion) > 10 && tbl_qr_casos.id_estado = 2,3,
-                  
-                  if(DATEDIFF( NOW(), fecha_creacion) > 10 && tbl_qr_casos.id_estado <> 2,4,""
-                  
-                  )))) AS num',
-
-                  'DATEDIFF( now(),tbl_qr_casos.fecha_creacion) as dias',
-
-                  'count(if(DATEDIFF( NOW(), fecha_creacion) <= 10 && tbl_qr_casos.id_estado = 2,1,
-
-                    if(DATEDIFF( NOW(), fecha_creacion) <= 10 && tbl_qr_casos.id_estado <> 2,2,
-
-                    if(DATEDIFF( NOW(), fecha_creacion) > 10 && tbl_qr_casos.id_estado = 2,3,
-
-                    if(DATEDIFF( NOW(), fecha_creacion) > 10 && tbl_qr_casos.id_estado <> 2,4,""
-
-                    ))))) AS canti'
-                ])
-                ->from(['tbl_qr_casos'])
-                ->where(['=','tbl_qr_casos.estatus',0])
-                ->groupBy(['num'])
-                ->all();
+ 
 
     $modelcaso = new Casosqyr(); 
     $modelo = new UploadForm2();
@@ -306,7 +265,7 @@ use app\models\Tipologiasqyr;
 
                 <br>
                 <div style='text-align: center; margin-bottom: 10px;'>
-                    <a style='border:1px solid #FFC72C; background-color: #FFC72C; color:white; padding: 3px 10px; border-radius: 40px; font-weight: bold; text-decoration: none;' href='https://qa.grupokonecta.local/qa_managementv2/web/index.php'>Ingresar a CXM/a>
+                    <a style='border:1px solid #FFC72C; background-color: #FFC72C; color:white; padding: 3px 10px; border-radius: 40px; font-weight: bold; text-decoration: none;' href='https://qa.grupokonecta.local/qa_managementv2/web/index.php'>Ingresar a CXM </a>
                 </div>
                   
               </div>
@@ -369,7 +328,7 @@ use app\models\Tipologiasqyr;
   
                       <br>
                       <div style='text-align: center; margin-bottom: 10px;'>
-                          <a style='border:1px solid #FFC72C; background-color: #FFC72C; color:white; padding: 3px 10px; border-radius: 40px; font-weight: bold; text-decoration: none;' href='https://qa.grupokonecta.local/qa_managementv2/web/index.php'>Ingresar a CXM/a>
+                          <a style='border:1px solid #FFC72C; background-color: #FFC72C; color:white; padding: 3px 10px; border-radius: 40px; font-weight: bold; text-decoration: none;' href='https://qa.grupokonecta.local/qa_managementv2/web/index.php'>Ingresar a CXM </a>
                       </div>
                         
                     </div>
@@ -419,8 +378,6 @@ use app\models\Tipologiasqyr;
       return $this->render('index',[
           'dataProviderInfo' => $dataProviderInfo,
           'model' => $model,
-          'varCantidadestados' => $varCantidadestados,
-          'varCantidadtranscurre' => $varCantidadtranscurre,
           'modelcumplido' => $modelcumplido,
           'modelcaso' => $modelcaso,
           'modelo' => $modelo,
@@ -1027,7 +984,7 @@ use app\models\Tipologiasqyr;
 
                   <br>
                   <div style='text-align: center; margin-bottom: 10px;'>
-                      <a style='border:1px solid #FFC72C; background-color: #FFC72C; color:white; padding: 3px 10px; border-radius: 40px; font-weight: bold; text-decoration: none;' href='https://qa.grupokonecta.local/qa_managementv2/web/index.php'>Ingresar a CXM/a>
+                      <a style='border:1px solid #FFC72C; background-color: #FFC72C; color:white; padding: 3px 10px; border-radius: 40px; font-weight: bold; text-decoration: none;' href='https://qa.grupokonecta.local/qa_managementv2/web/index.php'>Ingresar a CXM </a>
                   </div>
                     
                 </div>
@@ -1155,7 +1112,7 @@ use app\models\Tipologiasqyr;
 
                     <br>
                     <div style='text-align: center; margin-bottom: 10px;'>
-                        <a style='border:1px solid #FFC72C; background-color: #FFC72C; color:white; padding: 3px 10px; border-radius: 40px; font-weight: bold; text-decoration: none;' href='https://qa.grupokonecta.local/qa_managementv2/web/index.php'>Ingresar a CXM/a>
+                        <a style='border:1px solid #FFC72C; background-color: #FFC72C; color:white; padding: 3px 10px; border-radius: 40px; font-weight: bold; text-decoration: none;' href='https://qa.grupokonecta.local/qa_managementv2/web/index.php'>Ingresar a CXM </a>
                     </div>
                       
                   </div>
@@ -1272,7 +1229,7 @@ use app\models\Tipologiasqyr;
   
                       <br>
                       <div style='text-align: center; margin-bottom: 10px;'>
-                          <a style='border:1px solid #FFC72C; background-color: #FFC72C; color:white; padding: 3px 10px; border-radius: 40px; font-weight: bold; text-decoration: none;' href='https://qa.grupokonecta.local/qa_managementv2/web/index.php'>Ingresar a CXM/a>
+                          <a style='border:1px solid #FFC72C; background-color: #FFC72C; color:white; padding: 3px 10px; border-radius: 40px; font-weight: bold; text-decoration: none;' href='https://qa.grupokonecta.local/qa_managementv2/web/index.php'>Ingresar a CXM </a>
                       </div>
                         
                     </div>
@@ -1364,7 +1321,7 @@ use app\models\Tipologiasqyr;
         
                             <br>
                             <div style='text-align: center; margin-bottom: 10px;'>
-                                <a style='border:1px solid #FFC72C; background-color: #FFC72C; color:white; padding: 3px 10px; border-radius: 40px; font-weight: bold; text-decoration: none;' href='https://qa.grupokonecta.local/qa_managementv2/web/index.php'>Ingresar a CXM/a>
+                                <a style='border:1px solid #FFC72C; background-color: #FFC72C; color:white; padding: 3px 10px; border-radius: 40px; font-weight: bold; text-decoration: none;' href='https://qa.grupokonecta.local/qa_managementv2/web/index.php'>Ingresar a CXM </a>
                             </div>
                               
                           </div>
@@ -1485,7 +1442,7 @@ use app\models\Tipologiasqyr;
   
                       <br>
                       <div style='text-align: center; margin-bottom: 10px;'>
-                          <a style='border:1px solid #FFC72C; background-color: #FFC72C; color:white; padding: 3px 10px; border-radius: 40px; font-weight: bold; text-decoration: none;' href='https://qa.grupokonecta.local/qa_managementv2/web/index.php'>Ingresar a CXM/a>
+                          <a style='border:1px solid #FFC72C; background-color: #FFC72C; color:white; padding: 3px 10px; border-radius: 40px; font-weight: bold; text-decoration: none;' href='https://qa.grupokonecta.local/qa_managementv2/web/index.php'>Ingresar a CXM </a>
                       </div>
                         
                     </div>
@@ -1576,7 +1533,7 @@ use app\models\Tipologiasqyr;
 
                     <br>
                     <div style='text-align: center; margin-bottom: 10px;'>
-                        <a style='border:1px solid #FFC72C; background-color: #FFC72C; color:white; padding: 3px 10px; border-radius: 40px; font-weight: bold; text-decoration: none;' href='https://qa.grupokonecta.local/qa_managementv2/web/index.php'>Ingresar a CXM/a>
+                        <a style='border:1px solid #FFC72C; background-color: #FFC72C; color:white; padding: 3px 10px; border-radius: 40px; font-weight: bold; text-decoration: none;' href='https://qa.grupokonecta.local/qa_managementv2/web/index.php'>Ingresar a CXM </a>
                     </div>
                       
                   </div>
