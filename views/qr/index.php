@@ -35,7 +35,7 @@ $sessiones = Yii::$app->user->identity->id;
   ->from(['tbl_usuarios'])
   ->join('INNER JOIN','tbl_proceso_cliente_centrocosto',
         'tbl_proceso_cliente_centrocosto.documento_gerente = tbl_usuarios.usua_identificacion')
-  ->where(['=','tbl_usuarios.usua_id',94])
+  ->where(['=','tbl_usuarios.usua_id',$sessiones])
   ->groupBy(['tbl_proceso_cliente_centrocosto.documento_gerente'])
   ->scalar();
 
@@ -44,8 +44,15 @@ $sessiones = Yii::$app->user->identity->id;
   ->from(['tbl_usuarios'])
   ->join('INNER JOIN','tbl_proceso_cliente_centrocosto',
         'tbl_proceso_cliente_centrocosto.documento_director = tbl_usuarios.usua_identificacion')
-  ->where(['=','tbl_usuarios.usua_id',854])
+  ->where(['=','tbl_usuarios.usua_id',$sessiones])
   ->groupBy(['tbl_proceso_cliente_centrocosto.documento_director'])
+  ->scalar();
+
+  $varCedulaAdmi =  (new \yii\db\Query())
+  ->select(['tbl_usuarios.usua_identificacion'])
+  ->from(['tbl_usuarios'])
+  ->where(['=','tbl_usuarios.usua_id',$sessiones])
+  ->groupBy(['tbl_usuarios.usua_identificacion'])
   ->scalar();
   
   $varClienteDirector  =  (new \yii\db\Query())
@@ -108,22 +115,25 @@ $sessiones = Yii::$app->user->identity->id;
                 $varListaClientes = 0;
             }
         }
-    }
+    };
 
 
-  $varTotalCasos =  (new \yii\db\Query())
-  ->select(['*'])
-  ->from(['tbl_qr_casos'])
-  ->where(['=','tbl_qr_casos.estatus',0])
-  ->count(); 
-
+    $varTotalCasos = (new \yii\db\Query())
+    ->select(['*'])
+    ->from(['tbl_qr_casos'])
+    ->where(['=','tbl_qr_casos.estatus', 0])
+    ->andwhere(['IN','tbl_qr_casos.cliente',$varListaClientes])
+    ->count();
+    
 
   $varTotalEstados = (new \yii\db\Query())
   ->select(['COUNT(id_estado) as Cantidad','id_estado' ])
   ->from(['tbl_qr_casos'])
   ->where(['=','tbl_qr_casos.estatus',0])
+  ->andwhere(['IN','tbl_qr_casos.cliente',$varListaClientes])
   ->groupBy(['id_estado'])
   ->all();
+
 
   $varEstados = (new \yii\db\Query())
   ->select(['id_estado' ])
@@ -133,6 +143,22 @@ $sessiones = Yii::$app->user->identity->id;
   ->all();
 
   
+  $varCantidadestados = (new \yii\db\Query())
+  ->select([
+    'tbl_qr_estados.id_estado',
+    'tbl_qr_estados.nombre',
+    'COUNT(tbl_qr_estados.id_estado) Cantidad'
+  ])
+  ->from(['tbl_qr_casos'])
+  ->join('LEFT OUTER JOIN', 'tbl_qr_estados',
+    'tbl_qr_casos.id_estado = tbl_qr_estados.id_estado')
+  ->where(['=','tbl_qr_casos.estatus',0])
+  ->andwhere(['IN','tbl_qr_casos.cliente',$varListaClientes])
+  ->groupBy(['tbl_qr_estados.id_estado'])
+  ->all();
+
+
+
 
   foreach ($varTotalEstados as $key => $value) {
     
@@ -159,6 +185,36 @@ $sessiones = Yii::$app->user->identity->id;
   } 
   $varAlerta = 0;
 
+
+  $varCantidadtranscurre = (new \yii\db\Query())
+  ->select([
+    'if(DATEDIFF( NOW(), fecha_creacion) <= 10 && tbl_qr_casos.id_estado = 2,1,
+
+    if(DATEDIFF( NOW(), fecha_creacion) <= 10 && tbl_qr_casos.id_estado <> 2,2,
+    
+    if(DATEDIFF( NOW(), fecha_creacion) > 10 && tbl_qr_casos.id_estado = 2,3,
+    
+    if(DATEDIFF( NOW(), fecha_creacion) > 10 && tbl_qr_casos.id_estado <> 2,4,""
+    
+    )))) AS num',
+
+    'DATEDIFF( now(),tbl_qr_casos.fecha_creacion) as dias',
+
+    'count(if(DATEDIFF( NOW(), fecha_creacion) <= 10 && tbl_qr_casos.id_estado = 2,1,
+
+      if(DATEDIFF( NOW(), fecha_creacion) <= 10 && tbl_qr_casos.id_estado <> 2,2,
+
+      if(DATEDIFF( NOW(), fecha_creacion) > 10 && tbl_qr_casos.id_estado = 2,3,
+
+      if(DATEDIFF( NOW(), fecha_creacion) > 10 && tbl_qr_casos.id_estado <> 2,4,""
+
+      ))))) AS canti'
+  ])
+  ->from(['tbl_qr_casos'])
+  ->where(['=','tbl_qr_casos.estatus',0])
+  ->andwhere(['IN','tbl_qr_casos.cliente',$varListaClientes])
+  ->groupBy(['num'])
+  ->all();
 
 ?>
 
@@ -721,189 +777,201 @@ $sessiones = Yii::$app->user->identity->id;
                                         <tbody>
                                             <?php 
                                                 foreach ($model as $key => $value) {
-                                                    $varIdCaso = $value['idcaso'];
-                                                    $varNumCaso = $value['numero_caso'];
-                                                    $varTipoDato = $value['tipo_de_dato'];
-                                                    $varComentarios = $value['comentario'];
-                                                    $varCliente = $value['cliente'];
-                                                    $varNombreCliente = $value['clientearea'];                                
-                                                    $varUsuario = $value['nombre'];
-                                                    $varDocUsuario = $value['documento'];
-                                                    $varFechaRespuesta = $value['fecha_respuesta'];
-
-                                                    $fechaFormateada = date("Y-m-d", strtotime($varFechaRespuesta));
-
-                                                    $varParams = [':varParams' => $varDocUsuario];
-                                                    $varEmail = Yii::$app->dbjarvis->createCommand('
-                                                    SELECT 
-                                                    email 
-                                                    FROM dp_usuarios_red 
-                                                    WHERE 
-                                                        dp_usuarios_red.documento = :varParams ')->bindValues($varParams)->queryScalar();
-
-                                                    $varArea = $value['area'];
-                                                    $varTipologia = $value['tipologia'];
-                                                    $varEstado = $value['estado'];
-                                                    $varIdEstado = $value['idestado'];
-                                                    $varFechaCreacion = $value['fecha_creacion'];
-                                                    $varEstadoproceso = $value['id_estado'];                                
-                                                    $varnombreestado = $value['estado1'];
-
-                                                    $varNombreCliente = (new \yii\db\Query())
-                                                                        ->select(['tbl_proceso_cliente_centrocosto.cliente'])
-                                                                        ->from(['tbl_proceso_cliente_centrocosto'])
-                                                                        ->where(['=','tbl_proceso_cliente_centrocosto.id_dp_clientes',$varCliente])
-                                                                        ->andwhere(['=','tbl_proceso_cliente_centrocosto.anulado',0])
-                                                                        ->groupby(['tbl_proceso_cliente_centrocosto.id_dp_clientes'])
-                                                                        ->scalar();
-
-                                                    $listacumplimiento = (new \yii\db\Query())
-                                                                                ->select(['*'])
-                                                                                ->from(['tbl_qr_cumplimiento'])
-                                                                                ->where(['=','anulado',0])
-                                                                                ->All();                      
-
-                                                    $meta = null;
-                                                    $diaverde1 = null;
-                                                    $diaverde2 = null;
-                                                    $diaamarillo1 = null;
-                                                    $diaamarillo2 = null;
-                                                    $diarojo1 = null;
-                                                    $diarojo2 = null; 
-                                                    $fechaFormateadaRadicacion = date("Y-m-d", strtotime($varFechaCreacion));
-
-
-
-                                                    foreach ($listacumplimiento as $key => $valuee) {
-                                                        $meta = $valuee['indicador'];
-                                                        $diaverde1 = $valuee['diaverde1'];
-                                                        $diaverde2 = $valuee['diaverde2'];
-                                                        $diaamarillo1 = $valuee['diaamarillo1'];
-                                                        $diaamarillo2 = $valuee['diaamarillo2'];
-                                                        $diarojo1 = $valuee['diarojo1'];
-                                                        $diarojo2 = $valuee['diarojo2'];                        
-                                                    }
-
-                                                    $fecha1 = new Datetime($varFechaCreacion); //fecha creacion
-                                                    $fecha2= new datetime('now'); //fecha actual
-                                                    $dias = $fecha1->diff($fecha2); //diferencia entre la fecha de creacion y fecha actual 
+                                                    if (in_array($value['cliente'],$varListaClientes)) {
                                                     
-                                                    //mp($fecha1);
-                                                    //mp($fecha2);
-                                                    //mp($dias); 
+                                                        $varIdCaso = $value['idcaso'];
+                                                        $varNumCaso = $value['numero_caso'];
+                                                        $varTipoDato = $value['tipo_de_dato'];
+                                                        $varComentarios = $value['comentario'];
+                                                        $varCliente = $value['cliente'];
+                                                        $varNombreCliente = $value['clientearea'];                                
+                                                        $varUsuario = $value['nombre'];
+                                                        $varDocUsuario = $value['documento'];
 
-                                                    $diastrans = $dias->days; //dias trasncurridos
-                                                    $diasfaltan =$diastrans -  $meta; //dias que han pasado sin responder
 
-                                                    //mp($diastrans);
-                                                    //mp($diasfaltan);
+                                                        $varFechaRespuesta = $value['fecha_respuesta'];
 
-                                            
+                                                        $fechaFormateada = date("Y-m-d", strtotime($varFechaRespuesta));
 
-                                            ?>
-                                                <tr>
-                                                    <td><label style="font-size: 15px;"><?php echo  $varNumCaso; ?></label></td>
-                                                    <td><label style="font-size: 15px;"><?php echo  $varTipoDato; ?></label></td>                                
-                                                    <td><label style="font-size: 15px;"><?php echo  $varNombreCliente; ?></label></td>
-                                                    <td><label style="font-size: 15px;"><?php echo  $varUsuario; ?></label></td>                               
-                                                    <td><label style="font-size: 15px;"><?php echo  $fechaFormateadaRadicacion; ?></label></td>
-                                                    <?php if ($varnombreestado == 'Cerrado') { ?>
-                                                        <td><label style="font-size: 15px;"><?php echo $fechaFormateada; ?></label></td>
-                                                    <?php
-                                                    }else{ ?>                                    
-                                                            <td><label style="font-size: 15px;"><?= Yii::t('app', '-') ?></label></td>
-                                                    <?php } ?>
-                                                    <td class="resumen-celda"><label style="font-size: 15px;"></label>
-                                                    <div class="resumen"><label style="font-size: 15px;"><?php echo strlen($varComentarios) > 50 ? substr($varComentarios, 0, 50)."..." : $varComentarios; ?></label></div>
-                                                    <div class="completo hidden"><label style="font-size: 15px;"><?php echo $varComentarios; ?></label></div></td>
-                                                    <?php if ($varnombreestado == 'Cerrado') { ?>
-                                                        <td><label style="font-size: 15px;"><?php echo $varnombreestado; ?></label></td>
-                                                        <?php
-                                                        }else{ ?>                                    
-                                                            <td><label style="font-size: 15px;"><?php echo  $varnombreestado; ?></label></td>
-                                                        <?php } ?>
+                                                        $varParams = [':varParams' => $varDocUsuario];
+                                                        $varEmail = Yii::$app->dbjarvis->createCommand('
+                                                        SELECT 
+                                                        email 
+                                                        FROM dp_usuarios_red 
+                                                        WHERE 
+                                                            dp_usuarios_red.documento = :varParams ')->bindValues($varParams)->queryScalar();
+
+                                                        $varArea = $value['area'];
+                                                        $varTipologia = $value['tipologia'];
+                                                        $varEstado = $value['estado'];
+                                                        $varIdEstado = $value['idestado'];
+                                                        $varFechaCreacion = $value['fecha_creacion'];
+                                                        $varEstadoproceso = $value['id_estado'];                                
+                                                        $varnombreestado = $value['estado1'];
+
+                                                        $varNombreCliente = (new \yii\db\Query())
+                                                                            ->select(['tbl_proceso_cliente_centrocosto.cliente'])
+                                                                            ->from(['tbl_proceso_cliente_centrocosto'])
+                                                                            ->where(['=','tbl_proceso_cliente_centrocosto.id_dp_clientes',$varCliente])
+                                                                            ->andwhere(['=','tbl_proceso_cliente_centrocosto.anulado',0])
+                                                                            ->groupby(['tbl_proceso_cliente_centrocosto.id_dp_clientes'])
+                                                                            ->scalar();
+
+                                                        $listacumplimiento = (new \yii\db\Query())
+                                                                                    ->select(['*'])
+                                                                                    ->from(['tbl_qr_cumplimiento'])
+                                                                                    ->where(['=','anulado',0])
+                                                                                    ->All();                      
+
+                                                        $meta = null;
+                                                        $diaverde1 = null;
+                                                        $diaverde2 = null;
+                                                        $diaamarillo1 = null;
+                                                        $diaamarillo2 = null;
+                                                        $diarojo1 = null;
+                                                        $diarojo2 = null; 
+                                                        $fechaFormateadaRadicacion = date("Y-m-d", strtotime($varFechaCreacion));
+
+
+
+                                                        foreach ($listacumplimiento as $key => $valuee) {
+                                                            $meta = $valuee['indicador'];
+                                                            $diaverde1 = $valuee['diaverde1'];
+                                                            $diaverde2 = $valuee['diaverde2'];
+                                                            $diaamarillo1 = $valuee['diaamarillo1'];
+                                                            $diaamarillo2 = $valuee['diaamarillo2'];
+                                                            $diarojo1 = $valuee['diarojo1'];
+                                                            $diarojo2 = $valuee['diarojo2'];                        
+                                                        }
+
+                                                        $fecha1 = new Datetime($varFechaCreacion); //fecha creacion
+                                                        $fecha2= new datetime('now'); //fecha actual
+                                                        $dias = $fecha1->diff($fecha2); //diferencia entre la fecha de creacion y fecha actual 
+                                                        
+                                                        //mp($fecha1);
+                                                        //mp($fecha2);
+                                                        //mp($dias); 
+
+                                                        $diastrans = $dias->days; //dias trasncurridos
+                                                        $diasfaltan =$diastrans -  $meta; //dias que han pasado sin responder
+
+                                                        //mp($diastrans);
+                                                        //mp($diasfaltan);
 
                                                 
 
-                                                    <?php if($diastrans === 0){?>
-                                                        <td style="width: 100px;">
-                                                            <div>
-                                                            <span class="semaforo-verde"></span>
-                                                            <label class="dias"><?= Yii::t('app', 'Tienes '.$diasfaltan.' Días') ?></label>
-                                                            </div>
-                                                        </td>
+                                                        ?>
+                                                        <tr>
+                                                            <td><label style="font-size: 15px;"><?php echo  $varNumCaso; ?></label></td>
+                                                            <td><label style="font-size: 15px;"><?php echo  $varTipoDato; ?></label></td>                                
+                                                            <td><label style="font-size: 15px;"><?php echo  $varNombreCliente; ?></label></td>
+                                                            <td><label style="font-size: 15px;"><?php echo  $varUsuario; ?></label></td>                               
+                                                            <td><label style="font-size: 15px;"><?php echo  $fechaFormateadaRadicacion; ?></label></td>
+                                                            <?php if ($varnombreestado == 'Cerrado') { ?>
+                                                                <td><label style="font-size: 15px;"><?php echo $fechaFormateada; ?></label></td>
+                                                            <?php
+                                                            }else{ ?>                                    
+                                                                    <td><label style="font-size: 15px;"><?= Yii::t('app', '-') ?></label></td>
+                                                            <?php } ?>
+                                                            <td class="resumen-celda"><label style="font-size: 15px;"></label>
+                                                            <div class="resumen"><label style="font-size: 15px;"><?php echo strlen($varComentarios) > 50 ? substr($varComentarios, 0, 50)."..." : $varComentarios; ?></label></div>
+                                                            <div class="completo hidden"><label style="font-size: 15px;"><?php echo $varComentarios; ?></label></div></td>
+                                                            <?php if ($varnombreestado == 'Cerrado') { ?>
+                                                                <td><label style="font-size: 15px;"><?php echo $varnombreestado; ?></label></td>
+                                                                <?php
+                                                                }else{ ?>                                    
+                                                                    <td><label style="font-size: 15px;"><?php echo  $varnombreestado; ?></label></td>
+                                                                <?php } ?>
 
-                                                    <?php } ?>
-                                                    <?php if(($diastrans >= $diaverde1) && ($diastrans <= $diaverde2)){?>
-                                                        <td style="width: 100px;" ><span class="semaforo-verde"></span><label class="dias"><?= Yii::t('app','Tienes '.$diasfaltan.' Días') ?></label></td>
+                                                        
 
-                                                    <?php } ?>
-                                                    <?php if(($diastrans >= $diaamarillo1) && ($diastrans <= $diaamarillo2)){?>
-                                                        <td style="width: 100px;" ><span class="semaforo-amarillo" ></span><label class="dias"><?= Yii::t('app','Tienes '.$diasfaltan.' Días') ?></label></td>
+                                                            <?php if($diastrans === 0){?>
+                                                                <td style="width: 100px;">
+                                                                    <div>
+                                                                    <span class="semaforo-verde"></span>
+                                                                    <label class="dias"><?= Yii::t('app', 'Tienes '.$diasfaltan.' Días') ?></label>
+                                                                    </div>
+                                                                </td>
 
-                                                    <?php } ?>
-                                                    <?php if(($diastrans >= $diarojo1)){?>
-                                                        <td style="width: 100px;" ><span class="semaforo-rojo" ></span><label class="dias"><?= Yii::t('app', 'Días Vencidos  '.$diasfaltan) ?> </label></td>
+                                                            <?php } ?>
+                                                            <?php if(($diastrans >= $diaverde1) && ($diastrans <= $diaverde2)){?>
+                                                                <td style="width: 100px;" ><span class="semaforo-verde"></span><label class="dias"><?= Yii::t('app','Tienes '.$diasfaltan.' Días') ?></label></td>
 
-                                                    <?php } ?>
+                                                            <?php } ?>
+                                                            <?php if(($diastrans >= $diaamarillo1) && ($diastrans <= $diaamarillo2)){?>
+                                                                <td style="width: 100px;" ><span class="semaforo-amarillo" ></span><label class="dias"><?= Yii::t('app','Tienes '.$diasfaltan.' Días') ?></label></td>
 
-                                                    <?php if(($diastrans > $meta) && ($varEstadoproceso != 2)){?>
-                                                        <td><label style="font-size: 15px;"><?= Yii::t('app', 'No haz Respondido') ?></label></td>
+                                                            <?php } ?>
+                                                            <?php if(($diastrans >= $diarojo1)){?>
+                                                                <td style="width: 100px;" ><span class="semaforo-rojo" ></span><label class="dias"><?= Yii::t('app', 'Días Vencidos  '.$diasfaltan) ?> </label></td>
 
-                                                    <?php } ?>  
-                                                    <?php if(($diastrans > $meta) && ($varEstadoproceso == 2)){?>
-                                                        <td><label style="font-size: 15px;"><?= Yii::t('app', 'Cumplió fuera de la Fecha') ?></label></td>
+                                                            <?php } ?>
 
-                                                    <?php } ?>
-                                                    <?php if(($diastrans <= $meta)&& ($varEstadoproceso != 2)){?>
-                                                        <td><label style="font-size: 15px;"><?= Yii::t('app', 'Tienes tiempo para Cumplir') ?></label></td>
+                                                            <?php if(($diastrans > $meta) && ($varEstadoproceso != 2)){?>
+                                                                <td><label style="font-size: 15px;"><?= Yii::t('app', 'No haz Respondido') ?></label></td>
 
-                                                    <?php } ?>
-                                                    <?php if(($diastrans <= $meta)&& ($varEstadoproceso == 2)){?>
-                                                        <td><label style="font-size: 15px;"><?= Yii::t('app', 'Cumplió') ?></label></td>
+                                                            <?php } ?>  
+                                                            <?php if(($diastrans > $meta) && ($varEstadoproceso == 2)){?>
+                                                                <td><label style="font-size: 15px;"><?= Yii::t('app', 'Cumplió fuera de la Fecha') ?></label></td>
 
-                                                    <?php } ?>
+                                                            <?php } ?>
+                                                            <?php if(($diastrans <= $meta)&& ($varEstadoproceso != 2)){?>
+                                                                <td><label style="font-size: 15px;"><?= Yii::t('app', 'Tienes tiempo para Cumplir') ?></label></td>
+
+                                                            <?php } ?>
+                                                            <?php if(($diastrans <= $meta)&& ($varEstadoproceso == 2)){?>
+                                                                <td><label style="font-size: 15px;"><?= Yii::t('app', 'Cumplió') ?></label></td>
+
+                                                            <?php } ?>
+                                                            
+                                                            
+                                                            <td class="text-center">
+                                                                <?= Html::a('<em class="fas fa-search" style="font-size: 12px; color: #3e95b8;"></em>',  ['verqyr','idcaso'=> $value['idcaso']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Buscar']) ?>
+                                                            </td>                                                 
+                                                            <td class="text-center">
+
+                                                            <?php if ($varEstadoproceso == 2) { ?>
+
+                                                            <!-- Muestra el icono de equis cuando $varEstadoproceso es igual a 2 -->
+                                                            <label><em class="fas fa-times" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', '') ?></label>
+
+                                                            <?php } elseif ($varEstadoproceso == 4 && $roles != 301) { ?>
+
+                                                            <!-- Resto de las condiciones existentes -->
+                                                            <?= Html::a('<em class="fas fa-pencil-alt" style="font-size: 15px; color: #43ba45;"></em>', ['asignarqyr', 'idcaso' => $value['idcaso']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Gestionar']) ?>
+
+                                                            <?php } elseif ($varEstadoproceso == 5 && ($roles == 301 || $roles == 270)) { ?>
+
+                                                            <?= Html::a('<em class="fas fa-pencil-alt" style="font-size: 15px; color: #43ba45;"></em>', ['asignarqyr', 'idcaso' => $value['idcaso']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Gestionar']) ?>
+
+                                                            <?php } elseif ($varEstadoproceso == 9 && $roles == 270) { ?>
+
+                                                            <?= Html::a('<em class="fas fa-pencil-alt" style="font-size: 15px; color: #43ba45;"></em>', ['asignarqyr', 'idcaso' => $value['idcaso']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Gestionar']) ?>
+
+                                                            <?php } elseif ($varEstadoproceso == 8 && $roles == 270) { ?>
+
+                                                            <?= Html::a('<em class="fas fa-pencil-alt" style="font-size: 15px; color: #43ba45;"></em>', ['asignarqyr', 'idcaso' => $value['idcaso']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Gestionar']) ?>
+
+                                                            <?php } else { ?>
+
+                                                            <!-- Agrega aquí el icono de equis para cualquier otro caso -->
+                                                            <label><em class="fas fa-times" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', '') ?></label>
+
+                                                            <?php } ?>
+
+
+                                                            
+                                                            </td>
+                                                            <?php if ($roles == 270) { ?>
+                                                            <td class="text-center">
+                                                                <?= Html::a('<em class="fas fa-trash-alt" style="font-size: 12px; color: #d95416;"></em>',  ['deleteqr','idcaso'=> $value['idcaso']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar']) ?>
+                                                            </td>
+                                                            <?php } ?>
+                                                        </tr>
+                                                        <?php 
                                                     
-                                                    
-                                                    <td class="text-center">
-                                                        <?= Html::a('<em class="fas fa-search" style="font-size: 12px; color: #3e95b8;"></em>',  ['verqyr','idcaso'=> $value['idcaso']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Buscar']) ?>
-                                                    </td>                                                 
-                                                    <td class="text-center">
-
-                                                    <?php if ($varEstadoproceso == 4 && $roles != 301) {?>
-
-                                                    <?= Html::a('<em class="fas fa-pencil-alt" style="font-size: 15px; color: #43ba45;"></em>',  ['asignarqyr','idcaso'=> $value['idcaso']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Gestionar']) ?>
-
-                                                    <?php } elseif ($varEstadoproceso == 5 && $roles == 301 || $roles == 270) {?>
-
-                                                    <?= Html::a('<em class="fas fa-pencil-alt" style="font-size: 15px; color: #43ba45;"></em>',  ['asignarqyr','idcaso'=> $value['idcaso']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Gestionar']) ?>
-
-                                                    <?php } elseif ($varEstadoproceso == 9 && $roles == 270) {?>
-
-                                                    <?= Html::a('<em class="fas fa-pencil-alt" style="font-size: 15px; color: #43ba45;"></em>',  ['asignarqyr','idcaso'=> $value['idcaso']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Gestionar']) ?>
-
-                                                    <?php } elseif ($varEstadoproceso == 8 && $roles == 270) {?>
-
-                                                    <?= Html::a('<em class="fas fa-pencil-alt" style="font-size: 15px; color: #43ba45;"></em>',  ['asignarqyr','idcaso'=> $value['idcaso']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Gestionar']) ?>
-
-                                                    <?php } else { ?>
-
-                                                    <!-- Agrega aquí el icono de equis -->
-                                                    <label><em class="fas fa-times" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', '') ?></label>
-
-                                                    <?php } ?>
-
-                                                       
-                                                    </td>
-                                                    <?php if ($roles == 270) { ?>
-                                                    <td class="text-center">
-                                                        <?= Html::a('<em class="fas fa-trash-alt" style="font-size: 12px; color: #d95416;"></em>',  ['deleteqr','idcaso'=> $value['idcaso']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar']) ?>
-                                                    </td>
-                                                    <?php } ?>
-                                                </tr>
-                                            <?php 
-                                                }
-                                            ?>
+                                                } }
+                                                ?>
                                         </tbody>
                                     </table>
                                     <hr>
@@ -1273,37 +1341,40 @@ Highcharts.chart('containerA', {
     series: [{
         name: 'Data:',
         colorByPoint: true,
-        data: [<?php           
-                    foreach ($varCantidadestados as $key => $value) {
-                        $varColor = null;
+        data: [<?php 
 
-                        if ($value['id_estado'] == 2) {
-                            $varColor = '#FFC72C';
-                        }
-                        if ($value['id_estado'] == 4) {
-                            $varColor = '#00968F';
-                        }
-                        if ($value['id_estado'] == 5) {
-                            $varColor = '#0072CE';
-                        }
-                        if ($value['id_estado'] == 7) {
-                            $varColor = '#6F7271';
-                        }                        
-                        if ($value['id_estado'] == 9) {
-                            $varColor = '#CE0F69';
-                        }
-                        if ($value['id_estado'] == 8) {
-                            $varColor = '#4F758B';
-                        }
-                ?>
-                    {
-                        name: "<?php echo $value['nombre'];?>",
-                        y: parseFloat("<?php echo $value['Cantidad'];?>"),
-                        color: "<?php echo $varColor; ?>",
-                        dataLabels: {
-                            enabled: false
-                        }
-                    },
+    
+                    foreach ($varCantidadestados as $key => $value) {
+                            $varColor = null;
+
+                            if ($value['id_estado'] == 2) {
+                                $varColor = '#FFC72C';
+                            }
+                            if ($value['id_estado'] == 4) {
+                                $varColor = '#00968F';
+                            }
+                            if ($value['id_estado'] == 5) {
+                                $varColor = '#0072CE';
+                            }
+                            if ($value['id_estado'] == 7) {
+                                $varColor = '#6F7271';
+                            }                        
+                            if ($value['id_estado'] == 9) {
+                                $varColor = '#CE0F69';
+                            }
+                            if ($value['id_estado'] == 8) {
+                                $varColor = '#4F758B';
+                            }
+                    ?>
+                            {
+                                name: "<?php echo $value['nombre'];?>",
+                                y: parseFloat("<?php echo $value['Cantidad'];?>"),
+                                color: "<?php echo $varColor; ?>",
+                                dataLabels: {
+                                    enabled: false
+                                }
+                            },
+            
                 <?php 
                     }
                 ?>
@@ -1477,8 +1548,6 @@ function openCity(evt, cityName) {
             return;
         }
 
-
-        
 
 
     }
