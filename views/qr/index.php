@@ -39,6 +39,7 @@ $sessiones = Yii::$app->user->identity->id;
   ->groupBy(['tbl_proceso_cliente_centrocosto.documento_gerente'])
   ->scalar();
 
+  
   $varCedulaDirector =  (new \yii\db\Query())
   ->select(['tbl_proceso_cliente_centrocosto.documento_director'])
   ->from(['tbl_usuarios'])
@@ -109,7 +110,7 @@ $sessiones = Yii::$app->user->identity->id;
         if ($roles == '301') {
             $varListaClientes = $varArrayClientesDirectors;
         }else{
-            if ($roles == '270') {
+            if ($roles == '270' || $roles == '304') {
                 $varListaClientes = $varArrayClientesAdmis;
             }else{
                 $varListaClientes = 0;
@@ -123,6 +124,7 @@ $sessiones = Yii::$app->user->identity->id;
     ->from(['tbl_qr_casos'])
     ->where(['=','tbl_qr_casos.estatus', 0])
     ->andwhere(['IN','tbl_qr_casos.cliente',$varListaClientes])
+    //->orWhere(['IN','tbl_qr_casos.',[]])
     ->count();
     
 
@@ -338,6 +340,16 @@ $sessiones = Yii::$app->user->identity->id;
     display:block;
     position:absolute;
     background: linear-gradient(to right, #E83718 30%, transparent 30%)
+    }
+
+    .semaforo-gris {
+    width:4rem;
+    height:14px;
+    border:2px solid #A0A6A6;
+    border-radius:50px;
+    display:block;
+    position:absolute;
+    background-color: #A0A6A6;
     }
 
     
@@ -704,7 +716,7 @@ $sessiones = Yii::$app->user->identity->id;
                                             <div class="col-md-6">
                                                 <label style="font-size: 16px;"><em class="fas fa-check" style="font-size: 20px; color: #CE0F69;"></em><?= Yii::t('app', ' Anexar Documentos') ?></label>
                                                 <br>
-                                                <?= $form->field($modelo, 'file', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->fileInput(["class"=>"input-file" ,'id'=>'idvarFile', 'style'=>'font-size: 18px;','extensions' => ' pdf','docx', 'maxSize' => 1024*1024*1024])->label('') ?>
+                                                <?= $form->field($modelo, 'file', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->fileInput(["class"=>"input-file" ,'id'=>'idvarFile', 'style'=>'font-size: 18px;','extensions' => 'pdf','docx', 'maxSize' => 1024*1024*1024])->label('') ?>
                                                 <label style="font-size: 15px;"> <?= Yii::t('app', ' ___________________ ') ?></label><br>
                                                 <label style="font-size: 16px;"> <?= Yii::t('app', ' Tener en cuenta... ') ?></label><br>
                                                 <p style="font-size: 15px;"> <?= Yii::t('app', ' * Los archivos a subir deben tener la extensión correcta .docx, .pdf ') ?></p>
@@ -756,7 +768,7 @@ $sessiones = Yii::$app->user->identity->id;
                                                 <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 16px; width:80px;"><?= Yii::t('app', 'Fecha de Cierre ') ?></label></th>
                                                 <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 16px;"><?= Yii::t('app', 'Detalle PQRS ') ?></label></th>
                                                 <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 16px; width:125px;"><?= Yii::t('app', 'Estado Actual') ?></label></th>
-                                                <th scope="col" class="text-center" style="background-color: #b0cdd6; width:125px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Días Transcurridos') ?></label></th>
+                                                <th scope="col" class="text-center" style="background-color: #b0cdd6; width:130px;"><label style="font-size: 16px;"><?= Yii::t('app', 'Días Transcurridos') ?></label></th>
                                                 <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 16px;"><?= Yii::t('app', 'Cumplimiento') ?></label></th>
                                                 
                                                 <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 16px;"><?= Yii::t('app', 'Ver Historico') ?></label></th>
@@ -789,9 +801,9 @@ $sessiones = Yii::$app->user->identity->id;
                                                         $varDocUsuario = $value['documento'];
 
 
-                                                        $varFechaRespuesta = $value['fecha_respuesta'];
+                                                        $varFechaCierre = $value['fecha_cierre'];
 
-                                                        $fechaFormateada = date("Y-m-d", strtotime($varFechaRespuesta));
+                                                        $fechaFormateada = date("Y-m-d", strtotime($varFechaCierre));
 
                                                         $varParams = [':varParams' => $varDocUsuario];
                                                         $varEmail = Yii::$app->dbjarvis->createCommand('
@@ -844,21 +856,27 @@ $sessiones = Yii::$app->user->identity->id;
                                                             $diarojo2 = $valuee['diarojo2'];                        
                                                         }
 
-                                                        $fecha1 = new Datetime($varFechaCreacion); //fecha creacion
-                                                        $fecha2= new datetime('now'); //fecha actual
-                                                        $dias = $fecha1->diff($fecha2); //diferencia entre la fecha de creacion y fecha actual 
-                                                        
                                                         //mp($fecha1);
                                                         //mp($fecha2);
                                                         //mp($dias); 
+                                                        $fecha1 = new Datetime($varFechaCreacion); //fecha creacion
+                                                        
+                                                        if (isset($varFechaCierre)) {    // igual a estado cerrado                                                         
+                                                            $fecha2= new datetime($varFechaCierre);                                                
+                                                        }else{
+                                                            $fecha2= new datetime('now'); //fecha actual
+                                                        }
 
-                                                        $diastrans = $dias->days; //dias trasncurridos
-                                                        $diasfaltan =$diastrans -  $meta; //dias que han pasado sin responder
-
+                                                        $dias = $fecha1->diff($fecha2); //diferencia entre la fecha de creacion y fecha actual son 11 dias 
+                                                        
+                                                        $diastrans = $dias->days; //dias trasncurridos s
+                                                        
+                                                        $diasfaltan = $meta - $diastrans; //dias que han pasado sin responder
                                                         //mp($diastrans);
                                                         //mp($diasfaltan);
-
+                                                        
                                                 
+                                                       // var_dump($diastrans);
 
                                                         ?>
                                                         <tr>
@@ -883,35 +901,28 @@ $sessiones = Yii::$app->user->identity->id;
                                                                     <td><label style="font-size: 15px;"><?php echo  $varnombreestado; ?></label></td>
                                                                 <?php } ?>
 
-                                                        
-
-                                                            <?php if($diastrans === 0){?>
-                                                                <td style="width: 100px;">
-                                                                    <div>
-                                                                    <span class="semaforo-verde"></span>
-                                                                    <label class="dias"><?= Yii::t('app', 'Tienes '.$diasfaltan.' Días') ?></label>
-                                                                    </div>
-                                                                </td>
-
-                                                            <?php } ?>
-                                                            <?php if(($diastrans >= $diaverde1) && ($diastrans <= $diaverde2)){?>
-                                                                <td style="width: 100px;" ><span class="semaforo-verde"></span><label class="dias"><?= Yii::t('app','Tienes '.$diasfaltan.' Días') ?></label></td>
-
-                                                            <?php } ?>
-                                                            <?php if(($diastrans >= $diaamarillo1) && ($diastrans <= $diaamarillo2)){?>
-                                                                <td style="width: 100px;" ><span class="semaforo-amarillo" ></span><label class="dias"><?= Yii::t('app','Tienes '.$diasfaltan.' Días') ?></label></td>
-
-                                                            <?php } ?>
-                                                            <?php if(($diastrans >= $diarojo1)){?>
-                                                                <td style="width: 100px;" ><span class="semaforo-rojo" ></span><label class="dias"><?= Yii::t('app', 'Días Vencidos  '.$diasfaltan) ?> </label></td>
-
-                                                            <?php } ?>
+                                                                <?php if ($varnombreestado == 'Cerrado'): ?>
+                                                                    <td style="width: 100px;"><span class="semaforo-gris"></span><label class="dias"></label></td>
+                                                                <?php elseif ($diastrans === 0): ?>
+                                                                    <td style="width: 100px;">
+                                                                        <div>
+                                                                            <span class="semaforo-verde"></span>
+                                                                            <label class="dias"><?= Yii::t('app', 'Tienes '.$diasfaltan.' Días') ?></label>
+                                                                        </div>
+                                                                    </td>
+                                                                <?php elseif ($diastrans > $diaverde1 && $diastrans <= $diaverde2): ?>
+                                                                    <td style="width: 100px;"><span class="semaforo-verde"></span><label class="dias"><?= Yii::t('app', 'Tienes '.$diasfaltan.' Días') ?></label></td>
+                                                                <?php elseif ($diastrans >= $diaamarillo1 && $diastrans <= $diaamarillo2): ?>
+                                                                    <td style="width: 100px;"><span class="semaforo-amarillo"></span><label class="dias"><?= Yii::t('app', 'Tienes '.$diasfaltan.' Días') ?></label></td>
+                                                                <?php elseif ($diastrans > $diarojo1): ?>
+                                                                    <td style="width: 100px;"><span class="semaforo-rojo"></span><label class="dias"><?= Yii::t('app', 'Días Vencidos '.$diasfaltan) ?></label></td>
+                                                                <?php endif; ?>
 
                                                             <?php if(($diastrans > $meta) && ($varEstadoproceso != 2)){?>
-                                                                <td><label style="font-size: 15px;"><?= Yii::t('app', 'No haz Respondido') ?></label></td>
+                                                                <td><label style="font-size: 15px;"><?= Yii::t('app', 'No has Respondido') ?></label></td>
 
                                                             <?php } ?>  
-                                                            <?php if(($diastrans > $meta) && ($varEstadoproceso == 2)){?>
+                                                            <?php if(($diastrans >= $meta) && ($varEstadoproceso == 2)){?>
                                                                 <td><label style="font-size: 15px;"><?= Yii::t('app', 'Cumplió fuera de la Fecha') ?></label></td>
 
                                                             <?php } ?>
@@ -1180,7 +1191,7 @@ $sessiones = Yii::$app->user->identity->id;
 
 
                                                         foreach ($listacumplimiento as $key => $value) {
-                                                            $meta = $value['indicador'];
+                                                            $meta = 15;
                                                             $diaverde1 = $value['diaverde1'];
                                                             $diaverde2 = $value['diaverde2'];
                                                             $diaamarillo1 = $value['diaamarillo1'];
@@ -1554,7 +1565,7 @@ function openCity(evt, cityName) {
 
     document.getElementById('idvarFile').addEventListener('change', function () {
         var fileInput = this;
-        var allowedExtensions = ['pdf ','docx'];
+        var allowedExtensions = ['pdf','docx'];
         var maxSize = <?= 1024*1024*1024 ?>; // Tamaño máximo en bytes
         var fileSize = fileInput.files[0].size;
         var fileExtension = fileInput.value.split('.').pop().toLowerCase();
