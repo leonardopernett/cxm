@@ -318,7 +318,8 @@ if ($varDataResultado_Notas != null) {
                                         ->from(['tbl_alertas_tipoencuestas'])
                                         ->join('LEFT OUTER JOIN', 'tbl_alertas_encuestasalertas',
                                                 'tbl_alertas_tipoencuestas.id_tipoencuestas = tbl_alertas_encuestasalertas.id_tipoencuestas')
-                                        ->where(['=','tbl_alertas_encuestasalertas.id_alerta',$varIdAlertas])
+                                        ->where(['=','tbl_alertas_encuestasalertas.id_alerta',$varIdAlertas])                                        
+                                        ->andwhere(['=','tbl_alertas_encuestasalertas.usua_id',$sessiones])
                                         ->andwhere(['=','tbl_alertas_encuestasalertas.anulado',0])
                                         ->all(); 
 
