@@ -43,7 +43,7 @@ class Casosqyr extends \yii\db\ActiveRecord
     {
         return [
             [['id_responsable','id', 'id_solicitud','id_area','id_tipologia','id_estado_caso','anulado','usua_id','usua_id_estado'], 'integer'],
-            [['fecha_creacion','fecha_respuesta','fecha_revisioncx','fecha_revision_gerente','fecha_asignacion'], 'safe'],
+            [['fecha_creacion','fecha_respuesta','fecha_revisioncx','fecha_revision_gerente','fecha_asignacion','fecha_cierre'], 'safe'],
             [['comentario'], 'string', 'max' => 500],
             [['nombre','documento','correo','cliente','numero_caso','archivo','archivo2'], 'string', 'max' => 150]
         ];
@@ -77,6 +77,7 @@ class Casosqyr extends \yii\db\ActiveRecord
             'revision_cx' => Yii::t('app', ''),
             'fecha_asignacion' => Yii::t('app', ''),
             'id_responsable' => Yii::t('app', ''),
+            'fecha_cierre' => Yii::t('app', ''),
         ];
     }
 }

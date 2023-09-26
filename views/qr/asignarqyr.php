@@ -1196,7 +1196,7 @@ use yii\bootstrap\Modal;
 <script>
  document.getElementById('idfile').addEventListener('change', function () {
         var fileInput = this;
-        var allowedExtensions = ['pdf ','docx'];
+        var allowedExtensions = ['pdf','docx'];
         var maxSize = <?= 1024*1024*1024 ?>; // Tamaño máximo en bytes
         var fileSize = fileInput.files[0].size;
         var fileExtension = fileInput.value.split('.').pop().toLowerCase();
